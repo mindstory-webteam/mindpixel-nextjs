@@ -1,10 +1,7 @@
-import { useRef, useEffect } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+"use client";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { img } from "../assets/assest";
-import { motion } from "framer-motion";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const cardAccents = [
   { bg: "#95257b", text: "#ffffff" },
@@ -86,8 +83,8 @@ const services = [
     points: [
       { label: "Technical Audit", desc: "Crawl errors, Core Web Vitals, indexing issues, and site structure fixes." },
       { label: "Keyword Strategy", desc: "Search intent-based keyword mapping aligned with your business goals." },
-      { label: "Content Optimization", desc: "On-page improvements that make your content clearer, more useful, and easier for search engines to understand." },
-      { label: "Performance Tracking", desc: "Clear reporting with measurable KPIs, ranking movement, traffic insights, and improvement areas." },
+      { label: "Content Optimization", desc: "On-page improvements that make your content clearer and easier for search engines." },
+      { label: "Performance Tracking", desc: "Clear reporting with measurable KPIs, ranking movement, and traffic insights." },
     ],
     image: `${img.seoservice}`,
   },
@@ -101,7 +98,7 @@ const services = [
     points: [
       { label: "User Research", desc: "Understanding real user needs, behaviour, and pain points before planning the design." },
       { label: "Wireframes & Prototypes", desc: "Clickable layouts that help validate ideas before development begins." },
-      { label: "Design Systems", desc: "Consistent, scalable design components that make future updates faster and easier." },
+      { label: "Design Systems", desc: "Consistent, scalable design components that make future updates faster." },
       { label: "Accessibility", desc: "Designs planned to work clearly for different users across devices and screen sizes." },
     ],
     image: `${img.uiux}`,
@@ -109,190 +106,235 @@ const services = [
 ];
 
 const swirlPaths = [
-  `M 1030 55 C 905 95, 808 58, 688 118 C 568 178, 528 305, 408 345 C 290 383, 182 322, 102 382 C 42 424, -30 505, -30 625`,
-  `M 180 -30 C 210 70, 280 160, 230 270 C 180 375, 70 390, 90 490 C 110 565, 250 600, 400 580 C 550 558, 660 490, 790 520 C 890 542, 960 590, 1030 585`,
-  `M 1030 410 C 920 390, 820 440, 700 375 C 580 310, 530 190, 390 165 C 265 143, 158 225, 65 185 C 15 163, -30 115, -30 50`,
-  `M 1030 75 C 905 55, 830 125, 795 230 C 758 335, 820 415, 775 500 C 730 572, 625 608, 505 588 C 385 568, 285 505, 162 525 C 82 540, 18 585, -30 625`,
-  `M -30 590 C 95 525, 175 445, 275 385 C 375 325, 435 225, 555 205 C 655 188, 758 248, 860 205 C 942 170, 985 100, 1030 35`,
-  `M 1030 55 C 905 95, 808 58, 688 118 C 568 178, 528 305, 408 345 C 290 383, 182 322, 102 382 C 42 424, -30 505, -30 625`,
+  "M 1030 55 C 905 95, 808 58, 688 118 C 568 178, 528 305, 408 345 C 290 383, 182 322, 102 382 C 42 424, -30 505, -30 625",
+  "M 180 -30 C 210 70, 280 160, 230 270 C 180 375, 70 390, 90 490 C 110 565, 250 600, 400 580 C 550 558, 660 490, 790 520 C 890 542, 960 590, 1030 585",
+  "M 1030 410 C 920 390, 820 440, 700 375 C 580 310, 530 190, 390 165 C 265 143, 158 225, 65 185 C 15 163, -30 115, -30 50",
+  "M 1030 75 C 905 55, 830 125, 795 230 C 758 335, 820 415, 775 500 C 730 572, 625 608, 505 588 C 385 568, 285 505, 162 525 C 82 540, 18 585, -30 625",
+  "M -30 590 C 95 525, 175 445, 275 385 C 375 325, 435 225, 555 205 C 655 188, 758 248, 860 205 C 942 170, 985 100, 1030 35",
+  "M 1030 55 C 905 95, 808 58, 688 118 C 568 178, 528 305, 408 345 C 290 383, 182 322, 102 382 C 42 424, -30 505, -30 625",
 ];
 
+const N = services.length; // 6
+const STICKY_TOP = 85;     // px — height of navbar
+
+/* ─── Individual Card ──────────────────────────────────────────────────────── */
+function Card({ service, index, scrollYProgress, accent }) {
+  const isLast  = index === N - 1;
+  const isLight = accent.text === "#ffffff";
+
+  /*
+   * Scroll math:
+   *   scrollYProgress 0→1 covers N×100vh total track height.
+   *   Card i is "active" during segment [i/N … (i+1)/N].
+   *   • entry: card slides up from 110% → 0%   (card 0 already at 0%)
+   *   • exit : card scales 1 → 0.92, dims 1 → 0.75  as next card enters
+   */
+  const seg   = 1 / N;
+  const start = index * seg;
+  const end   = (index + 1) * seg;
+
+  const entryEnd  = start + seg * 0.28;
+  const exitStart = end   - seg * 0.30;
+
+  const yFrom = index === 0 ? "0%" : "110%";
+  const y     = useTransform(scrollYProgress, [start, entryEnd], [yFrom, "0%"]);
+
+  const scale  = useTransform(scrollYProgress, [exitStart, end], [1, isLast ? 1 : 0.92]);
+  const bright = useTransform(scrollYProgress, [exitStart, end], [1, isLast ? 1 : 0.72]);
+  const filter = useTransform(bright, (v) => `brightness(${v})`);
+
+  return (
+    <motion.div className="svc-slot" style={{ zIndex: index + 1, y }}>
+      <motion.div
+        className="svc-card"
+        style={{
+          scale,
+          filter,
+          background: accent.bg,
+          color: accent.text,
+          border: `1px solid ${isLight ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.12)"}`,
+        }}
+      >
+        {/* decorative swirl */}
+        <svg className="svc-swirl" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden>
+          <motion.path
+            d={swirlPaths[index]}
+            fill="none"
+            stroke="#e9d5ff"
+            strokeWidth="30"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            opacity="0.38"
+            initial={{ pathLength: 0 }}
+            whileInView={{ pathLength: 1 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 1.6, ease: "easeOut" }}
+          />
+        </svg>
+
+        <div className="svc-grid">
+          {/* image */}
+          <div className="svc-img-wrap">
+            <img src={service.image} alt={service.title} className="svc-img" />
+            <span className="svc-img-tag">{service.tag}</span>
+          </div>
+
+          {/* text */}
+          <div className="svc-body">
+            <p className="svc-desc" style={{ color: isLight ? "rgba(255,255,255,0.75)" : "rgba(0,0,0,0.6)" }}>
+              {service.description}
+            </p>
+
+            <div className="svc-points">
+              {service.points.map((pt) => (
+                <div className="svc-point-item" key={pt.label}>
+                  <div className="svc-dot" />
+                  <div className="svc-point-body">
+                    <span className="svc-lbl" style={{ color: accent.text }}>{pt.label}</span>
+                    <span className="svc-ptdesc" style={{ color: isLight ? "rgba(255,255,255,0.65)" : "rgba(0,0,0,0.55)" }}>
+                      {pt.desc}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="svc-tags">
+              {service.subtags.map((sub) => (
+                <span key={sub} className="svc-tag bg-white text-black"
+                  style={{ border: `1px solid ${isLight ? "rgba(255,255,255,0.45)" : "rgba(0,0,0,0.3)"}` }}>
+                  {sub}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+/* ─── Main Component ───────────────────────────────────────────────────────── */
 export default function Services() {
-  const cardRefs = useRef([]);
-  const outroRef = useRef(null);
+  const trackRef = useRef(null);
 
-  useEffect(() => {
-    let mm = gsap.matchMedia();
-
-    mm.add("(min-width: 641px)", () => {
-      const cards = cardRefs.current.filter(Boolean);
-
-      cards.forEach((card, index) => {
-        const isLast = index === cards.length - 1;
-        const inner = card.querySelector(".svc-stack-inner");
-
-        if (!isLast) {
-          gsap.to(inner, {
-            scale: 0.95,
-            ease: "none",
-            scrollTrigger: {
-              trigger: cards[index + 1],
-              start: "top 100%",
-              end: "top 65px",
-              scrub: true,
-            },
-          });
-        }
-      });
-    });
-
-    return () => mm.revert();
-  }, []);
+  /*
+   * WHY THIS HAS ZERO TRAILING WHITESPACE:
+   *   svc-track   height = N×100vh  →  scroll distance
+   *   svc-win     height = calc(100vh - STICKY_TOP), sticky top = STICKY_TOP, overflow:hidden
+   *
+   * The sticky window is exactly viewport-minus-navbar.
+   * It unsticks the INSTANT the track ends → Testimonials enters immediately.
+   * margin-top/bottom on svc-track creates equal, symmetrical gaps with Portfolio & Testimonials.
+   */
+  const { scrollYProgress } = useScroll({
+    target: trackRef,
+    offset: ["start start", "end end"],
+  });
 
   return (
     <>
-      <section className="svc-stack-section">
-        {services.map((service, index) => {
-          const accent = cardAccents[index % cardAccents.length];
-          const isLight = accent.text === "#ffffff";
-          return (
-            <div
-              key={service.id}
-              ref={(el) => (cardRefs.current[index] = el)}
-              className="svc-card-block"
-              style={{ zIndex: index + 1 }}
-            >
-              <div
-                className="svc-stack-inner"
-                style={{
-                  background: accent.bg,
-                  color: accent.text,
-                  border: `1px solid ${isLight ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.12)"}`,
-                }}
-              >
-                <svg
-                  className="svc-swirl-svg"
-                  viewBox="0 0 1000 600"
-                  preserveAspectRatio="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  aria-hidden="true"
-                >
-                  <motion.path
-                    d={swirlPaths[index]}
-                    fill="none"
-                    stroke="#e9d5ff"
-                    strokeWidth="30"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    opacity="0.38"
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    viewport={{ once: true, amount: 0.15 }}
-                    transition={{ duration: 1.6, ease: "easeOut" }}
-                  />
-                </svg>
+      {/* ── DESKTOP: scroll-container pattern ────────────────────────────── */}
+      <div ref={trackRef} className="svc-track">
+        <div className="svc-win">
+          {services.map((svc, i) => (
+            <Card
+              key={svc.id}
+              service={svc}
+              index={i}
+              scrollYProgress={scrollYProgress}
+              accent={cardAccents[i % cardAccents.length]}
+            />
+          ))}
+        </div>
+      </div>
 
-                <div className="svc-stack-grid">
-
-                  <div className="svc-stack-img-wrap">
-                    <img
-                      src={service.image}
-                      alt={service.title}
-                      className="svc-stack-img"
-                    />
-                    <span className="svc-img-tag">{service.tag}</span>
-                  </div>
-
-                  <div className="svc-stack-text">
-                    <p
-                      className="svc-desc"
-                      style={{
-                        color: isLight ? "rgba(255,255,255,0.75)" : "rgba(0,0,0,0.6)",
-                      }}
-                    >
-                      {service.description}
-                    </p>
-
-                    <div className="svc-points">
-                      {service.points.map((pt) => (
-                        <div className="svc-point-item" key={pt.label}>
-                          <div className="svc-point-dot" />
-                          <div className="svc-point-body">
-                            <span className="svc-point-label" style={{ color: accent.text }}>
-                              {pt.label}
-                            </span>
-                            <span
-                              className="svc-point-desc"
-                              style={{
-                                color: isLight ? "rgba(255,255,255,0.65)" : "rgba(0,0,0,0.55)",
-                              }}
-                            >
-                              {pt.desc}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="svc-subtags">
-                      {service.subtags.map((sub) => (
-                        <span
-                          key={sub}
-                          className="svc-stack-subtag bg-white text-black"
-                          style={{
-                            border: `1px solid ${isLight ? "rgba(255,255,255,0.45)" : "rgba(0,0,0,0.3)"}`,
-                          }}
-                        >
-                          {sub}
-                        </span>
-                      ))}
+      {/* ── MOBILE: simple stacked list ──────────────────────────────────── */}
+      <div className="svc-mobile">
+        {services.map((svc, i) => (
+          <motion.div
+            key={svc.id}
+            className="svc-mobile-card"
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.1 }}
+            transition={{ duration: 0.44, ease: "easeOut", delay: i * 0.04 }}
+          >
+            <div className="svc-img-wrap" style={{ height: 210, borderRadius: 0 }}>
+              <img src={svc.image} alt={svc.title} className="svc-img" />
+              <span className="svc-img-tag">{svc.tag}</span>
+            </div>
+            <div className="svc-body" style={{ height: "auto", padding: "1.4rem 1.2rem" }}>
+              <p className="svc-desc" style={{ color: "rgba(255,255,255,0.78)" }}>{svc.description}</p>
+              <div className="svc-points">
+                {svc.points.map((pt) => (
+                  <div className="svc-point-item" key={pt.label}>
+                    <div className="svc-dot" />
+                    <div className="svc-point-body">
+                      <span className="svc-lbl">{pt.label}</span>
+                      <span className="svc-ptdesc" style={{ color: "rgba(255,255,255,0.65)" }}>{pt.desc}</span>
                     </div>
                   </div>
-                </div>
+                ))}
+              </div>
+              <div className="svc-tags">
+                {svc.subtags.map((t) => (
+                  <span key={t} className="svc-tag bg-white text-black"
+                    style={{ border: "1px solid rgba(255,255,255,0.45)" }}>{t}</span>
+                ))}
               </div>
             </div>
-          );
-        })}
-        <div ref={outroRef} className="svc-outro-spacer" />
-      </section>
+          </motion.div>
+        ))}
+      </div>
 
+      {/* ── STYLES ──────────────────────────────────────────────────────── */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
 
-        .svc-stack-section {
+        /* ── scroll track ──
+           height = N×100vh  →  total scroll duration for the animation
+           margin-top/bottom creates IDENTICAL, SYMMETRICAL gaps
+           with the Portfolio section above AND Testimonials section below   */
+        .svc-track {
+          height: ${N * 100}vh;
           position: relative;
-          width: 100%;
-          background: #fff;
-          padding-bottom: 10px;
+          margin-top: 60px;
+          margin-bottom: 60px;
         }
 
-        .svc-card-block {
+        /* ── sticky window ──
+           Exactly (100vh - navbar) tall so it un-sticks the INSTANT
+           the track ends.  overflow:hidden clips cards below.              */
+        .svc-win {
           position: sticky;
-          top: 65px;
-          width: 100%;
-          height: 100vh;
-          display: flex;
-          align-items: flex-start;
-          justify-content: center;
-          padding-top: 40px;
-          box-sizing: border-box;
+          top: ${STICKY_TOP}px;
+          height: calc(100vh - ${STICKY_TOP}px);
+          overflow: hidden;
+          background: #fff;
         }
 
-        .svc-stack-inner {
-          width: calc(100% - 120px);
-          height: 75vh;
+        /* ── card slot ──
+           Absolute-fills the sticky window, 20px inset on all sides      */
+        .svc-slot {
+          position: absolute;
+          inset: 20px 60px;
+          will-change: transform;
+        }
+
+        /* ── card visual ── */
+        .svc-card {
+          width: 100%;
+          height: 100%;
           border-radius: 2rem;
           padding: 2.5rem;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
           position: relative;
           overflow: hidden;
           will-change: transform;
           box-sizing: border-box;
         }
 
-        .svc-swirl-svg {
+        .svc-swirl {
           position: absolute;
           inset: 0;
           width: 100%;
@@ -301,33 +343,32 @@ export default function Services() {
           pointer-events: none;
         }
 
-        .svc-stack-grid {
+        .svc-grid {
           display: grid;
           grid-template-columns: 0.85fr 1fr;
-          gap: 0;
+          height: 100%;
           position: relative;
           z-index: 1;
-          height: 100%;
           align-items: stretch;
           min-height: 0;
         }
 
-        .svc-stack-img-wrap {
+        .svc-img-wrap {
           position: relative;
           border-radius: 1.25rem;
           overflow: hidden;
           height: 100%;
-          max-height: 100%;
           width: 100%;
         }
 
-        .svc-stack-img {
+        .svc-img {
           width: 100%;
           height: 100%;
           object-fit: cover;
           display: block;
           transition: transform 0.7s ease;
         }
+        .svc-card:hover .svc-img { transform: scale(1.04); }
 
         .svc-img-tag {
           position: absolute;
@@ -344,11 +385,11 @@ export default function Services() {
           color: #fff;
         }
 
-        .svc-stack-text {
+        .svc-body {
           display: flex;
           flex-direction: column;
           justify-content: center;
-          padding: 1.5rem 2rem 1.5rem 2rem;
+          padding: 1.5rem 2rem;
           gap: 1rem;
           overflow: hidden;
           height: 100%;
@@ -360,38 +401,38 @@ export default function Services() {
           font-family: 'Syne', sans-serif;
           font-size: 15px;
           font-weight: 400;
-          line-height: 1.7;
+          line-height: 1.72;
           margin: 0;
         }
 
         .svc-points {
           display: flex;
           flex-direction: column;
-          gap: 0.65rem;
+          gap: 0.62rem;
         }
 
         .svc-point-item {
           display: flex;
           align-items: flex-start;
-          gap: 0.65rem;
+          gap: 0.6rem;
         }
 
-        .svc-point-dot {
+        .svc-dot {
           flex-shrink: 0;
           width: 7px;
           height: 7px;
           border-radius: 50%;
-          background: rgba(255, 255, 255, 0.6);
+          background: rgba(255,255,255,0.55);
           margin-top: 0.35rem;
         }
 
         .svc-point-body {
           display: flex;
           flex-direction: column;
-          gap: 0.12rem;
+          gap: 0.1rem;
         }
 
-        .svc-point-label {
+        .svc-lbl {
           font-family: 'Syne', sans-serif;
           font-size: 16px;
           font-weight: 600;
@@ -399,20 +440,20 @@ export default function Services() {
           line-height: 1.3;
         }
 
-        .svc-point-desc {
+        .svc-ptdesc {
           font-family: 'Syne', sans-serif;
-          font-size: 16px;
+          font-size: 15px;
           font-weight: 400;
-          line-height: 1.55;
+          line-height: 1.5;
         }
 
-        .svc-subtags {
+        .svc-tags {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.45rem;
+          gap: 0.42rem;
         }
 
-        .svc-stack-subtag {
+        .svc-tag {
           font-family: 'Syne', sans-serif;
           font-size: 11px;
           font-weight: 400;
@@ -423,93 +464,60 @@ export default function Services() {
           cursor: default;
           transition: opacity 0.2s;
         }
+        .svc-tag:hover { opacity: 1; }
 
-        .svc-stack-subtag:hover { opacity: 1; }
+        /* mobile list hidden on desktop */
+        .svc-mobile { display: none; }
 
-        .svc-outro-spacer { height: 1px; }
-
-        @media (max-width: 1400px) {
-          .svc-stack-text {
-            padding: 1.2rem 1.5rem;
-            gap: 0.8rem;
-          }
-          .svc-desc { font-size: 14px; line-height: 1.55; }
-          .svc-point-label { font-size: 15px; }
-          .svc-point-desc { font-size: 14px; line-height: 1.4; }
+        /* ── responsive ── */
+        @media (max-width: 1280px) {
+          .svc-slot { inset: 20px 40px; }
+          .svc-desc { font-size: 14px; }
+          .svc-lbl { font-size: 15px; }
+          .svc-ptdesc { font-size: 13px; }
+        }
+        @media (max-width: 1024px) {
+          .svc-slot { inset: 14px 24px; }
+          .svc-grid { grid-template-columns: 1fr 1fr; }
+          .svc-desc { font-size: 13px; line-height: 1.6; }
+          .svc-lbl { font-size: 14px; }
+          .svc-ptdesc { font-size: 12px; }
+          .svc-body { padding: 1rem 1.3rem; gap: 0.8rem; }
+          .svc-img-tag { font-size: 19px; }
           .svc-points { gap: 0.5rem; }
         }
-
-        @media (max-width: 1200px) {
-          .svc-stack-inner {
-            width: calc(100% - 80px);
-            padding: 2rem;
-          }
-          .svc-stack-text {
-            padding: 1rem 1.3rem;
-            gap: 0.7rem;
-          }
-          .svc-desc { font-size: 13px; line-height: 1.5; }
-          .svc-point-label { font-size: 14px; }
-          .svc-point-desc { font-size: 12px; line-height: 1.35; }
-          .svc-img-tag { font-size: 19px; }
-          .svc-points { gap: 0.4rem; }
+        @media (max-width: 768px) {
+          .svc-slot { inset: 10px 14px; }
+          .svc-card { border-radius: 1.4rem; }
         }
 
-        @media (max-width: 900px) {
-          .svc-stack-inner {
-            width: calc(100% - 48px);
-            height: 85vh;
-            padding: 1.5rem;
-          }
-          .svc-stack-text {
-            padding: 1rem 1.2rem;
-            gap: 0.7rem;
-          }
-          .svc-desc { font-size: 13px; }
-          .svc-point-label { font-size: 14px; }
-          .svc-point-desc { font-size: 11px; }
-          .svc-img-tag { font-size: 16px; }
-          .svc-points { gap: 0.45rem; }
-          .svc-point-item { gap: 0.5rem; }
-        }
-
+        /* ── mobile: swap to plain stacked cards ── */
         @media (max-width: 640px) {
-          .svc-swirl-svg {
-            display: none;
+          .svc-track { display: none; }
+          .svc-mobile {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding: 14px;
+            margin-top: 40px;
+            margin-bottom: 40px;
+            background: #fff;
           }
-          .svc-card-block {
-            position: relative;
-            height: auto;
-            min-height: auto;
-            padding: 20px 16px;
-          }
-          .svc-stack-inner {
-            width: 100%;
-            height: auto;
-            min-height: auto;
-            padding: 0;
+          .svc-mobile-card {
             border-radius: 1.5rem;
-            transform: none !important;
+            background: #95257b;
+            color: #fff;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.14);
           }
-          .svc-stack-grid {
+          .svc-mobile-card .svc-grid {
             grid-template-columns: 1fr;
-            gap: 0;
             height: auto;
           }
-          .svc-stack-img-wrap {
-            height: 220px;
-            max-height: 220px;
-          }
-          .svc-stack-text {
-            padding: 1.75rem 1.5rem;
-            gap: 1.25rem;
-            height: auto;
-          }
-          .svc-desc { font-size: 16px; }
-          .svc-point-label { font-size: 15px; }
-          .svc-point-desc { font-size: 13px; }
-          .svc-img-tag { font-size: 18px; }
-          .svc-outro-spacer { display: none; }
+          .svc-mobile-card .svc-desc   { font-size: 0.88rem; }
+          .svc-mobile-card .svc-lbl    { font-size: 0.9rem; }
+          .svc-mobile-card .svc-ptdesc { font-size: 0.8rem; }
+          .svc-mobile-card .svc-img-tag { font-size: 0.95rem; }
         }
       `}</style>
     </>

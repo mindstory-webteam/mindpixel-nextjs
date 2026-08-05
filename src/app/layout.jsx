@@ -10,6 +10,7 @@ export const metadata = {
   },
   icons: {
     icon: "/favicon.png",
+    shortcut: "/favicon.png",
   },
 };
 
@@ -29,21 +30,29 @@ export default function RootLayout({ children }) {
             })(window,document,'script','dataLayer','GTM-NCJP8LHF');`,
           }}
         />
-        {/* Dynamic Favicon Script */}
+        {/* Dynamic Favicon Blink Script */}
         <Script
-          id="favicon-loader"
-          strategy="lazyOnload"
+          id="favicon-blink"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
-                const frames = ["/favicon.png", "/faviconstroke.png"];
-                let index = 0;
-                setInterval(() => {
-                  const favicon = document.getElementById("favicon") || document.querySelector("link[rel*='icon']");
-                  if (favicon) {
-                    favicon.href = frames[index];
-                    index = (index + 1) % frames.length;
+                var frames = ["/favicon.png", "/faviconstroke.png"];
+                var index = 0;
+                function getOrCreateFavicon() {
+                  var link = document.querySelector("link[rel~='icon']");
+                  if (!link) {
+                    link = document.createElement("link");
+                    link.rel = "icon";
+                    link.type = "image/png";
+                    document.head.appendChild(link);
                   }
+                  return link;
+                }
+                setInterval(function() {
+                  var favicon = getOrCreateFavicon();
+                  favicon.href = frames[index] + "?v=" + Date.now();
+                  index = (index + 1) % frames.length;
                 }, 1000);
               })();
             `,
