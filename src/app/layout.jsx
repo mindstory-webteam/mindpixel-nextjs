@@ -18,6 +18,23 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="h-full antialiased">
       <head>
+        {/* Global ChunkLoadError Auto-Recovery Script */}
+        <Script
+          id="chunk-error-handler"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.addEventListener('error', function(e) {
+                var message = e.message || '';
+                var isChunkError = /Loading chunk/i.test(message) || /ChunkLoadError/i.test(e.name || '') || /CSS_CHUNK_LOAD_FAILED/i.test(message);
+                if (isChunkError) {
+                  console.warn('Chunk load failed. Force reloading page...');
+                  window.location.reload(true);
+                }
+              }, true);
+            `,
+          }}
+        />
         {/* Google Tag Manager */}
         <Script
           id="gtm-script"
