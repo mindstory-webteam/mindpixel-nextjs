@@ -24,11 +24,14 @@ export default function Hero2() {
     const tagline = taglineRef.current;
 
     if (!skyContainer) return;
-    const skyContainerHeight = skyContainer.offsetHeight;
+    let skyContainerHeight = skyContainer.offsetHeight;
+    if (!skyContainerHeight) {
+      skyContainerHeight = window.innerHeight * 3.5;
+    }
     const viewportHeight = window.innerHeight;
     const skyMoveDistance = skyContainerHeight - viewportHeight;
 
-    gsap.set(heroCopy, { yPercent: 100 });
+    gsap.set(heroCopy, { yPercent: 100, opacity: 1 });
     gsap.set(tagline, { opacity: 1, yPercent: 0 });
 
     const ctx = gsap.context(() => {
@@ -211,21 +214,21 @@ export default function Hero2() {
 
         <div
           ref={heroCopyRef}
-          className="absolute top-0 left-0 w-full flex flex-col justify-center items-center text-center px-8"
+          className="absolute top-0 left-0 w-full flex flex-col justify-center items-center text-center px-6 sm:px-8"
           style={{
             height: "100dvh",
             willChange: "transform",
             zIndex: 10,
-            transform: "translateY(100%)",
+            opacity: 0,
           }}
         >
           <p
             style={{
               ...syne,
-              fontSize: "clamp(0.75rem, 1.2vw, 1rem)",
+              fontSize: "clamp(0.7rem, 1.2vw, 1rem)",
               letterSpacing: "0.25em",
               textTransform: "uppercase",
-              marginBottom: "1.5rem",
+              marginBottom: "1rem",
             }}
           >
             WEB & SOFTWARE SOLUTIONS
@@ -233,9 +236,9 @@ export default function Hero2() {
           <h1
             style={{
               ...syne,
-              fontSize: "clamp(4rem, 9vw, 10rem)",
+              fontSize: "clamp(2.5rem, 8vw, 8rem)",
               fontWeight: 700,
-              lineHeight: 0.85,
+              lineHeight: 0.9,
               textAlign: "center",
             }}
           >
@@ -244,10 +247,10 @@ export default function Hero2() {
           <p
             style={{
               ...syne,
-              fontSize: "clamp(1rem, 1.4vw, 1.25rem)",
-              lineHeight: 1.5,
-              maxWidth: "480px",
-              marginTop: "2rem",
+              fontSize: "clamp(0.85rem, 1.3vw, 1.25rem)",
+              lineHeight: 1.4,
+              maxWidth: "420px",
+              marginTop: "1.25rem",
             }}
           >
             From bold landing pages to complex web apps turning your ideas into

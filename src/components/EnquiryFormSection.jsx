@@ -3,12 +3,10 @@ import { useNavigate } from '@/lib/react-router-dom-compat';
 import { FaFacebookF, FaYoutube, FaInstagram } from "react-icons/fa6";
 import SharedLeadForm from "./SharedLeadForm";
 
-// ─── Window width hook ────────────────────────────────────────────────────────
 function useWindowWidth() {
-  const [width, setWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 1200
-  );
+  const [width, setWidth] = useState(1200);
   useEffect(() => {
+    setWidth(window.innerWidth);
     const handler = () => setWidth(window.innerWidth);
     window.addEventListener("resize", handler);
     return () => window.removeEventListener("resize", handler);

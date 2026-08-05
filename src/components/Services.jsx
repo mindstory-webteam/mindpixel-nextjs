@@ -2,6 +2,7 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { img } from "../assets/assest";
+import { motion } from "framer-motion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -130,16 +131,6 @@ export default function Services() {
         const isLast = index === cards.length - 1;
         const inner = card.querySelector(".svc-stack-inner");
 
-        ScrollTrigger.create({
-          trigger: card,
-          start: "top 65px",
-          endTrigger: outroRef.current,
-          end: "top 100%",
-          pin: true,
-          pinSpacing: false,
-          invalidateOnRefresh: true,
-        });
-
         if (!isLast) {
           gsap.to(inner, {
             scale: 0.95,
@@ -147,7 +138,7 @@ export default function Services() {
             scrollTrigger: {
               trigger: cards[index + 1],
               start: "top 100%",
-              end: "top 40px",
+              end: "top 65px",
               scrub: true,
             },
           });
@@ -169,6 +160,7 @@ export default function Services() {
               key={service.id}
               ref={(el) => (cardRefs.current[index] = el)}
               className="svc-card-block"
+              style={{ zIndex: index + 1 }}
             >
               <div
                 className="svc-stack-inner"
@@ -185,7 +177,7 @@ export default function Services() {
                   xmlns="http://www.w3.org/2000/svg"
                   aria-hidden="true"
                 >
-                  <path
+                  <motion.path
                     d={swirlPaths[index]}
                     fill="none"
                     stroke="#e9d5ff"
@@ -193,6 +185,10 @@ export default function Services() {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     opacity="0.38"
+                    initial={{ pathLength: 0 }}
+                    whileInView={{ pathLength: 1 }}
+                    viewport={{ once: true, amount: 0.15 }}
+                    transition={{ duration: 1.6, ease: "easeOut" }}
                   />
                 </svg>
 
@@ -271,7 +267,8 @@ export default function Services() {
         }
 
         .svc-card-block {
-          position: relative;
+          position: sticky;
+          top: 65px;
           width: 100%;
           height: 100vh;
           display: flex;
@@ -477,7 +474,11 @@ export default function Services() {
         }
 
         @media (max-width: 640px) {
+          .svc-swirl-svg {
+            display: none;
+          }
           .svc-card-block {
+            position: relative;
             height: auto;
             min-height: auto;
             padding: 20px 16px;

@@ -127,7 +127,7 @@ const EnquiryAbout = () => {
           <div className="flex flex-col gap-4 lg:hidden">
             <div ref={card1Ref} className="relative overflow-hidden rounded-[20px] min-h-64 flex flex-col justify-between p-7">
               <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0">
-                <source src={img.WhatWeDoVideo} type="video/mp4" />
+                <source src={img.WhatWeDoVideo} type="video/webm" />
               </video>
               <div className="absolute inset-0 bg-black/40 rounded-[20px] z-1" />
               <div className="relative z-10">
@@ -181,7 +181,7 @@ const EnquiryAbout = () => {
           <div className="hidden lg:grid gap-4" style={{ gridTemplateColumns: '1.8fr 1fr 1fr' }}>
             <div ref={card1Ref} className="card-hover relative overflow-hidden rounded-[20px] min-h-65 flex flex-col justify-between p-9">
               <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0">
-                <source src={img.WhatWeDoVideo} type="video/mp4" />
+                <source src={img.WhatWeDoVideo} type="video/webm" />
               </video>
               <div className="absolute inset-0 bg-black/40 rounded-[20px] z-1" />
               <div className="relative z-10">

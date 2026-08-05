@@ -3,12 +3,10 @@ import bgImage from "../assets/EnquiryBanner.png";
 import bgImageSm from "../assets/enquiry-banner-sm-screen.png";
 import bgImageMobile from "../assets/enquiry-banner-for-mobile.png";
 
-// ─── Window width hook ────────────────────────────────────────────────────────
 function useWindowWidth() {
-  const [width, setWidth] = useState(
-    typeof window !== "undefined" ? window.innerWidth : 1200
-  );
+  const [width, setWidth] = useState(1200);
   useEffect(() => {
+    setWidth(window.innerWidth);
     const handler = () => setWidth(window.innerWidth);
     window.addEventListener("resize", handler);
     return () => window.removeEventListener("resize", handler);
