@@ -1,15 +1,21 @@
 "use client";
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { motion } from "framer-motion";
 import { img } from "../assets/assest";
 
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
 const cardAccents = [
-  { bg: "#95257b", text: "#ffffff" },
-  { bg: "#95257b", text: "#ffffff" },
-  { bg: "#95257b", text: "#ffffff" },
-  { bg: "#95257b", text: "#ffffff" },
-  { bg: "#95257b", text: "#ffffff" },
-  { bg: "#95257b", text: "#ffffff" },
+  { bg: "linear-gradient(135deg, #95257b 0%, #6b1958 100%)", text: "#ffffff" },
+  { bg: "linear-gradient(135deg, #95257b 0%, #7c1d66 100%)", text: "#ffffff" },
+  { bg: "linear-gradient(135deg, #95257b 0%, #6b1958 100%)", text: "#ffffff" },
+  { bg: "linear-gradient(135deg, #95257b 0%, #7c1d66 100%)", text: "#ffffff" },
+  { bg: "linear-gradient(135deg, #95257b 0%, #6b1958 100%)", text: "#ffffff" },
+  { bg: "linear-gradient(135deg, #95257b 0%, #7c1d66 100%)", text: "#ffffff" },
 ];
 
 const services = [
@@ -114,173 +120,190 @@ const swirlPaths = [
   "M 1030 55 C 905 95, 808 58, 688 118 C 568 178, 528 305, 408 345 C 290 383, 182 322, 102 382 C 42 424, -30 505, -30 625",
 ];
 
-const N = services.length; // 6
-const STICKY_TOP = 85;     // px — height of navbar
+const N = services.length;
+const STICKY_TOP = 85; // navbar height in px
 
-/* ─── Individual Card ──────────────────────────────────────────────────────── */
-function Card({ service, index, scrollYProgress, accent }) {
-  const isLast  = index === N - 1;
-  const isLight = accent.text === "#ffffff";
-
-  /*
-   * Scroll math:
-   *   scrollYProgress 0→1 covers N×100vh total track height.
-   *   Card i is "active" during segment [i/N … (i+1)/N].
-   *   • entry: card slides up from 110% → 0%   (card 0 already at 0%)
-   *   • exit : card scales 1 → 0.92, dims 1 → 0.75  as next card enters
-   */
-  const seg   = 1 / N;
-  const start = index * seg;
-  const end   = (index + 1) * seg;
-
-  const entryEnd  = start + seg * 0.28;
-  const exitStart = end   - seg * 0.30;
-
-  const yFrom = index === 0 ? "0%" : "110%";
-  const y     = useTransform(scrollYProgress, [start, entryEnd], [yFrom, "0%"]);
-
-  const scale  = useTransform(scrollYProgress, [exitStart, end], [1, isLast ? 1 : 0.92]);
-  const bright = useTransform(scrollYProgress, [exitStart, end], [1, isLast ? 1 : 0.72]);
-  const filter = useTransform(bright, (v) => `brightness(${v})`);
-
-  return (
-    <motion.div className="svc-slot" style={{ zIndex: index + 1, y }}>
-      <motion.div
-        className="svc-card"
-        style={{
-          scale,
-          filter,
-          background: accent.bg,
-          color: accent.text,
-          border: `1px solid ${isLight ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.12)"}`,
-        }}
-      >
-        {/* decorative swirl */}
-        <svg className="svc-swirl" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden>
-          <motion.path
-            d={swirlPaths[index]}
-            fill="none"
-            stroke="#e9d5ff"
-            strokeWidth="30"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity="0.38"
-            initial={{ pathLength: 0 }}
-            whileInView={{ pathLength: 1 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 1.6, ease: "easeOut" }}
-          />
-        </svg>
-
-        <div className="svc-grid">
-          {/* image */}
-          <div className="svc-img-wrap">
-            <img src={service.image} alt={service.title} className="svc-img" />
-            <span className="svc-img-tag">{service.tag}</span>
-          </div>
-
-          {/* text */}
-          <div className="svc-body">
-            <p className="svc-desc" style={{ color: isLight ? "rgba(255,255,255,0.75)" : "rgba(0,0,0,0.6)" }}>
-              {service.description}
-            </p>
-
-            <div className="svc-points">
-              {service.points.map((pt) => (
-                <div className="svc-point-item" key={pt.label}>
-                  <div className="svc-dot" />
-                  <div className="svc-point-body">
-                    <span className="svc-lbl" style={{ color: accent.text }}>{pt.label}</span>
-                    <span className="svc-ptdesc" style={{ color: isLight ? "rgba(255,255,255,0.65)" : "rgba(0,0,0,0.55)" }}>
-                      {pt.desc}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="svc-tags">
-              {service.subtags.map((sub) => (
-                <span key={sub} className="svc-tag bg-white text-black"
-                  style={{ border: `1px solid ${isLight ? "rgba(255,255,255,0.45)" : "rgba(0,0,0,0.3)"}` }}>
-                  {sub}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </motion.div>
-    </motion.div>
-  );
-}
-
-/* ─── Main Component ───────────────────────────────────────────────────────── */
 export default function Services() {
   const trackRef = useRef(null);
+  const cardsRef = useRef([]);
 
-  /*
-   * WHY THIS HAS ZERO TRAILING WHITESPACE:
-   *   svc-track   height = N×100vh  →  scroll distance
-   *   svc-win     height = calc(100vh - STICKY_TOP), sticky top = STICKY_TOP, overflow:hidden
-   *
-   * The sticky window is exactly viewport-minus-navbar.
-   * It unsticks the INSTANT the track ends → Testimonials enters immediately.
-   * margin-top/bottom on svc-track creates equal, symmetrical gaps with Portfolio & Testimonials.
-   */
-  const { scrollYProgress } = useScroll({
-    target: trackRef,
-    offset: ["start start", "end end"],
-  });
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
+
+      mm.add("(min-width: 641px)", () => {
+        const cards = cardsRef.current.filter(Boolean);
+        if (!cards.length) return;
+
+        // Card 0 sits visible. Cards 1…N-1 start fully below the viewport.
+        gsap.set(cards[0], { y: 0, force3D: true });
+        for (let i = 1; i < cards.length; i++) {
+          gsap.set(cards[i], { y: "100vh", force3D: true });
+        }
+
+        // Initialize strokeDasharray and strokeDashoffset for all swirl paths
+        cards.forEach((card) => {
+          const path = card.querySelector(".svc-swirl-path");
+          if (path) {
+            gsap.set(path, { strokeDasharray: 2000, strokeDashoffset: 2000 });
+          }
+        });
+
+        // Trigger drawing of Card 0's swirl path when it comes on screen
+        ScrollTrigger.create({
+          trigger: trackRef.current,
+          start: "top 80%",
+          once: true,
+          onEnter: () => {
+            const firstPath = cards[0]?.querySelector(".svc-swirl-path");
+            if (firstPath) {
+              gsap.to(firstPath, { strokeDashoffset: 0, duration: 1.5, ease: "power2.out" });
+            }
+          }
+        });
+
+        // Scrubbed timeline — each card slides from 100vh → 0, perfectly clipped.
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: trackRef.current,
+            start: `top ${STICKY_TOP}px`,
+            end: "bottom bottom",
+            scrub: 0.6,
+            invalidateOnRefresh: true,
+          },
+        });
+
+        for (let i = 1; i < cards.length; i++) {
+          const currentCard = cards[i];
+          const path = currentCard.querySelector(".svc-swirl-path");
+
+          // Slide card up from 100vh (completely outside)
+          tl.to(
+            currentCard,
+            { y: 0, ease: "none", duration: 1 },
+            i - 1
+          );
+
+          // Draw the swirl path concurrently as it slides up
+          if (path) {
+            tl.to(
+              path,
+              { strokeDashoffset: 0, ease: "power1.inOut", duration: 1 },
+              i - 1
+            );
+          }
+        }
+      });
+    }, trackRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
     <>
-      {/* ── DESKTOP: scroll-container pattern ────────────────────────────── */}
+      {/* ── DESKTOP & TABLET ─────────────────────────────────────────────── */}
       <div ref={trackRef} className="svc-track">
         <div className="svc-win">
-          {services.map((svc, i) => (
-            <Card
-              key={svc.id}
-              service={svc}
-              index={i}
-              scrollYProgress={scrollYProgress}
-              accent={cardAccents[i % cardAccents.length]}
-            />
-          ))}
+          {services.map((svc, i) => {
+            const accent = cardAccents[i % cardAccents.length];
+            return (
+              <div
+                key={svc.id}
+                ref={(el) => (cardsRef.current[i] = el)}
+                className="svc-slot"
+                style={{ zIndex: i + 1 }}
+              >
+                <div
+                  className="svc-card"
+                  style={{ background: accent.bg, color: accent.text }}
+                >
+                  {/* decorative swirl */}
+                  <svg className="svc-swirl" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden>
+                    <path
+                      className="svc-swirl-path"
+                      d={swirlPaths[i]}
+                      fill="none"
+                      stroke="#e9d5ff"
+                      strokeWidth="28"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+
+                  <div className="svc-grid">
+                    {/* image */}
+                    <div className="svc-img-wrap">
+                      <img src={svc.image} alt={svc.title} className="svc-img" />
+                      <span className="svc-img-tag">{svc.tag}</span>
+                    </div>
+
+                    {/* text */}
+                    <div className="svc-body">
+                      <p className="svc-desc" style={{ color: "rgba(255,255,255,0.82)" }}>
+                        {svc.description}
+                      </p>
+
+                      <div className="svc-points">
+                        {svc.points.map((pt) => (
+                          <div className="svc-point-item" key={pt.label}>
+                            <div className="svc-dot" />
+                            <div className="svc-point-body">
+                              <span className="svc-lbl">{pt.label}</span>
+                              <span className="svc-ptdesc" style={{ color: "rgba(255,255,255,0.68)" }}>
+                                {pt.desc}
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+
+                      <div className="svc-tags">
+                        {svc.subtags.map((sub) => (
+                          <span key={sub} className="svc-tag">
+                            {sub}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      {/* ── MOBILE: simple stacked list ──────────────────────────────────── */}
+      {/* ── MOBILE ───────────────────────────────────────────────────────── */}
       <div className="svc-mobile">
         {services.map((svc, i) => (
           <motion.div
             key={svc.id}
             className="svc-mobile-card"
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 28 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.1 }}
-            transition={{ duration: 0.44, ease: "easeOut", delay: i * 0.04 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: i * 0.05 }}
           >
-            <div className="svc-img-wrap" style={{ height: 210, borderRadius: 0 }}>
+            <div className="svc-img-wrap" style={{ height: 220, borderRadius: 0 }}>
               <img src={svc.image} alt={svc.title} className="svc-img" />
               <span className="svc-img-tag">{svc.tag}</span>
             </div>
             <div className="svc-body" style={{ height: "auto", padding: "1.4rem 1.2rem" }}>
-              <p className="svc-desc" style={{ color: "rgba(255,255,255,0.78)" }}>{svc.description}</p>
+              <p className="svc-desc" style={{ color: "rgba(255,255,255,0.82)" }}>{svc.description}</p>
               <div className="svc-points">
                 {svc.points.map((pt) => (
                   <div className="svc-point-item" key={pt.label}>
                     <div className="svc-dot" />
                     <div className="svc-point-body">
                       <span className="svc-lbl">{pt.label}</span>
-                      <span className="svc-ptdesc" style={{ color: "rgba(255,255,255,0.65)" }}>{pt.desc}</span>
+                      <span className="svc-ptdesc" style={{ color: "rgba(255,255,255,0.68)" }}>{pt.desc}</span>
                     </div>
                   </div>
                 ))}
               </div>
               <div className="svc-tags">
                 {svc.subtags.map((t) => (
-                  <span key={t} className="svc-tag bg-white text-black"
-                    style={{ border: "1px solid rgba(255,255,255,0.45)" }}>{t}</span>
+                  <span key={t} className="svc-tag">{t}</span>
                 ))}
               </div>
             </div>
@@ -292,10 +315,7 @@ export default function Services() {
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
 
-        /* ── scroll track ──
-           height = N×100vh  →  total scroll duration for the animation
-           margin-top/bottom creates IDENTICAL, SYMMETRICAL gaps
-           with the Portfolio section above AND Testimonials section below   */
+        /* ─ scroll track: N×100vh gives scroll distance for all N cards ─ */
         .svc-track {
           height: ${N * 100}vh;
           position: relative;
@@ -303,9 +323,7 @@ export default function Services() {
           margin-bottom: 60px;
         }
 
-        /* ── sticky window ──
-           Exactly (100vh - navbar) tall so it un-sticks the INSTANT
-           the track ends.  overflow:hidden clips cards below.              */
+        /* ─ sticky window: sticks until track ends ─ */
         .svc-win {
           position: sticky;
           top: ${STICKY_TOP}px;
@@ -314,15 +332,15 @@ export default function Services() {
           background: #fff;
         }
 
-        /* ── card slot ──
-           Absolute-fills the sticky window, 20px inset on all sides      */
+        /* ─ card slot: fills the sticky window ─ */
         .svc-slot {
           position: absolute;
           inset: 20px 60px;
           will-change: transform;
+          transform: translateZ(0);
         }
 
-        /* ── card visual ── */
+        /* ─ card: rounded, NO shadows ─ */
         .svc-card {
           width: 100%;
           height: 100%;
@@ -343,6 +361,12 @@ export default function Services() {
           pointer-events: none;
         }
 
+        .svc-swirl-path {
+          opacity: 0.3;
+          stroke-dasharray: 2000;
+          stroke-dashoffset: 2000;
+        }
+
         .svc-grid {
           display: grid;
           grid-template-columns: 0.85fr 1fr;
@@ -359,6 +383,7 @@ export default function Services() {
           overflow: hidden;
           height: 100%;
           width: 100%;
+          transform: translateZ(0);
         }
 
         .svc-img {
@@ -366,23 +391,27 @@ export default function Services() {
           height: 100%;
           object-fit: cover;
           display: block;
-          transition: transform 0.7s ease;
+          transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+          will-change: transform;
         }
-        .svc-card:hover .svc-img { transform: scale(1.04); }
+        .svc-card:hover .svc-img { transform: scale(1.05); }
 
         .svc-img-tag {
           position: absolute;
-          bottom: 10px;
-          left: 12px;
+          bottom: 14px;
+          left: 14px;
           font-family: 'Syne', sans-serif;
-          font-size: 22px;
+          font-size: 20px;
           font-weight: 600;
-          padding: 4px 12px;
+          padding: 6px 16px;
           border-radius: 9999px;
-          opacity: 0.92;
           pointer-events: none;
           z-index: 2;
           color: #fff;
+          background: rgba(0,0,0,0.28);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          border: 1px solid rgba(255,255,255,0.22);
         }
 
         .svc-body {
@@ -415,21 +444,23 @@ export default function Services() {
           display: flex;
           align-items: flex-start;
           gap: 0.6rem;
+          transition: transform 0.25s ease;
         }
+        .svc-point-item:hover { transform: translateX(3px); }
 
         .svc-dot {
           flex-shrink: 0;
           width: 7px;
           height: 7px;
           border-radius: 50%;
-          background: rgba(255,255,255,0.55);
-          margin-top: 0.35rem;
+          background: rgba(255,255,255,0.6);
+          margin-top: 0.38rem;
         }
 
         .svc-point-body {
           display: flex;
           flex-direction: column;
-          gap: 0.1rem;
+          gap: 0.08rem;
         }
 
         .svc-lbl {
@@ -438,6 +469,7 @@ export default function Services() {
           font-weight: 600;
           letter-spacing: 0.01em;
           line-height: 1.3;
+          color: #fff;
         }
 
         .svc-ptdesc {
@@ -456,20 +488,22 @@ export default function Services() {
         .svc-tag {
           font-family: 'Syne', sans-serif;
           font-size: 11px;
-          font-weight: 400;
-          padding: 4px 12px;
+          font-weight: 500;
+          padding: 5px 14px;
           border-radius: 9999px;
-          opacity: 0.7;
+          color: #fff;
+          border: 1px solid rgba(255,255,255,0.4);
+          opacity: 0.85;
           letter-spacing: 0.04em;
           cursor: default;
-          transition: opacity 0.2s;
+          transition: opacity 0.2s ease;
         }
         .svc-tag:hover { opacity: 1; }
 
-        /* mobile list hidden on desktop */
+        /* mobile hidden on desktop */
         .svc-mobile { display: none; }
 
-        /* ── responsive ── */
+        /* ─ responsive ─ */
         @media (max-width: 1280px) {
           .svc-slot { inset: 20px 40px; }
           .svc-desc { font-size: 14px; }
@@ -483,21 +517,21 @@ export default function Services() {
           .svc-lbl { font-size: 14px; }
           .svc-ptdesc { font-size: 12px; }
           .svc-body { padding: 1rem 1.3rem; gap: 0.8rem; }
-          .svc-img-tag { font-size: 19px; }
+          .svc-img-tag { font-size: 17px; }
           .svc-points { gap: 0.5rem; }
         }
         @media (max-width: 768px) {
           .svc-slot { inset: 10px 14px; }
-          .svc-card { border-radius: 1.4rem; }
+          .svc-card { border-radius: 1.5rem; padding: 1.5rem; }
         }
 
-        /* ── mobile: swap to plain stacked cards ── */
+        /* ─ mobile: plain stacked list ─ */
         @media (max-width: 640px) {
           .svc-track { display: none; }
           .svc-mobile {
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 16px;
             padding: 14px;
             margin-top: 40px;
             margin-bottom: 40px;
@@ -505,19 +539,15 @@ export default function Services() {
           }
           .svc-mobile-card {
             border-radius: 1.5rem;
-            background: #95257b;
+            background: linear-gradient(135deg, #95257b 0%, #6b1958 100%);
             color: #fff;
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.14);
           }
-          .svc-mobile-card .svc-grid {
-            grid-template-columns: 1fr;
-            height: auto;
-          }
+          .svc-mobile-card .svc-grid { grid-template-columns: 1fr; height: auto; }
           .svc-mobile-card .svc-desc   { font-size: 0.88rem; }
           .svc-mobile-card .svc-lbl    { font-size: 0.9rem; }
           .svc-mobile-card .svc-ptdesc { font-size: 0.8rem; }
-          .svc-mobile-card .svc-img-tag { font-size: 0.95rem; }
+          .svc-mobile-card .svc-img-tag { font-size: 0.9rem; }
         }
       `}</style>
     </>
