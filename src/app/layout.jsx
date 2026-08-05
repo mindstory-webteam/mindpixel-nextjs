@@ -47,34 +47,6 @@ export default function RootLayout({ children }) {
             })(window,document,'script','dataLayer','GTM-NCJP8LHF');`,
           }}
         />
-        {/* Dynamic Favicon Blink Script */}
-        <Script
-          id="favicon-blink"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                var frames = ["/favicon.png", "/faviconstroke.png"];
-                var index = 0;
-                function getOrCreateFavicon() {
-                  var link = document.querySelector("link[rel~='icon']");
-                  if (!link) {
-                    link = document.createElement("link");
-                    link.rel = "icon";
-                    link.type = "image/png";
-                    document.head.appendChild(link);
-                  }
-                  return link;
-                }
-                setInterval(function() {
-                  var favicon = getOrCreateFavicon();
-                  favicon.href = frames[index] + "?v=" + Date.now();
-                  index = (index + 1) % frames.length;
-                }, 1000);
-              })();
-            `,
-          }}
-        />
       </head>
       <body className="min-h-full flex flex-col">
         {/* Google Tag Manager (noscript) */}
