@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useState } from 'react'
 import Core from 'smooothy'
 
 const slidesData = [
-  { text: "MindPixel delivered exactly what we needed for our business website. Their team was professional, responsive, and completed the project on time with excellent design quality.", username: "Rahul, Kochi", color: '#e6e7e8', stars: 4.5},
+  { text: "MindPixel delivered exactly what we needed for our business website. Their team was professional, responsive, and completed the project on time with excellent design quality.", username: "Rahul, Kochi", color: '#e6e7e8', stars: 4.5 },
   { text: "We approached MindPixel for web development and branding support. The entire process was smooth, and the final output exceeded our expectations.", username: "Priya S, Bengaluru", color: '#e6e7e8', stars: 3.5 },
   { text: "Highly satisfied with the website and support provided by MindPixel. Their attention to detail and technical expertise really helped our business grow online.", username: "Arjun N, Chennai", color: '#e6e7e8', stars: 3 },
   { text: "MindPixel created a modern and user-friendly website for our company. The team understood our requirements clearly and delivered great results.", username: "Sneha K, Mumbai", color: '#e6e7e8', stars: 4.5 },
@@ -74,8 +74,8 @@ const MobileSwiper = () => {
   }
 
   const onTouchStart = (e) => { touchStart.current = e.touches[0].clientX }
-  const onTouchMove  = (e) => { touchDelta.current = e.touches[0].clientX - touchStart.current }
-  const onTouchEnd   = () => {
+  const onTouchMove = (e) => { touchDelta.current = e.touches[0].clientX - touchStart.current }
+  const onTouchEnd = () => {
     if (Math.abs(touchDelta.current) > 40) {
       goTo(touchDelta.current < 0 ? current + 1 : current - 1)
     }
@@ -83,7 +83,7 @@ const MobileSwiper = () => {
   }
 
   return (
-    <div className="w-full flex flex-col items-center gap-5 py-10 bg-white overflow-hidden">
+    <div className="w-full flex flex-col items-center gap-5 py-6 bg-white overflow-hidden">
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');`}</style>
 
       <div
@@ -107,7 +107,7 @@ const MobileSwiper = () => {
             onClick={() => goTo(i)}
             className="transition-all duration-300 rounded-full"
             style={{
-              width:  i === current ? 20 : 8,
+              width: i === current ? 20 : 8,
               height: 8,
               background: i === current ? '#111' : '#d1d1d1',
               border: 'none',
@@ -148,9 +148,9 @@ const DesktopSlider = () => {
         const vwOffset = window.innerWidth * 0.08
         slides.forEach((slide, i) => {
           const slideWidth = slide.offsetWidth
-          const slideLeft  = slide.offsetLeft + instance.current
-          const bgColor    = slidesData[i].color
-          const isLast     = i === slidesData.length - 1
+          const slideLeft = slide.offsetLeft + instance.current
+          const bgColor = slidesData[i].color
+          const isLast = i === slidesData.length - 1
 
           if (slideLeft < 0 && !isLast) {
             const ratio = Math.min(1, Math.abs(slideLeft) / slideWidth)
@@ -176,11 +176,11 @@ const DesktopSlider = () => {
     let animId
     let autoDirection = -1
     let isAutoPlaying = true
-    let resumeTimer   = null
-    let wasDragging   = false
-    let momentum      = 0
+    let resumeTimer = null
+    let wasDragging = false
+    let momentum = 0
     const MOMENTUM_MULTIPLIER = 10
-    const MOMENTUM_DECAY      = 0.96
+    const MOMENTUM_DECAY = 0.96
 
     function isLastVisible() {
       const triggerSlide = slides[slidesData.length - 1]
@@ -195,22 +195,22 @@ const DesktopSlider = () => {
         isAutoPlaying = false; wasDragging = true; momentum = 0
         if (resumeTimer) { clearTimeout(resumeTimer); resumeTimer = null }
       } else if (wasDragging) {
-        momentum     = slider.speed * MOMENTUM_MULTIPLIER
-        wasDragging  = false
-        resumeTimer  = setTimeout(() => { isAutoPlaying = true }, RESUME_DELAY)
+        momentum = slider.speed * MOMENTUM_MULTIPLIER
+        wasDragging = false
+        resumeTimer = setTimeout(() => { isAutoPlaying = true }, RESUME_DELAY)
       }
 
       if (Math.abs(momentum) > 0.5) {
         slider.target += momentum
-        momentum       *= MOMENTUM_DECAY
-        slider.target   = Math.max(slider.maxScroll, Math.min(0, slider.target))
+        momentum *= MOMENTUM_DECAY
+        slider.target = Math.max(slider.maxScroll, Math.min(0, slider.target))
       }
 
       if (isAutoPlaying) {
         if (autoDirection === -1 && isLastVisible()) autoDirection = 1
-        if (autoDirection === 1  && slider.target >= 0) { slider.target = 0; autoDirection = -1 }
+        if (autoDirection === 1 && slider.target >= 0) { slider.target = 0; autoDirection = -1 }
         slider.target += autoDirection * AUTO_SPEED
-        slider.target   = Math.max(slider.maxScroll, Math.min(0, slider.target))
+        slider.target = Math.max(slider.maxScroll, Math.min(0, slider.target))
       }
 
       animId = requestAnimationFrame(animate)
@@ -227,7 +227,7 @@ const DesktopSlider = () => {
   }, [])
 
   return (
-    <div className="w-full h-[40vw] min-h-130 flex items-center bg-white relative overflow-hidden">
+    <div className="w-full h-[34vw] min-h-100 flex items-center bg-white relative overflow-hidden">
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');`}</style>
 
       <div className="absolute left-0 top-0 h-full w-15 bg-white z-20" />

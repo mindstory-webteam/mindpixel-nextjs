@@ -212,7 +212,7 @@ export default function Hero2() {
           ref={heroCopyRef}
           className="absolute top-0 left-0 w-full flex flex-col justify-center items-center text-center px-6 sm:px-8"
           style={{
-            height: "100dvh",
+            height: "85dvh",
             willChange: "transform",
             zIndex: 10,
             opacity: 0,
