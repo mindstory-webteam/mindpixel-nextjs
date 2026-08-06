@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from
 import { img } from '../assets/assest'
 import { NavLink, useLocation } from '@/lib/react-router-dom-compat'
 import { usePageTransition } from './TransitionProvider'
+import { useLenis } from 'lenis/react'
 import gsap from 'gsap'
 import { DotLottieReact } from '@lottiefiles/dotlottie-react'
 
@@ -16,9 +17,9 @@ const defaultNavLinks = [
 ]
 
 
-const ACCENT       = '#f97316'
+const ACCENT = '#f97316'
 const LAYER_COLORS = ['#f97316', '#95257b']
-const syneBase     = { fontFamily: "'Syne', sans-serif", fontWeight: 400 }
+const syneBase = { fontFamily: "'Syne', sans-serif", fontWeight: 400 }
 
 const glassStyle = {
   background: 'rgba(255, 255, 255, 0.15)',
@@ -44,29 +45,29 @@ const Navbar = () => {
 
   const navRef = useRef(null)
 
-  const [menuOpen, setMenuOpen]   = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const [textLines, setTextLines] = useState(['Menu', 'Close'])
 
-  const menuOpenRef    = useRef(false)
-  const busyRef        = useRef(false)
-  const panelRef       = useRef(null)
-  const preLayersRef   = useRef(null)
+  const menuOpenRef = useRef(false)
+  const busyRef = useRef(false)
+  const panelRef = useRef(null)
+  const preLayersRef = useRef(null)
   const preLayerElsRef = useRef([])
 
-  const toggleBtnRef  = useRef(null)
-  const iconRef       = useRef(null)
-  const plusHRef      = useRef(null)
-  const plusVRef      = useRef(null)
-  const textInnerRef  = useRef(null)
+  const toggleBtnRef = useRef(null)
+  const iconRef = useRef(null)
+  const plusHRef = useRef(null)
+  const plusVRef = useRef(null)
+  const textInnerRef = useRef(null)
 
-  const openTlRef     = useRef(null)
+  const openTlRef = useRef(null)
   const closeTweenRef = useRef(null)
-  const spinTweenRef  = useRef(null)
-  const textCycleRef  = useRef(null)
+  const spinTweenRef = useRef(null)
+  const textCycleRef = useRef(null)
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
-      const panel        = panelRef.current
+      const panel = panelRef.current
       const preContainer = preLayersRef.current
       if (!panel) return
 
@@ -76,18 +77,18 @@ const Navbar = () => {
       preLayerElsRef.current = preLayers
 
       gsap.set([panel, ...preLayers], { xPercent: 100, opacity: 1 })
-      gsap.set(preContainer,          { xPercent: 0,   opacity: 1 })
-      gsap.set(plusHRef.current,      { transformOrigin: '50% 50%', rotate: 0 })
-      gsap.set(plusVRef.current,      { transformOrigin: '50% 50%', rotate: 90 })
-      gsap.set(iconRef.current,       { rotate: 0, transformOrigin: '50% 50%' })
-      gsap.set(textInnerRef.current,  { yPercent: 0 })
-      gsap.set(toggleBtnRef.current,  { color: '#111111' })
+      gsap.set(preContainer, { xPercent: 0, opacity: 1 })
+      gsap.set(plusHRef.current, { transformOrigin: '50% 50%', rotate: 0 })
+      gsap.set(plusVRef.current, { transformOrigin: '50% 50%', rotate: 90 })
+      gsap.set(iconRef.current, { rotate: 0, transformOrigin: '50% 50%' })
+      gsap.set(textInnerRef.current, { yPercent: 0 })
+      gsap.set(toggleBtnRef.current, { color: '#111111' })
     })
     return () => ctx.revert()
   }, [])
 
   const buildOpenTimeline = useCallback(() => {
-    const panel  = panelRef.current
+    const panel = panelRef.current
     const layers = preLayerElsRef.current
     if (!panel) return null
 
@@ -108,8 +109,8 @@ const Navbar = () => {
       )
     })
 
-    const lastTime      = layers.length ? (layers.length - 1) * 0.07 : 0
-    const panelStart    = lastTime + (layers.length ? 0.08 : 0)
+    const lastTime = layers.length ? (layers.length - 1) * 0.07 : 0
+    const panelStart = lastTime + (layers.length ? 0.08 : 0)
     const panelDuration = 0.65
 
     tl.fromTo(panel,
@@ -144,7 +145,7 @@ const Navbar = () => {
   const playClose = useCallback(() => {
     openTlRef.current?.kill()
     openTlRef.current = null
-    const panel  = panelRef.current
+    const panel = panelRef.current
     const layers = preLayerElsRef.current
     if (!panel) return
 
@@ -162,16 +163,16 @@ const Navbar = () => {
   const animateIcon = useCallback((opening) => {
     spinTweenRef.current?.kill()
     spinTweenRef.current = opening
-      ? gsap.to(iconRef.current, { rotate: 225, duration: 0.8, ease: 'power4.out',    overwrite: 'auto' })
-      : gsap.to(iconRef.current, { rotate: 0,   duration: 0.35, ease: 'power3.inOut', overwrite: 'auto' })
+      ? gsap.to(iconRef.current, { rotate: 225, duration: 0.8, ease: 'power4.out', overwrite: 'auto' })
+      : gsap.to(iconRef.current, { rotate: 0, duration: 0.35, ease: 'power3.inOut', overwrite: 'auto' })
   }, [])
 
   const animateText = useCallback((opening) => {
     textCycleRef.current?.kill()
     const current = opening ? 'Menu' : 'Close'
-    const target  = opening ? 'Close' : 'Menu'
-    const seq     = [current]
-    let last      = current
+    const target = opening ? 'Close' : 'Menu'
+    const seq = [current]
+    let last = current
     for (let i = 0; i < 3; i++) { last = last === 'Menu' ? 'Close' : 'Menu'; seq.push(last) }
     if (last !== target) seq.push(target)
     seq.push(target)
@@ -212,6 +213,8 @@ const Navbar = () => {
     menuOpenRef.current ? closeMenu() : openMenu()
   }, [openMenu, closeMenu])
 
+  const lenis = useLenis();
+
   const handleNavClick = useCallback((e, to) => {
     const hash = to.includes('#') ? to.substring(to.indexOf('#') + 1) : null;
     const isEnquiryPage = location.pathname === '/enquiry' || location.pathname === '/enquiry/';
@@ -219,7 +222,11 @@ const Navbar = () => {
       e.preventDefault();
       const el = document.getElementById(hash);
       if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
+        if (lenis) {
+          lenis.scrollTo(el);
+        } else {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
         if (menuOpenRef.current) closeMenu();
         return;
       }
@@ -231,13 +238,13 @@ const Navbar = () => {
     } else {
       navigateTo(to);
     }
-  }, [location.pathname, closeMenu, navigateTo]);
+  }, [location.pathname, closeMenu, navigateTo, lenis]);
 
   useEffect(() => {
     if (!menuOpen) return
     const handler = (e) => {
       if (
-        panelRef.current     && !panelRef.current.contains(e.target) &&
+        panelRef.current && !panelRef.current.contains(e.target) &&
         toggleBtnRef.current && !toggleBtnRef.current.contains(e.target)
       ) closeMenu()
     }

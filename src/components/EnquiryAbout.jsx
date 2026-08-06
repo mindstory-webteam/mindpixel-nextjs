@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react'
+import { useLenis } from 'lenis/react'
 import { img } from '../assets/assest'
 import { IoIosArrowForward } from "react-icons/io"
 import { Swiper, SwiperSlide } from 'swiper/react'
@@ -63,10 +64,16 @@ const EnquiryAbout = () => {
     return () => ctx.revert()
   }, [])
 
+  const lenis = useLenis();
+
   const scrollToContact = () => {
     const el = document.getElementById('contact');
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
+      if (lenis) {
+        lenis.scrollTo(el);
+      } else {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   }
 

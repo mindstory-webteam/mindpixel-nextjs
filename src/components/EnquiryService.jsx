@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
+import { useLenis } from "lenis/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "framer-motion";
@@ -207,10 +208,16 @@ export default function EnquiryService() {
     return () => ctx.revert();
   }, []);
 
+  const lenis = useLenis();
+
   const scrollToContact = () => {
     const el = document.getElementById("contact");
     if (el) {
-      el.scrollIntoView({ behavior: "smooth" });
+      if (lenis) {
+        lenis.scrollTo(el);
+      } else {
+        el.scrollIntoView({ behavior: "smooth" });
+      }
     }
   };
 

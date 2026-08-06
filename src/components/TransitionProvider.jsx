@@ -9,6 +9,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { useRouter, usePathname } from "next/navigation";
+import { useLenis } from "lenis/react";
 import gsap from "gsap";
 
 const MD_BREAKPOINT = 768;
@@ -16,15 +17,15 @@ const MD_BREAKPOINT = 768;
 // ─── Routes that should NOT trigger the page transition overlay ──────────────
 function shouldSkipTransition(href) {
   if (!href) return false;
-  
+
   // Clean and normalize the href string
   let path = href.toLowerCase();
-  
+
   try {
     if (path.startsWith("http://") || path.startsWith("https://")) {
       path = new URL(href).pathname;
     }
-  } catch (e) {}
+  } catch (e) { }
 
   // Ensure it starts with a leading slash
   if (!path.startsWith("/")) {
@@ -51,7 +52,7 @@ function shouldSkipTransition(href) {
 }
 
 // ─── Context ────────────────────────────────────────────────────────────────
-export const TransitionContext = createContext({ navigateTo: () => {} });
+export const TransitionContext = createContext({ navigateTo: () => { } });
 export const usePageTransition = () => useContext(TransitionContext);
 
 // ─── Portal root ─────────────────────────────────────────────────────────────
@@ -69,6 +70,7 @@ function getPortalRoot() {
 export default function TransitionProvider({ children, column = 6 }) {
   const router = useRouter();
   const pathname = usePathname();
+  const lenis = useLenis();
   const colRefs = useRef([]);
   const tweenRef = useRef(null);
   const isTransitioning = useRef(false);
@@ -126,7 +128,11 @@ export default function TransitionProvider({ children, column = 6 }) {
         if (targetCleanPath === currentCleanPath || !targetPath) {
           const el = document.getElementById(hash);
           if (el) {
-            el.scrollIntoView({ behavior: 'smooth' });
+            if (lenis) {
+              lenis.scrollTo(el);
+            } else {
+              el.scrollIntoView({ behavior: 'smooth' });
+            }
             return;
           }
         }

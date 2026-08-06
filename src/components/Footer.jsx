@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { NavLink, useLocation } from '@/lib/react-router-dom-compat';
 import { img } from "../assets/assest";
+import { useLenis } from 'lenis/react';
 import {
   FaXTwitter,
   FaLinkedinIn,
@@ -39,6 +40,7 @@ const defaultNavColumns = [
 ];
 
 export default function Footer() {
+  const lenis = useLenis();
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
   const location = useLocation();
@@ -52,7 +54,11 @@ export default function Footer() {
       if (sectionId) {
         const el = document.getElementById(sectionId);
         if (el) {
-          el.scrollIntoView({ behavior: 'smooth' });
+          if (lenis) {
+            lenis.scrollTo(el);
+          } else {
+            el.scrollIntoView({ behavior: 'smooth' });
+          }
         }
       }
     }
@@ -168,13 +174,13 @@ export default function Footer() {
 
                   <div className="brand-img-item  items-center flex rounded-2xl">
                     <a href="https://viralcatmeow.com/" target="_blank" rel="noreferrer">
-                      <img src={img.vc} alt="VC" style={{ width: "75px", height: "35px" , paddingRight:"10px"}} />
+                      <img src={img.vc} alt="VC" style={{ width: "75px", height: "35px", paddingRight: "10px" }} />
                     </a>
                   </div>
 
                   <div className="brand-img-item items-center flex rounded-2xl">
                     <a href="https://21fiftyone.com/" target="_blank" rel="noreferrer">
-                      <img src={img.twentyonefiftyone} alt="twentyonefiftyone" style={{ width: "60px", height: "35px", paddingLeft:"4px" }} />
+                      <img src={img.twentyonefiftyone} alt="twentyonefiftyone" style={{ width: "60px", height: "35px", paddingLeft: "4px" }} />
                     </a>
                   </div>
 
@@ -265,7 +271,7 @@ export default function Footer() {
 
               <div className="brand-img-item">
                 <a href="https://21fiftyone.com/" target="_blank" rel="noreferrer">
-                  <img src={img.twentyonefiftyone} alt="twentyonefiftyone" style={{ paddingRight:"40px", width: "110px", height: "25px" }} />
+                  <img src={img.twentyonefiftyone} alt="twentyonefiftyone" style={{ paddingRight: "40px", width: "110px", height: "25px" }} />
                 </a>
               </div>
 
