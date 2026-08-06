@@ -1,11 +1,9 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { useLenis } from "lenis/react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "framer-motion";
 import { img } from "../assets/assest";
-import { IoIosArrowForward } from "react-icons/io";
 
 const cardAccents = [
   { bg: "linear-gradient(135deg, #95257b 0%, #6b1958 100%)", text: "#ffffff" },
@@ -143,26 +141,7 @@ export default function EnquiryService() {
           gsap.set(cards[i], { y: "100vh", force3D: true });
         }
 
-        // Initialize strokeDasharray and strokeDashoffset for all swirl paths
-        cards.forEach((card) => {
-          const path = card.querySelector(".svc-swirl-path");
-          if (path) {
-            gsap.set(path, { strokeDasharray: 2000, strokeDashoffset: 2000 });
-          }
-        });
 
-        // Trigger drawing of Card 0's swirl path when it comes on screen
-        ScrollTrigger.create({
-          trigger: trackRef.current,
-          start: "top 80%",
-          once: true,
-          onEnter: () => {
-            const firstPath = cards[0]?.querySelector(".svc-swirl-path");
-            if (firstPath) {
-              gsap.to(firstPath, { strokeDashoffset: 0, duration: 1.5, ease: "power2.out" });
-            }
-          }
-        });
 
         // Scrubbed timeline — each card slides from 100vh → 0, perfectly clipped.
         const tl = gsap.timeline({
@@ -177,7 +156,6 @@ export default function EnquiryService() {
 
         for (let i = 1; i < cards.length; i++) {
           const currentCard = cards[i];
-          const path = currentCard.querySelector(".svc-swirl-path");
 
           // Slide card up from 100vh (completely outside)
           tl.to(
@@ -185,15 +163,6 @@ export default function EnquiryService() {
             { y: 0, ease: "none", duration: 1 },
             i - 1
           );
-
-          // Draw the swirl path concurrently as it slides up
-          if (path) {
-            tl.to(
-              path,
-              { strokeDashoffset: 0, ease: "power1.inOut", duration: 1 },
-              i - 1
-            );
-          }
         }
       });
 
@@ -207,19 +176,6 @@ export default function EnquiryService() {
 
     return () => ctx.revert();
   }, []);
-
-  const lenis = useLenis();
-
-  const scrollToContact = () => {
-    const el = document.getElementById("contact");
-    if (el) {
-      if (lenis) {
-        lenis.scrollTo(el);
-      } else {
-        el.scrollIntoView({ behavior: "smooth" });
-      }
-    }
-  };
 
   return (
     <>
@@ -246,7 +202,7 @@ export default function EnquiryService() {
                       d={swirlPaths[i]}
                       fill="none"
                       stroke="#e9d5ff"
-                      strokeWidth="28"
+                      strokeWidth="56"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
@@ -287,9 +243,6 @@ export default function EnquiryService() {
                         ))}
                       </div>
 
-                      <button onClick={scrollToContact} className="svc-cta-btn">
-                        Enquire Now <IoIosArrowForward />
-                      </button>
                     </div>
                   </div>
                 </div>
@@ -332,9 +285,6 @@ export default function EnquiryService() {
                   <span key={t} className="svc-tag">{t}</span>
                 ))}
               </div>
-              <button onClick={scrollToContact} className="svc-cta-btn">
-                Enquire Now <IoIosArrowForward />
-              </button>
             </div>
           </motion.div>
         ))}
@@ -392,8 +342,6 @@ export default function EnquiryService() {
 
         .svc-swirl-path {
           opacity: 0.3;
-          stroke-dasharray: 2000;
-          stroke-dashoffset: 2000;
         }
 
         .svc-grid {
@@ -529,38 +477,6 @@ export default function EnquiryService() {
         }
         .svc-tag:hover { opacity: 1; }
 
-        .svc-cta-btn {
-          align-self: flex-start;
-          font-family: 'Syne', sans-serif;
-          font-size: 14px;
-          font-weight: 600;
-          color: #fff;
-          background: rgba(255, 255, 255, 0.1);
-          border: 1px solid rgba(255, 255, 255, 0.35);
-          padding: 10px 24px;
-          border-radius: 9999px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          letter-spacing: 0.02em;
-          margin-top: 0.5rem;
-          display: inline-flex;
-          align-items: center;
-          gap: 8px;
-        }
-        .svc-cta-btn:hover {
-          background: #fff;
-          color: #6b1958;
-          border-color: #fff;
-          transform: translateY(-2px);
-        }
-        .svc-cta-btn svg {
-          font-size: 16px;
-          transition: transform 0.2s ease;
-        }
-        .svc-cta-btn:hover svg {
-          transform: translateX(3px);
-        }
-
         /* mobile hidden on desktop */
         .svc-mobile { display: none; }
 
@@ -609,10 +525,6 @@ export default function EnquiryService() {
           .svc-mobile-card .svc-lbl    { font-size: 0.9rem; }
           .svc-mobile-card .svc-ptdesc { font-size: 0.8rem; }
           .svc-mobile-card .svc-img-tag { font-size: 0.9rem; }
-          .svc-mobile-card .svc-cta-btn {
-            align-self: stretch;
-            justify-content: center;
-          }
         }
       `}</style>
     </>

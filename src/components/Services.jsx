@@ -192,7 +192,7 @@ export default function Services() {
                       d={swirlPaths[i]}
                       fill="none"
                       stroke="#e9d5ff"
-                      strokeWidth="28"
+                      strokeWidth="56"
                       strokeLinecap="round"
                       strokeLinejoin="round"
                     />
