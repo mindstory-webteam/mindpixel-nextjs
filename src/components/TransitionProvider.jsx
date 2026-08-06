@@ -102,10 +102,10 @@ export default function TransitionProvider({ children, column = 6 }) {
     tweenRef.current?.kill();
     tweenRef.current = gsap.to(cols, {
       y: "-100%",
-      duration: 0.45,
+      duration: 0.32,
       ease: "power3.inOut",
-      stagger: 0.04,
-      delay: 0.05,
+      stagger: 0.025,
+      delay: 0.02,
       onComplete: () => {
         gsap.set(getCols(), { y: "100%" });
         isTransitioning.current = false;
@@ -159,9 +159,9 @@ export default function TransitionProvider({ children, column = 6 }) {
       gsap.set(cols, { y: "100%" });
       tweenRef.current = gsap.to(cols, {
         y: "0%",
-        duration: 0.45,
+        duration: 0.32,
         ease: "power3.inOut",
-        stagger: 0.04,
+        stagger: 0.025,
         onComplete: () => router.push(href),
       });
     },

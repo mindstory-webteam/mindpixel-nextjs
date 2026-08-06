@@ -31,22 +31,22 @@ const Preloader = ({ isLoading, onComplete }) => {
       });
 
       tl.to(iconRef.current, {
-        scale: 0.8,
+        scale: 0.85,
         opacity: 0,
-        duration: 0.4,
+        duration: 0.2,
         ease: "power2.in"
       })
       .to(containerRef.current, {
         yPercent: -100,
-        duration: 1.2,
-        ease: "power4.inOut"
-      }, "-=0.2")
+        duration: 0.65,
+        ease: "power3.inOut"
+      }, "-=0.1")
       // Animate the SVG path to flatten out with a bounce
       .to(pathRef.current, {
         attr: { d: "M 0 0 L 100 0 Q 50 0 0 0" },
-        duration: 0.8,
+        duration: 0.45,
         ease: "power2.out"
-      }, "-=0.8");
+      }, "-=0.45");
     }
   }, [isLoading, onComplete]);
 
