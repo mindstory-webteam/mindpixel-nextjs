@@ -11,15 +11,19 @@ export default function SmoothScroll({ children }) {
   const pathname = usePathname();
   const lenisRef = useRef(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+
     const lenis = new Lenis({
-      duration: 1.5,
+      duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
-      wheelMultiplier: 1.1,
+      wheelMultiplier: 1.0,
       orientation: 'vertical',
       gestureOrientation: 'vertical',
-      touchMultiplier: 2,
+      touchMultiplier: 1.5,
     });
 
     lenisRef.current = lenis;
@@ -31,11 +35,10 @@ export default function SmoothScroll({ children }) {
     };
 
     gsap.ticker.add(update);
-    gsap.ticker.lagSmoothing(0);
 
     return () => {
-      lenis.destroy();
       gsap.ticker.remove(update);
+      lenis.destroy();
       lenisRef.current = null;
     };
   }, []);
@@ -46,7 +49,10 @@ export default function SmoothScroll({ children }) {
     } else {
       window.scrollTo(0, 0);
     }
-    ScrollTrigger.refresh();
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 150);
+    return () => clearTimeout(timer);
   }, [pathname]);
 
   return <>{children}</>;

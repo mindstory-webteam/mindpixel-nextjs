@@ -128,6 +128,10 @@ export default function Services() {
   const cardsRef = useRef([]);
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
@@ -194,6 +198,12 @@ export default function Services() {
           }
         }
       });
+
+      const timer = setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 100);
+
+      return () => clearTimeout(timer);
     }, trackRef);
 
     return () => ctx.revert();
@@ -319,7 +329,7 @@ export default function Services() {
         .svc-track {
           height: ${N * 100}vh;
           position: relative;
-          margin-top: 60px;
+          margin-top: 0px;
           margin-bottom: 60px;
         }
 

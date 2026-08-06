@@ -16,6 +16,10 @@ export default function Hero2() {
   const taglineRef = useRef(null);
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+
     const intro = introRef.current;
     const skyContainer = skyRef.current;
     const heroCopy = heroCopyRef.current;
