@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "framer-motion";
@@ -140,64 +141,6 @@ export default function Services() {
           gsap.set(cards[i], { y: "100vh", force3D: true });
         }
 
-        // Reset all swirl paths to fully hidden
-        cards.forEach((card) => {
-          const path = card.querySelector(".svc-swirl-path");
-          if (path) {
-            const len = path.getTotalLength?.() || 2000;
-            gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
-          }
-        });
-
-        // ── Per-card SVG draw triggers ────────────────────────────────────
-        // Card 0: fires when the section scrolls into view
-        ScrollTrigger.create({
-          trigger: trackRef.current,
-          start: "top 75%",
-          once: true,
-          onEnter: () => {
-            const path = cards[0]?.querySelector(".svc-swirl-path");
-            if (path) {
-              const len = path.getTotalLength?.() || 2000;
-              gsap.fromTo(
-                path,
-                { strokeDashoffset: len },
-                { strokeDashoffset: 0, duration: 1.8, ease: "power2.out", delay: 0.2 }
-              );
-            }
-          },
-        });
-
-        // Cards 1…N-1: each gets its own draw trigger keyed to the scroll
-        const trackEl = trackRef.current;
-        const trackHeight = trackEl?.scrollHeight || window.innerHeight * N;
-        const scrollStart = STICKY_TOP; // matches tl start
-
-        for (let i = 1; i < cards.length; i++) {
-          const card = cards[i];
-          const fraction = i / (cards.length - 1); // 0..1
-          const offsetPx = Math.round(
-            scrollStart + (trackHeight - window.innerHeight - scrollStart) * (fraction - 0.05)
-          );
-
-          ScrollTrigger.create({
-            trigger: trackEl,
-            start: `top+=${offsetPx}px top`,
-            once: true,
-            onEnter: () => {
-              const path = card?.querySelector(".svc-swirl-path");
-              if (path) {
-                const len = path.getTotalLength?.() || 2000;
-                gsap.fromTo(
-                  path,
-                  { strokeDashoffset: len },
-                  { strokeDashoffset: 0, duration: 1.8, ease: "power2.out", delay: 0.15 }
-                );
-              }
-            },
-          });
-        }
-
         // ── Scrubbed slide-up timeline ────────────────────────
         const tl = gsap.timeline({
           scrollTrigger: {
@@ -258,7 +201,7 @@ export default function Services() {
                   <div className="svc-grid">
                     {/* image */}
                     <div className="svc-img-wrap">
-                      <img src={svc.image} alt={svc.title} className="svc-img" />
+                      <Image src={svc.image} alt={svc.title} fill className="svc-img" sizes="(max-width:1024px) 50vw, 40vw" loading="lazy" />
                       <span className="svc-img-tag">{svc.tag}</span>
                     </div>
 
@@ -310,7 +253,7 @@ export default function Services() {
             transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: i * 0.05 }}
           >
             <div className="svc-img-wrap" style={{ height: 220, borderRadius: 0 }}>
-              <img src={svc.image} alt={svc.title} className="svc-img" />
+              <Image src={svc.image} alt={svc.title} fill className="svc-img" sizes="100vw" loading="lazy" />
               <span className="svc-img-tag">{svc.tag}</span>
             </div>
             <div className="svc-body" style={{ height: "auto", padding: "1.4rem 1.2rem" }}>
@@ -388,8 +331,6 @@ export default function Services() {
 
         .svc-swirl-path {
           opacity: 0.45;
-          stroke-dasharray: 3000;
-          stroke-dashoffset: 3000;
         }
 
         .svc-grid {
