@@ -90,11 +90,11 @@ const WhoWeAre = () => {
         }
       `}</style>
 
-      <section ref={sectionRef} className="syne px-5 pt-10 pb-10 md:px-15 box-border">
+      <section ref={sectionRef} className="syne px-5 pt-10 pb-10 lg:px-15 box-border">
 
-        <div className="flex flex-col gap-6 mb-10 md:flex-row md:justify-between md:items-start md:mb-16">
+        <div className="flex flex-col gap-6 mb-10 lg:flex-row lg:justify-between lg:items-start lg:mb-16">
           <div>
-            <h1 ref={headingRef} className="syne text-4xl md:text-6xl font-normal text-[#1a1a1a] leading-[1.1] max-w-full md:max-w-85 mb-6 md:mb-7">
+            <h1 ref={headingRef} className="syne text-4xl lg:text-6xl font-normal text-[#1a1a1a] leading-[1.1] max-w-full lg:max-w-85 mb-6 lg:mb-7">
               Who we are
             </h1>
             <div ref={buttonRef}>
@@ -108,16 +108,16 @@ const WhoWeAre = () => {
               </AnimatedButton>
             </div>
           </div>
-          <p ref={paraRef} className="syne max-w-full md:max-w-95 text-base leading-[1.7] text-black font-light md:pt-2">
+          <p ref={paraRef} className="syne max-w-full lg:max-w-95 text-base leading-[1.7] text-black font-light lg:pt-2">
 MindPixel is the web and design division of MindStory in Thrissur, Kerala. We build websites, software, and digital experiences with clean design, fast performance, and user-friendly features that help businesses grow and succeed online.
           </p>
         </div>
 
         {/*  Cards  */}
-        <div className="grid grid-cols-1 gap-4 md:grid md:gap-4" style={{ gridTemplateColumns: 'repeat(1, 1fr)' }}>
+        <div className="grid grid-cols-1 gap-4 lg:grid lg:gap-4" style={{ gridTemplateColumns: 'repeat(1, 1fr)' }}>
 
           {/* Mobile layout */}
-          <div className="flex flex-col gap-4 md:hidden">
+          <div className="flex flex-col gap-4 lg:hidden">
             <div ref={card1Ref} className="relative overflow-hidden rounded-[20px] min-h-64 flex flex-col justify-between p-7">
               <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0">
                 <source src={img.WhatWeDoVideo} type="video/webm" />
@@ -177,7 +177,7 @@ MindPixel is the web and design division of MindStory in Thrissur, Kerala. We bu
           </div>
 
           {/* Desktop layout */}
-          <div className="hidden md:grid gap-4" style={{ gridTemplateColumns: '1.8fr 1fr 1fr' }}>
+          <div className="hidden lg:grid gap-4" style={{ gridTemplateColumns: '1.8fr 1fr 1fr' }}>
             <div ref={card1Ref} className="card-hover relative overflow-hidden rounded-[20px] min-h-65 flex flex-col justify-between p-9">
               <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0">
                 <source src={img.WhatWeDoVideo} type="video/webm" />
@@ -236,7 +236,7 @@ MindPixel is the web and design division of MindStory in Thrissur, Kerala. We bu
         </div>
 
         {/*  Marquee  */}
-        <div ref={marqueeRef} className="mt-12 md:mt-16 flex items-center gap-6 md:gap-10">
+        <div ref={marqueeRef} className="mt-12 lg:mt-16 flex items-center gap-6 lg:gap-10">
           <span className="syne text-[0.72rem] font-medium tracking-[0.06em] uppercase text-[#999] whitespace-nowrap shrink-0">
             Trusted by
           </span>
