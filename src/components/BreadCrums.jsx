@@ -15,7 +15,7 @@ const Breadcrumb = ({
         paddingLeft: '30px',
         paddingRight: '30px',
         paddingBottom: '16px',
-        paddingTop: '60px',
+        paddingTop: '80px',
         boxSizing: 'border-box',
         width: '100%',
         fontFamily: "'Syne', sans-serif",
