@@ -44,7 +44,7 @@ const ContactSection = () => {
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
 
         .contact-container {
-          padding: 80px 40px;
+          padding: 80px 40px 60px 40px;
           box-sizing: border-box;
           font-family: 'Syne', sans-serif;
           max-width: 1300px;
@@ -198,7 +198,7 @@ const ContactSection = () => {
           border-color: #95257b;
         }
 
-        .map-section { margin-bottom: 100px; }
+        .map-section { margin-bottom: 0px; }
 
         .map-header { margin-bottom: 50px; }
 
@@ -242,7 +242,7 @@ const ContactSection = () => {
         }
 
         @media (max-width: 768px) {
-          .contact-container { padding: 100px 20px 40px 20px; }
+          .contact-container { padding: 100px 20px 0px 20px; }
           .locations-grid { grid-template-columns: 1fr; }
           .contact-methods-grid { grid-template-columns: 1fr; }
           .map-wrap { height: 320px; }
