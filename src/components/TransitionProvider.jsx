@@ -13,13 +13,22 @@ import gsap from "gsap";
 
 const MD_BREAKPOINT = 768;
 
+// ─── Routes that should NOT trigger the page transition overlay ──────────────
+// Use string prefix matches — any href starting with these will skip the wipe.
+const NO_TRANSITION_PREFIXES = [
+  "/blogs/",     // individual blog detail pages  e.g. /blogs/my-post-slug
+  "/thank-you",  // post-enquiry redirect
+];
+
+function shouldSkipTransition(href) {
+  return NO_TRANSITION_PREFIXES.some((prefix) => href.startsWith(prefix));
+}
+
 // ─── Context ────────────────────────────────────────────────────────────────
 export const TransitionContext = createContext({ navigateTo: () => {} });
 export const usePageTransition = () => useContext(TransitionContext);
 
 // ─── Portal root ─────────────────────────────────────────────────────────────
-// Attach to a well-known id so HMR reloads re-use the existing node
-// instead of appending a second one.
 function getPortalRoot() {
   let el = document.getElementById("transition-portal");
   if (!el) {
@@ -38,7 +47,6 @@ export default function TransitionProvider({ children, column = 6 }) {
   const tweenRef = useRef(null);
   const isTransitioning = useRef(false);
   const [portalReady, setPortalReady] = useState(false);
-  const [isMd, setIsMd] = useState(false);
 
   // Portal root initialization
   useEffect(() => {
@@ -83,7 +91,7 @@ export default function TransitionProvider({ children, column = 6 }) {
     (href) => {
       if (!href) return;
 
-      // Handle anchor hash links on the current page
+      // Handle anchor hash links on the current page — never animate
       if (href.includes('#')) {
         const [targetPath, hash] = href.split('#');
         const currentCleanPath = pathname.replace(/\/$/, '');
@@ -100,6 +108,12 @@ export default function TransitionProvider({ children, column = 6 }) {
 
       if (isTransitioning.current) return;
       if (pathname === href) return;
+
+      // Skip transition overlay for blog detail pages and thank-you
+      if (shouldSkipTransition(href)) {
+        router.push(href);
+        return;
+      }
 
       const cols = getCols();
       if (!cols.length) {
