@@ -135,34 +135,70 @@ export default function Services() {
         const cards = cardsRef.current.filter(Boolean);
         if (!cards.length) return;
 
-        // Card 0 sits visible. Cards 1…N-1 start fully below the viewport.
         gsap.set(cards[0], { y: 0, force3D: true });
         for (let i = 1; i < cards.length; i++) {
           gsap.set(cards[i], { y: "100vh", force3D: true });
         }
 
-        // Initialize strokeDasharray and strokeDashoffset for all swirl paths
+        // Reset all swirl paths to fully hidden
         cards.forEach((card) => {
           const path = card.querySelector(".svc-swirl-path");
           if (path) {
-            gsap.set(path, { strokeDasharray: 2000, strokeDashoffset: 2000 });
+            const len = path.getTotalLength?.() || 2000;
+            gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
           }
         });
 
-        // Trigger drawing of Card 0's swirl path when it comes on screen
+        // ── Per-card SVG draw triggers ────────────────────────────────────
+        // Card 0: fires when the section scrolls into view
         ScrollTrigger.create({
           trigger: trackRef.current,
-          start: "top 80%",
+          start: "top 75%",
           once: true,
           onEnter: () => {
-            const firstPath = cards[0]?.querySelector(".svc-swirl-path");
-            if (firstPath) {
-              gsap.to(firstPath, { strokeDashoffset: 0, duration: 1.5, ease: "power2.out" });
+            const path = cards[0]?.querySelector(".svc-swirl-path");
+            if (path) {
+              const len = path.getTotalLength?.() || 2000;
+              gsap.fromTo(
+                path,
+                { strokeDashoffset: len },
+                { strokeDashoffset: 0, duration: 1.8, ease: "power2.out", delay: 0.2 }
+              );
             }
-          }
+          },
         });
 
-        // Scrubbed timeline — each card slides from 100vh → 0, perfectly clipped.
+        // Cards 1…N-1: each gets its own draw trigger keyed to the scroll
+        const trackEl = trackRef.current;
+        const trackHeight = trackEl?.scrollHeight || window.innerHeight * N;
+        const scrollStart = STICKY_TOP; // matches tl start
+
+        for (let i = 1; i < cards.length; i++) {
+          const card = cards[i];
+          const fraction = i / (cards.length - 1); // 0..1
+          const offsetPx = Math.round(
+            scrollStart + (trackHeight - window.innerHeight - scrollStart) * (fraction - 0.05)
+          );
+
+          ScrollTrigger.create({
+            trigger: trackEl,
+            start: `top+=${offsetPx}px top`,
+            once: true,
+            onEnter: () => {
+              const path = card?.querySelector(".svc-swirl-path");
+              if (path) {
+                const len = path.getTotalLength?.() || 2000;
+                gsap.fromTo(
+                  path,
+                  { strokeDashoffset: len },
+                  { strokeDashoffset: 0, duration: 1.8, ease: "power2.out", delay: 0.15 }
+                );
+              }
+            },
+          });
+        }
+
+        // ── Scrubbed slide-up timeline ────────────────────────
         const tl = gsap.timeline({
           scrollTrigger: {
             trigger: trackRef.current,
@@ -174,24 +210,7 @@ export default function Services() {
         });
 
         for (let i = 1; i < cards.length; i++) {
-          const currentCard = cards[i];
-          const path = currentCard.querySelector(".svc-swirl-path");
-
-          // Slide card up from 100vh (completely outside)
-          tl.to(
-            currentCard,
-            { y: 0, ease: "none", duration: 1 },
-            i - 1
-          );
-
-          // Draw the swirl path concurrently as it slides up
-          if (path) {
-            tl.to(
-              path,
-              { strokeDashoffset: 0, ease: "power1.inOut", duration: 1 },
-              i - 1
-            );
-          }
+          tl.to(cards[i], { y: 0, ease: "none", duration: 1 }, i - 1);
         }
       });
 
@@ -368,9 +387,9 @@ export default function Services() {
         }
 
         .svc-swirl-path {
-          opacity: 0.3;
-          stroke-dasharray: 2000;
-          stroke-dashoffset: 2000;
+          opacity: 0.45;
+          stroke-dasharray: 3000;
+          stroke-dashoffset: 3000;
         }
 
         .svc-grid {
