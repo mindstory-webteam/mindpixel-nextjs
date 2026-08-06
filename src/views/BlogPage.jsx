@@ -5,9 +5,31 @@ import Breadcrumb from '../components/BreadCrums';
 import { client, urlFor } from '../lib/sanityClient';
 import { ALL_POSTS_QUERY } from '../lib/queries';
 
+import { mockBlogs } from '../assets/blogsData';
+
+function convertMockBlog(b) {
+  const slug = b.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+  return {
+    _id: String(b.id),
+    title: b.title,
+    slug: { current: slug },
+    excerpt: b.excerpt,
+    coverImage: {
+      asset: { url: b.image },
+      alt: b.title,
+    },
+    author: b.author?.name || 'Admin',
+    publishedAt: b.date,
+    categories: ['Web Development'],
+    body: b.content,
+  };
+}
+
 function formatDate(dateStr) {
   if (!dateStr) return '';
-  return new Date(dateStr).toLocaleDateString('en-IN', {
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return dateStr;
+  return d.toLocaleDateString('en-IN', {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
@@ -25,12 +47,16 @@ export default function BlogPage() {
     client
       .fetch(ALL_POSTS_QUERY)
       .then((data) => {
-        setBlogs(data);
+        if (Array.isArray(data) && data.length > 0) {
+          setBlogs(data);
+        } else {
+          setBlogs(mockBlogs.map(convertMockBlog));
+        }
         setLoading(false);
       })
       .catch((err) => {
-        console.error('Sanity fetch error:', err);
-        setError('Failed to load blog posts.');
+        console.warn('Sanity fetch error (using fallback blogs):', err);
+        setBlogs(mockBlogs.map(convertMockBlog));
         setLoading(false);
       });
   }, []);
@@ -106,7 +132,9 @@ export default function BlogPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
           {currentBlogs.map((blog) => {
-            const imageUrl = blog.coverImage?.asset
+            const imageUrl = blog.coverImage?.asset?.url?.startsWith('http')
+              ? blog.coverImage.asset.url
+              : blog.coverImage?.asset
               ? urlFor(blog.coverImage).width(600).height(400).fit('crop').auto('format').url()
               : null;
 

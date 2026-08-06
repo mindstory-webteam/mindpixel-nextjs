@@ -6,6 +6,25 @@ import Breadcrumb from '../components/BreadCrums';
 import SEO from '../components/SEO';
 import { client, urlFor } from '../lib/sanityClient';
 import { POST_BY_SLUG_QUERY, RECENT_POSTS_QUERY } from '../lib/queries';
+import { mockBlogs } from '../assets/blogsData';
+
+function convertMockBlog(b) {
+  const s = b.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+  return {
+    _id: String(b.id),
+    title: b.title,
+    slug: { current: s },
+    excerpt: b.excerpt,
+    coverImage: {
+      asset: { url: b.image },
+      alt: b.title,
+    },
+    author: b.author?.name || 'Admin',
+    publishedAt: b.date,
+    categories: ['Web Development'],
+    body: b.content,
+  };
+}
 
 function formatDate(dateStr) {
   if (!dateStr) return '';
@@ -120,13 +139,23 @@ export default function BlogDetailPage() {
       client.fetch(RECENT_POSTS_QUERY, { slug })
     ])
       .then(([postData, recentData]) => {
-        setBlog(postData);
-        setRecentPosts(recentData || []);
+        const mockConverted = mockBlogs.map(convertMockBlog);
+        const fallbackPost = mockConverted.find(
+          (m) => m.slug.current === slug || String(m._id) === slug
+        );
+
+        setBlog(postData || fallbackPost || mockConverted[0]);
+        setRecentPosts(recentData && recentData.length > 0 ? recentData : mockConverted.slice(0, 5));
         setLoading(false);
       })
       .catch((err) => {
-        console.error('Sanity fetch error:', err);
-        setError('Failed to load this post.');
+        console.warn('Sanity fetch error (using fallback post):', err);
+        const mockConverted = mockBlogs.map(convertMockBlog);
+        const fallbackPost = mockConverted.find(
+          (m) => m.slug.current === slug || String(m._id) === slug
+        );
+        setBlog(fallbackPost || mockConverted[0]);
+        setRecentPosts(mockConverted.slice(0, 5));
         setLoading(false);
       });
   }, [slug]);
@@ -179,7 +208,9 @@ export default function BlogDetailPage() {
     );
   }
 
-  const coverImageUrl = blog.coverImage?.asset
+  const coverImageUrl = blog.coverImage?.asset?.url?.startsWith('http')
+    ? blog.coverImage.asset.url
+    : blog.coverImage?.asset
     ? urlFor(blog.coverImage).width(1200).height(600).fit('crop').auto('format').url()
     : null;
 
