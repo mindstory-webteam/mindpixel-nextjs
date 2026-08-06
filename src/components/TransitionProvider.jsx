@@ -14,14 +14,40 @@ import gsap from "gsap";
 const MD_BREAKPOINT = 768;
 
 // ─── Routes that should NOT trigger the page transition overlay ──────────────
-// Use string prefix matches — any href starting with these will skip the wipe.
-const NO_TRANSITION_PREFIXES = [
-  "/blogs/",     // individual blog detail pages  e.g. /blogs/my-post-slug
-  "/thank-you",  // post-enquiry redirect
-];
-
 function shouldSkipTransition(href) {
-  return NO_TRANSITION_PREFIXES.some((prefix) => href.startsWith(prefix));
+  if (!href) return false;
+  
+  // Clean and normalize the href string
+  let path = href.toLowerCase();
+  
+  try {
+    if (path.startsWith("http://") || path.startsWith("https://")) {
+      path = new URL(href).pathname;
+    }
+  } catch (e) {}
+
+  // Ensure it starts with a leading slash
+  if (!path.startsWith("/")) {
+    path = "/" + path;
+  }
+
+  // Strip trailing slash for consistent matching
+  if (path.length > 1 && path.endsWith("/")) {
+    path = path.slice(0, -1);
+  }
+
+  // Skip for thank-you page
+  if (path === "/thank-you" || path.startsWith("/thank-you/")) {
+    return true;
+  }
+
+  // Skip for individual blog detail pages (e.g., /blogs/my-post-slug)
+  // while keeping transitions active on the main /blogs listing page.
+  if (path.startsWith("/blogs/")) {
+    return true;
+  }
+
+  return false;
 }
 
 // ─── Context ────────────────────────────────────────────────────────────────
