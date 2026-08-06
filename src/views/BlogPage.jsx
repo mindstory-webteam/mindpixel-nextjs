@@ -144,8 +144,8 @@ export default function BlogPage() {
             const imageUrl = blog.coverImage?.asset?.url?.startsWith('http')
               ? blog.coverImage.asset.url
               : blog.coverImage?.asset
-              ? urlFor(blog.coverImage).width(600).height(400).fit('crop').auto('format').url()
-              : null;
+                ? urlFor(blog.coverImage).width(600).height(400).fit('crop').auto('format').url()
+                : null;
 
             return (
               <Link
@@ -201,11 +201,10 @@ export default function BlogPage() {
                 <button
                   key={page}
                   onClick={() => handlePageChange(page)}
-                  className={`w-10 h-10 flex items-center justify-center rounded-lg transition-colors text-sm font-medium ${
-                    currentPage === page
+                  className={`w-10 h-10 flex items-center justify-center rounded-lg transition-colors text-sm font-medium ${currentPage === page
                       ? 'bg-[#0f172a] text-white'
                       : 'text-gray-700 hover:bg-gray-100'
-                  }`}
+                    }`}
                 >
                   {page}
                 </button>

@@ -60,8 +60,8 @@ export default function CareerSection() {
 
     emailjs
       .send(
-        process.env.VITE_EMAILJS_SERVICE_ID,
-        process.env.VITE_EMAILJS_CAREER_TEMPLATE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_CAREER_TEMPLATE_ID,
         {
           from_name: applyForm.name,
           from_email: applyForm.email,
@@ -70,7 +70,7 @@ export default function CareerSection() {
           message: applyForm.message || "No additional message provided.",
           time: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
         },
-        process.env.VITE_EMAILJS_PUBLIC_KEY
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
       )
       .then(() => {
         setApplyStatus("success");

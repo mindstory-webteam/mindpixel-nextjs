@@ -3,7 +3,7 @@ import AnimatedButton from "./AnimatedButton";
 
 // ─── GOOGLE SHEET CONFIGURATION ──────────────────────
 // Paste your deployed Google Apps Script Web App URL below:
-const GOOGLE_SHEET_WEBAPP_URL = process.env.VITE_GOOGLE_APPS_SCRIPT_URL;
+const GOOGLE_SHEET_WEBAPP_URL = process.env.NEXT_PUBLIC_GOOGLE_APPS_SCRIPT_URL || process.env.VITE_GOOGLE_APPS_SCRIPT_URL;
 
 /**
  * Submit form data to Google Sheet using modern fetch with no-cors.
