@@ -5,26 +5,6 @@ import Breadcrumb from '../components/BreadCrums';
 import { client, urlFor } from '../lib/sanityClient';
 import { ALL_POSTS_QUERY } from '../lib/queries';
 
-import { mockBlogs } from '../assets/blogsData';
-
-function convertMockBlog(b) {
-  const slug = b.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
-  return {
-    _id: String(b.id),
-    title: b.title,
-    slug: { current: slug },
-    excerpt: b.excerpt,
-    coverImage: {
-      asset: { url: b.image },
-      alt: b.title,
-    },
-    author: b.author?.name || 'Admin',
-    publishedAt: b.date,
-    categories: ['Web Development'],
-    body: b.content,
-  };
-}
-
 function formatDate(dateStr) {
   if (!dateStr) return '';
   const d = new Date(dateStr);
@@ -47,16 +27,14 @@ export default function BlogPage() {
     client
       .fetch(ALL_POSTS_QUERY)
       .then((data) => {
-        if (Array.isArray(data) && data.length > 0) {
+        if (Array.isArray(data)) {
           setBlogs(data);
-        } else {
-          setBlogs(mockBlogs.map(convertMockBlog));
         }
         setLoading(false);
       })
       .catch((err) => {
-        console.warn('Sanity fetch error (using fallback blogs):', err);
-        setBlogs(mockBlogs.map(convertMockBlog));
+        console.error('Sanity fetch error:', err);
+        setError('Failed to load blog posts. Please try again later.');
         setLoading(false);
       });
   }, []);

@@ -131,7 +131,7 @@ export default function EnquiryService() {
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
-      mm.add("(min-width: 641px)", () => {
+      mm.add("(min-width: 1200px)", () => {
         const cards = cardsRef.current.filter(Boolean);
         if (!cards.length) return;
 
@@ -346,7 +346,7 @@ export default function EnquiryService() {
 
         .svc-grid {
           display: grid;
-          grid-template-columns: 0.85fr 1fr;
+          grid-template-columns: 1fr 1fr;
           height: 100%;
           position: relative;
           z-index: 1;
@@ -405,7 +405,7 @@ export default function EnquiryService() {
 
         .svc-desc {
           font-family: 'Syne', sans-serif;
-          font-size: 15px;
+          font-size: 18px;
           font-weight: 400;
           line-height: 1.62;
           margin: 0;
@@ -442,7 +442,7 @@ export default function EnquiryService() {
 
         .svc-lbl {
           font-family: 'Syne', sans-serif;
-          font-size: 16px;
+          font-size: 18px;
           font-weight: 600;
           letter-spacing: 0.01em;
           line-height: 1.3;
@@ -451,7 +451,7 @@ export default function EnquiryService() {
 
         .svc-ptdesc {
           font-family: 'Syne', sans-serif;
-          font-size: 14px;
+          font-size: 16px;
           font-weight: 400;
           line-height: 1.4;
         }
@@ -478,41 +478,32 @@ export default function EnquiryService() {
         .svc-tag:hover { opacity: 1; }
 
         /* mobile hidden on desktop */
-        .svc-mobile { display: none; }
+        @media (min-width: 1200px) {
+          .svc-mobile { display: none; }
+        }
 
         /* ─ responsive ─ */
-        @media (max-width: 1280px) {
+        @media (max-width: 1366px) and (min-width: 1200px) {
           .svc-slot { inset: 20px 40px; }
           .svc-desc { font-size: 14px; }
           .svc-lbl { font-size: 15px; }
           .svc-ptdesc { font-size: 13px; }
         }
-        @media (max-width: 1024px) {
-          .svc-slot { inset: 14px 24px; }
-          .svc-grid { grid-template-columns: 1fr 1fr; }
-          .svc-desc { font-size: 13px; line-height: 1.6; }
-          .svc-lbl { font-size: 14px; }
-          .svc-ptdesc { font-size: 12px; }
-          .svc-body { padding: 1rem 1.3rem; gap: 0.8rem; }
-          .svc-img-tag { font-size: 17px; }
-          .svc-points { gap: 0.5rem; }
-        }
-        @media (max-width: 768px) {
-          .svc-slot { inset: 10px 14px; }
-          .svc-card { border-radius: 1.5rem; padding: 1.5rem; }
-        }
 
-        /* ─ mobile: plain stacked list ─ */
-        @media (max-width: 640px) {
+        /* ─ mobile & tablet: plain stacked list ─ */
+        @media (max-width: 1199px) {
           .svc-track { display: none; }
           .svc-mobile {
             display: flex;
             flex-direction: column;
-            gap: 16px;
-            padding: 14px;
+            gap: 20px;
+            padding: 20px;
             margin-top: 40px;
             margin-bottom: 40px;
             background: #fff;
+            max-width: 720px;
+            margin-left: auto;
+            margin-right: auto;
           }
           .svc-mobile-card {
             border-radius: 1.5rem;
@@ -521,10 +512,10 @@ export default function EnquiryService() {
             overflow: hidden;
           }
           .svc-mobile-card .svc-grid { grid-template-columns: 1fr; height: auto; }
-          .svc-mobile-card .svc-desc   { font-size: 0.88rem; }
-          .svc-mobile-card .svc-lbl    { font-size: 0.9rem; }
-          .svc-mobile-card .svc-ptdesc { font-size: 0.8rem; }
-          .svc-mobile-card .svc-img-tag { font-size: 0.9rem; }
+          .svc-mobile-card .svc-desc   { font-size: 0.92rem; }
+          .svc-mobile-card .svc-lbl    { font-size: 1rem; }
+          .svc-mobile-card .svc-ptdesc { font-size: 0.85rem; }
+          .svc-mobile-card .svc-img-tag { font-size: 0.95rem; }
         }
       `}</style>
     </>
