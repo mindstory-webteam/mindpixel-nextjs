@@ -40,6 +40,7 @@ export default function Hero2() {
         end: () => `+=${window.innerHeight * 3}px`,
         pin: true,
         pinSpacing: true,
+        scrub: true,
         anticipatePin: 1,
         invalidateOnRefresh: true,
         onUpdate: (self) => {
