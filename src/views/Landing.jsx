@@ -1,6 +1,6 @@
 "use client";
 import Portfolio from '../components/Portfolio'
-import Services from '../components/Services'
+import EnquiryService from '../components/EnquiryService'
 import WhoWeAre from '../components/WhoWeAre'
 import Testimonials from '../components/Testimonials'
 import FaqSection from '../components/FaqSection'
@@ -29,23 +29,23 @@ const Landing = () => {
       <div id="home">
         <EnquiryHero />
       </div>
-      <div id="contact">
+      <div id="contact" style={{ scrollMarginTop: '85px' }}>
         <EnquiryFormSection />
       </div>
-      <div id="why-choose-us" style={{ scrollMarginTop: '100px' }}>
+      <div id="why-choose-us" style={{ scrollMarginTop: '85px' }}>
         <EnquiryWhyChooseUs />
       </div>
-      <div id="about">
+      <div id="about" style={{ scrollMarginTop: '85px' }}>
         <EnquiryAbout />
       </div>
-      <div id="services">
-        <Services />
+      <div id="services" style={{ scrollMarginTop: '85px' }}>
+        <EnquiryService />
       </div>
 
-      <div id="testimonials">
+      <div id="testimonials" style={{ scrollMarginTop: '85px' }}>
         <EnquiryReview />
       </div>
-      <div id="faqs">
+      <div id="faqs" style={{ scrollMarginTop: '85px' }}>
         <EnquiryFaq />
       </div>
 

@@ -240,24 +240,15 @@ const EnquiryNavbar = () => {
   }, [openMenu, closeMenu])
 
   const handleNavClick = useCallback((e, to) => {
-    e.preventDefault();
-    if (location.pathname === '/enquiry') {
-      const routeToId = {
-        '/enquiry#services': 'services',
-        '/enquiry#why-choose-us': 'why-choose-us',
-        '/enquiry#about': 'about',
-        '/enquiry#testimonials': 'testimonials',
-        '/enquiry#faqs': 'faqs',
-        '/enquiry#contact': 'contact'
-      };
-      const sectionId = routeToId[to];
-      if (sectionId) {
-        const el = document.getElementById(sectionId);
-        if (el) {
-          el.scrollIntoView({ behavior: 'smooth' });
-          if (menuOpenRef.current) closeMenu();
-          return;
-        }
+    const hash = to.includes('#') ? to.substring(to.indexOf('#') + 1) : null;
+    const isEnquiryPage = location.pathname === '/enquiry' || location.pathname === '/enquiry/';
+    if (hash && isEnquiryPage) {
+      e.preventDefault();
+      const el = document.getElementById(hash);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+        if (menuOpenRef.current) closeMenu();
+        return;
       }
     }
 
