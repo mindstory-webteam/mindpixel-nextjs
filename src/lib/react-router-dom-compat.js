@@ -2,25 +2,73 @@
 import React, { forwardRef } from 'react';
 import NextLink from 'next/link';
 import { useRouter, usePathname, useParams as useNextParams, useSearchParams } from 'next/navigation';
+import { usePageTransition } from '@/components/TransitionProvider';
 
-// Mock Link
-export const Link = forwardRef(({ to, href, children, ...props }, ref) => {
+// Mock Link with page transition integration
+export const Link = forwardRef(({ to, href, onClick, children, ...props }, ref) => {
+  const pathname = usePathname();
   const destination = to || href || '#';
+  const transition = usePageTransition();
+
+  const handleClick = (e) => {
+    if (onClick) onClick(e);
+    if (e.defaultPrevented) return;
+
+    if (
+      !destination ||
+      destination === '#' ||
+      destination.includes('#') ||
+      destination === pathname ||
+      destination.startsWith('http') ||
+      destination.startsWith('mailto:') ||
+      destination.startsWith('tel:')
+    ) {
+      return;
+    }
+
+    if (transition?.navigateTo) {
+      e.preventDefault();
+      transition.navigateTo(destination);
+    }
+  };
+
   return (
-    <NextLink ref={ref} href={destination} {...props}>
+    <NextLink ref={ref} href={destination} onClick={handleClick} {...props}>
       {children}
     </NextLink>
   );
 });
 Link.displayName = 'Link';
 
-// Mock NavLink
-export const NavLink = forwardRef(({ to, href, children, className, activeClassName, style, ...props }, ref) => {
+// Mock NavLink with page transition integration
+export const NavLink = forwardRef(({ to, href, onClick, children, className, activeClassName, style, ...props }, ref) => {
   const pathname = usePathname();
   const destination = to || href || '#';
   const isActive = pathname === destination;
-  
-  // Resolve class names
+  const transition = usePageTransition();
+
+  const handleClick = (e) => {
+    if (onClick) onClick(e);
+    if (e.defaultPrevented) return;
+
+    if (
+      !destination ||
+      destination === '#' ||
+      destination.includes('#') ||
+      destination === pathname ||
+      destination.startsWith('http') ||
+      destination.startsWith('mailto:') ||
+      destination.startsWith('tel:')
+    ) {
+      return;
+    }
+
+    if (transition?.navigateTo) {
+      e.preventDefault();
+      transition.navigateTo(destination);
+    }
+  };
+
   let resolvedClassName = className;
   if (typeof className === 'function') {
     resolvedClassName = className({ isActive });
@@ -31,18 +79,24 @@ export const NavLink = forwardRef(({ to, href, children, className, activeClassN
   }
 
   return (
-    <NextLink ref={ref} href={destination} className={resolvedClassName} {...props}>
+    <NextLink ref={ref} href={destination} onClick={handleClick} className={resolvedClassName} {...props}>
       {children}
     </NextLink>
   );
 });
 NavLink.displayName = 'NavLink';
 
-// Mock useNavigate
+// Mock useNavigate with page transition integration
 export function useNavigate() {
+  const transition = usePageTransition();
   const router = useRouter();
+
   return (href) => {
-    router.push(href);
+    if (transition?.navigateTo && href && !href.includes('#')) {
+      transition.navigateTo(href);
+    } else {
+      router.push(href);
+    }
   };
 }
 

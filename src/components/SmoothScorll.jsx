@@ -1,58 +1,67 @@
 "use client";
-import { useEffect, useLayoutEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function SmoothScroll({ children }) {
   const pathname = usePathname();
   const lenisRef = useRef(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      gsap.registerPlugin(ScrollTrigger);
-    }
+    // Register once on the client
+    gsap.registerPlugin(ScrollTrigger);
 
     const lenis = new Lenis({
-      duration: 1.2,
+      // Lenis drives scroll — keep it simple and reliable
+      duration: 1.1,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
       wheelMultiplier: 1.0,
-      orientation: 'vertical',
-      gestureOrientation: 'vertical',
-      touchMultiplier: 1.5,
+      // Disable touch smooth so mobile never locks
+      smoothTouch: false,
+      touchMultiplier: 1,
+      // Use the document scroller (not a custom wrapper element)
+      // so GSAP ScrollTrigger can read the real scroll position
+      syncTouch: false,
     });
 
     lenisRef.current = lenis;
 
-    lenis.on('scroll', ScrollTrigger.update);
+    // Keep ScrollTrigger in sync on every Lenis scroll tick
+    lenis.on('scroll', () => {
+      ScrollTrigger.update();
+    });
 
-    const update = (time) => {
-      lenis.raf(time * 1000);
-    };
-
-    gsap.ticker.add(update);
+    // Use gsap ticker to drive Lenis RAF — avoids duplicated rAF calls
+    const raf = (time) => lenis.raf(time * 1000);
+    gsap.ticker.add(raf);
+    // Do NOT use lagSmoothing — it can stall Lenis near heavy animations
+    gsap.ticker.lagSmoothing(false);
 
     return () => {
-      gsap.ticker.remove(update);
+      gsap.ticker.remove(raf);
       lenis.destroy();
       lenisRef.current = null;
     };
   }, []);
 
+  // On route change: scroll to top + refresh ScrollTrigger positions
   useEffect(() => {
-    if (lenisRef.current) {
-      lenisRef.current.scrollTo(0, { immediate: true });
+    const lenis = lenisRef.current;
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: true });
     } else {
       window.scrollTo(0, 0);
     }
-    const timer = setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 150);
-    return () => clearTimeout(timer);
+
+    // Give the new page DOM time to paint before recomputing pin spacers
+    const t = setTimeout(() => {
+      ScrollTrigger.refresh(true);
+    }, 200);
+
+    return () => clearTimeout(t);
   }, [pathname]);
 
   return <>{children}</>;

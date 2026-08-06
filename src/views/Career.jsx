@@ -6,7 +6,6 @@ import Breadcrumb from '../components/BreadCrums';
 import CareerSection from '../components/CareerSection';
 import SEO from '../components/SEO';
 
-gsap.registerPlugin(ScrollTrigger);
 
 const Career = () => {
   const sliderRef = useRef(null);

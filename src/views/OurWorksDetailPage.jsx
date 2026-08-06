@@ -8,7 +8,6 @@ import AnimatedButton from "../components/AnimatedButton";
 import { img } from "../assets/assest";
 import SEO from '../components/SEO';
 
-gsap.registerPlugin(ScrollTrigger);
 
 export const WORK_DATA = [
   {

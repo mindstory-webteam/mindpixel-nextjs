@@ -4,8 +4,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { img } from "../assets/assest";
 
-gsap.registerPlugin(ScrollTrigger);
-
 export default function Hero2() {
   const containerRef = useRef(null);
   const introRef = useRef(null);
@@ -16,9 +14,7 @@ export default function Hero2() {
   const taglineRef = useRef(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      gsap.registerPlugin(ScrollTrigger);
-    }
+    gsap.registerPlugin(ScrollTrigger);
 
     const intro = introRef.current;
     const skyContainer = skyRef.current;
@@ -28,12 +24,11 @@ export default function Hero2() {
     const tagline = taglineRef.current;
 
     if (!skyContainer) return;
-    let skyContainerHeight = skyContainer.offsetHeight;
-    if (!skyContainerHeight) {
-      skyContainerHeight = window.innerHeight * 3.5;
-    }
-    const viewportHeight = window.innerHeight;
-    const skyMoveDistance = skyContainerHeight - viewportHeight;
+
+    const getHeights = () => {
+      const h = skyContainer.offsetHeight || window.innerHeight * 3.5;
+      return { skyH: h, moveDistance: h - window.innerHeight };
+    };
 
     gsap.set(heroCopy, { yPercent: 100, opacity: 1 });
     gsap.set(tagline, { opacity: 1, yPercent: 0 });
@@ -42,12 +37,14 @@ export default function Hero2() {
       ScrollTrigger.create({
         trigger: intro,
         start: "top top",
-        end: `+=${window.innerHeight * 3}px`,
+        end: () => `+=${window.innerHeight * 3}px`,
         pin: true,
         pinSpacing: true,
         anticipatePin: 1,
+        invalidateOnRefresh: true,
         onUpdate: (self) => {
           const progress = self.progress;
+          const { moveDistance } = getHeights();
 
           let windowScale;
           if (progress <= 0.5) {
@@ -58,14 +55,10 @@ export default function Hero2() {
 
           gsap.set(windowContainer, { scale: windowScale });
           gsap.set(heroHeader, { scale: windowScale, z: progress * 500 });
-          gsap.set(skyContainer, { y: -progress * skyMoveDistance });
+          gsap.set(skyContainer, { y: -progress * moveDistance });
 
-          const taglineOpacity = progress <= 0.2
-            ? 1 - (progress / 0.2)
-            : 0;
-          const taglineY = progress <= 0.2
-            ? -(progress / 0.2) * 20
-            : -20;
+          const taglineOpacity = progress <= 0.2 ? 1 - progress / 0.2 : 0;
+          const taglineY = progress <= 0.2 ? -(progress / 0.2) * 20 : -20;
           gsap.set(tagline, { opacity: taglineOpacity, y: taglineY });
 
           let heroCopyY;
@@ -76,7 +69,6 @@ export default function Hero2() {
           } else {
             heroCopyY = 100 * (1 - (progress - 0.65) / 0.34);
           }
-
           gsap.set(heroCopy, { yPercent: heroCopyY });
         },
       });

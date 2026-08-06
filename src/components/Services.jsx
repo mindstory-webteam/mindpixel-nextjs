@@ -5,10 +5,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "framer-motion";
 import { img } from "../assets/assest";
 
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
-
 const cardAccents = [
   { bg: "linear-gradient(135deg, #95257b 0%, #6b1958 100%)", text: "#ffffff" },
   { bg: "linear-gradient(135deg, #95257b 0%, #7c1d66 100%)", text: "#ffffff" },

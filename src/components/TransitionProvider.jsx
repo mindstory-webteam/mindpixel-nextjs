@@ -40,15 +40,10 @@ export default function TransitionProvider({ children, column = 6 }) {
   const [portalReady, setPortalReady] = useState(false);
   const [isMd, setIsMd] = useState(false);
 
-  // Portal + resize listener
+  // Portal root initialization
   useEffect(() => {
     getPortalRoot();
     setPortalReady(true);
-
-    const checkMd = () => setIsMd(window.innerWidth >= MD_BREAKPOINT);
-    checkMd();
-    window.addEventListener("resize", checkMd);
-    return () => window.removeEventListener("resize", checkMd);
   }, []);
 
   // Trim stale refs when column count changes
@@ -62,11 +57,6 @@ export default function TransitionProvider({ children, column = 6 }) {
   useEffect(() => {
     if (!isTransitioning.current) return;
 
-    if (!isMd) {
-      isTransitioning.current = false;
-      return;
-    }
-
     const cols = getCols();
     if (!cols.length) {
       isTransitioning.current = false;
@@ -76,9 +66,9 @@ export default function TransitionProvider({ children, column = 6 }) {
     tweenRef.current?.kill();
     tweenRef.current = gsap.to(cols, {
       y: "-100%",
-      duration: 0.5,
+      duration: 0.45,
       ease: "power3.inOut",
-      stagger: 0.05,
+      stagger: 0.04,
       delay: 0.05,
       onComplete: () => {
         gsap.set(getCols(), { y: "100%" });
@@ -87,17 +77,29 @@ export default function TransitionProvider({ children, column = 6 }) {
     });
 
     return () => tweenRef.current?.kill();
-  }, [pathname, isMd]);
+  }, [pathname]);
 
   const navigateTo = useCallback(
     (href) => {
+      if (!href) return;
+
+      // Handle anchor hash links on the current page
+      if (href.includes('#')) {
+        const [targetPath, hash] = href.split('#');
+        const currentCleanPath = pathname.replace(/\/$/, '');
+        const targetCleanPath = targetPath ? targetPath.replace(/\/$/, '') : currentCleanPath;
+
+        if (targetCleanPath === currentCleanPath || !targetPath) {
+          const el = document.getElementById(hash);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth' });
+            return;
+          }
+        }
+      }
+
       if (isTransitioning.current) return;
       if (pathname === href) return;
-
-      if (!isMd) {
-        router.push(href);
-        return;
-      }
 
       const cols = getCols();
       if (!cols.length) {
@@ -111,13 +113,13 @@ export default function TransitionProvider({ children, column = 6 }) {
       gsap.set(cols, { y: "100%" });
       tweenRef.current = gsap.to(cols, {
         y: "0%",
-        duration: 0.5,
+        duration: 0.45,
         ease: "power3.inOut",
-        stagger: 0.05,
+        stagger: 0.04,
         onComplete: () => router.push(href),
       });
     },
-    [router, pathname, isMd]
+    [router, pathname]
   );
 
   const overlay = (
@@ -137,9 +139,8 @@ export default function TransitionProvider({ children, column = 6 }) {
           style={{
             flex: 1,
             height: "100%",
-            background: "#ff8c00",
+            background: "#f78624",
             transform: "translateY(100%)",
-            display: isMd ? "block" : "none",
           }}
         />
       ))}

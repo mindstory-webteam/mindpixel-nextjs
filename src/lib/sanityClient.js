@@ -13,19 +13,51 @@ export const client = createClient({
   ...(token ? { token } : {}),
 })
 
-// Helper for generating image URLs from Sanity asset references
+// Helper for generating image URLs from Sanity asset references or fallback image URLs
 const builder = createImageUrlBuilder(client)
 
 export function urlFor(source) {
-  if (!source || (!source.asset && !source._ref)) {
-    return {
-      width: () => urlFor(source),
-      height: () => urlFor(source),
-      fit: () => urlFor(source),
-      crop: () => urlFor(source),
-      auto: () => urlFor(source),
+  if (!source) {
+    const chain = {
+      width: () => chain,
+      height: () => chain,
+      fit: () => chain,
+      crop: () => chain,
+      auto: () => chain,
       url: () => '',
-    }
+    };
+    return chain;
   }
-  return builder.image(source)
+
+  const directUrl =
+    typeof source === 'string'
+      ? source
+      : source?.asset?.url || (typeof source?.asset === 'string' ? source.asset : null);
+
+  if (directUrl && typeof directUrl === 'string' && directUrl.startsWith('http')) {
+    const chain = {
+      width: () => chain,
+      height: () => chain,
+      fit: () => chain,
+      crop: () => chain,
+      auto: () => chain,
+      url: () => directUrl,
+    };
+    return chain;
+  }
+
+  try {
+    return builder.image(source);
+  } catch (err) {
+    const fallbackUrl = directUrl || '';
+    const chain = {
+      width: () => chain,
+      height: () => chain,
+      fit: () => chain,
+      crop: () => chain,
+      auto: () => chain,
+      url: () => fallbackUrl,
+    };
+    return chain;
+  }
 }

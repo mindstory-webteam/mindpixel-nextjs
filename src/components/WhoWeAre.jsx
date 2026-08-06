@@ -9,7 +9,6 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { NavLink } from '@/lib/react-router-dom-compat'
 
-gsap.registerPlugin(ScrollTrigger)
 
 const logos = [
   { image: img.IndelMoney_mind, name: 'IndelMoney' },

@@ -160,6 +160,15 @@ export default function BlogDetailPage() {
       });
   }, [slug]);
 
+  useEffect(() => {
+    if (!loading) {
+      const timer = setTimeout(() => {
+        window.dispatchEvent(new Event('resize'));
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [loading, blog]);
+
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -316,12 +325,12 @@ export default function BlogDetailPage() {
                 {recentPosts.length > 0 ? (
                   recentPosts.map((post) => (
                     <Link
-                      to={`/blogs/${post.slug.current}`}
+                      to={`/blogs/${post.slug?.current || post.slug}`}
                       key={post._id}
                       className="flex items-center gap-4 group bg-[#fafbfc] p-3 rounded-2xl transition-all hover:shadow-md"
                     >
                       <div className="w-20 h-20 flex-shrink-0 rounded-xl overflow-hidden bg-gray-200">
-                        {post.coverImage?.asset?.url ? (
+                        {post.coverImage ? (
                           <img
                             src={urlFor(post.coverImage).width(200).height(200).fit('crop').url()}
                             alt={post.title}

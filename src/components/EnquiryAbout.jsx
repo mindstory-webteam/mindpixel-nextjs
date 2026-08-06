@@ -8,7 +8,6 @@ import AnimatedButton from './AnimatedButton'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-gsap.registerPlugin(ScrollTrigger)
 
 const logos = [
   { image: img.IndelMoney_mind, name: 'IndelMoney' },

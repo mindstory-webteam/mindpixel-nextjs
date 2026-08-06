@@ -6,7 +6,6 @@ import Breadcrumb from '../components/BreadCrums';
 import ContactSection from '../components/ContactSection';
 import SEO from '../components/SEO';
 
-gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
   const sliderRef = useRef(null);

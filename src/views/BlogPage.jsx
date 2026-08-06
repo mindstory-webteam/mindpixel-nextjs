@@ -61,6 +61,15 @@ export default function BlogPage() {
       });
   }, []);
 
+  useEffect(() => {
+    if (!loading) {
+      const timer = setTimeout(() => {
+        window.dispatchEvent(new Event('resize'));
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [loading, blogs]);
+
   const totalPages = Math.ceil(blogs.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentBlogs = blogs.slice(startIndex, startIndex + itemsPerPage);

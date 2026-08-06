@@ -4,7 +4,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import AnimatedButton from "./AnimatedButton";
 import { img } from "../assets/assest";
 
-gsap.registerPlugin(ScrollTrigger);
 
 const NAVBAR_H = 70;
 const SIDE_GAP = 60;
