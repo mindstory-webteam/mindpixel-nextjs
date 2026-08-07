@@ -235,6 +235,11 @@ export default function ChatbotWidget({
         target="_blank"
         rel="noopener noreferrer"
         className="whatsapp-fab-wrap"
+        style={{
+          opacity: isOpen ? 0 : 1,
+          pointerEvents: isOpen ? 'none' : 'auto',
+          transform: isOpen ? 'scale(0.8)' : 'scale(1)',
+        }}
         aria-label="Chat on WhatsApp"
       >
         <FaWhatsapp size={28} />
