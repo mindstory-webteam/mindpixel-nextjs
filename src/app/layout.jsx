@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import "./globals.css";
 import Script from "next/script";
+import FaviconBlinker from "@/components/FaviconBlinker";
 
 export const metadata = {
   title: "Mind Pixel | Best Web Development Company in Thrissur",
@@ -58,6 +59,7 @@ export default function RootLayout({ children }) {
             style={{ display: "none", visibility: "hidden" }}
           ></iframe>
         </noscript>
+        <FaviconBlinker />
         {children}
       </body>
     </html>
