@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import AnimatedButton from "./AnimatedButton";
 
 const CARDS = [
@@ -78,15 +79,17 @@ const WorkProcess = () => {
               build partnerships rooted in clarity, craft, and accountability.
             </p>
             <div className="w-fit mx-auto sm:mx-0">
-              <AnimatedButton
-                className="mt-2"
-                bgColor="#1a1a1a"
-                textColor="#f5f0e8"
-                hoverBgColor="#ffb86a"
-                hoverTextColor="#1a1a1a"
-              >
-                Contact Us
-              </AnimatedButton>
+              <Link href="/contact">
+                <AnimatedButton
+                  className="mt-2"
+                  bgColor="#1a1a1a"
+                  textColor="#f5f0e8"
+                  hoverBgColor="#ffb86a"
+                  hoverTextColor="#1a1a1a"
+                >
+                  Contact Us
+                </AnimatedButton>
+              </Link>
             </div>
           </div>
 
