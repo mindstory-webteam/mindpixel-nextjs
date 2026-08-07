@@ -1,11 +1,7 @@
 import OpenAI from "openai";
 import { companyKnowledge } from "@/lib/knowledge_base";
 
-// Initialize Groq (Uses the existing OpenAI SDK)
-const openai = new OpenAI({
-  baseURL: "https://api.groq.com/openai/v1",
-  apiKey: process.env.GROQ_API_KEY || "",
-});
+// Removed top-level initialization to prevent build errors
 
 export async function POST(req) {
   try {
@@ -21,6 +17,12 @@ export async function POST(req) {
         { status: 500 }
       );
     }
+
+    // Initialize Groq inside the handler so Next.js build doesn't crash from missing env vars
+    const openai = new OpenAI({
+      baseURL: "https://api.groq.com/openai/v1",
+      apiKey: process.env.GROQ_API_KEY,
+    });
 
     // Format messages for the API
     const formattedMessages = [
