@@ -102,9 +102,9 @@ export default function TransitionProvider({ children, column = 6 }) {
     tweenRef.current?.kill();
     tweenRef.current = gsap.to(cols, {
       y: "-100%",
-      duration: 0.32,
+      duration: 0.5,
       ease: "power3.inOut",
-      stagger: 0.025,
+      stagger: 0.05,
       delay: 0.02,
       onComplete: () => {
         gsap.set(getCols(), { y: "100%" });
