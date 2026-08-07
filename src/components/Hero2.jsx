@@ -83,12 +83,12 @@ export default function Hero2() {
   const syne = { fontFamily: "'Syne', sans-serif" };
 
   return (
-    <div ref={containerRef} style={{ position: "relative" }}>
+    <div ref={containerRef} style={{ position: "relative", backgroundColor: "#000" }}>
       <section
         ref={introRef}
         className="relative w-full overflow-hidden"
         style={{
-          height: "100dvh",
+          height: "100vh",
           perspective: "1000px",
           color: "#e3e3db",
         }}
@@ -96,7 +96,7 @@ export default function Hero2() {
         <div
           ref={skyRef}
           className="absolute top-0 left-0 w-full"
-          style={{ height: "350dvh", willChange: "transform" }}
+          style={{ height: "350vh", willChange: "transform" }}
         >
           <video
             autoPlay
@@ -119,7 +119,7 @@ export default function Hero2() {
         <div
           ref={windowContainerRef}
           className="absolute top-0 left-0 w-full"
-          style={{ height: "100dvh", willChange: "transform", zIndex: 1 }}
+          style={{ height: "100vh", willChange: "transform", zIndex: 1 }}
         >
           <img
             src={img.computerimg}
@@ -141,7 +141,7 @@ export default function Hero2() {
           ref={taglineRef}
           className="absolute -top-4 left-0 w-full hidden sm:flex items-center justify-center"
           style={{
-            height: "100dvh",
+            height: "100vh",
             zIndex: 5,
             pointerEvents: "none",
             willChange: "opacity, transform",
@@ -163,7 +163,7 @@ export default function Hero2() {
           ref={heroHeaderRef}
           className="absolute top-0 left-0 w-full flex flex-col justify-end"
           style={{
-            height: "100dvh",
+            height: "100vh",
             willChange: "transform",
             transformStyle: "preserve-3d",
             padding: "6rem 2rem 2rem",
@@ -213,7 +213,7 @@ export default function Hero2() {
           ref={heroCopyRef}
           className="absolute top-0 left-0 w-full flex flex-col justify-center items-center text-center px-6 sm:px-8"
           style={{
-            height: "85dvh",
+            height: "85vh",
             willChange: "transform",
             zIndex: 10,
             opacity: 0,

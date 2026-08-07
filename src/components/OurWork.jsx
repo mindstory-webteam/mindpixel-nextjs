@@ -338,7 +338,7 @@ const OurWork = () => {
   );
 
   return (
-    <section style={{ background: '#fff', padding: '60px 40px 0px 40px', fontFamily: "'DM Sans', sans-serif", color: '#0f0f14' }}>
+    <section className="pt-20 md:pt-[60px]" style={{ background: '#fff', paddingBottom: '0px', paddingLeft: '40px', paddingRight: '40px', fontFamily: "'DM Sans', sans-serif", color: '#0f0f14' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500&display=swap');
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }

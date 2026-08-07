@@ -141,8 +141,8 @@ export default function TransitionProvider({ children, column = 6 }) {
       if (isTransitioning.current) return;
       if (pathname === href) return;
 
-      // Skip transition overlay for blog detail pages and thank-you
-      if (shouldSkipTransition(href)) {
+      // Skip transition overlay for blog detail pages, thank-you, and small screens
+      if (shouldSkipTransition(href) || window.innerWidth < MD_BREAKPOINT) {
         router.push(href);
         return;
       }
@@ -170,10 +170,10 @@ export default function TransitionProvider({ children, column = 6 }) {
 
   const overlay = (
     <div
+      className="hidden md:flex"
       style={{
         position: "fixed",
         inset: 0,
-        display: "flex",
         pointerEvents: "none",
         zIndex: 10000,
       }}
