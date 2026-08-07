@@ -76,7 +76,7 @@ export default function ChatbotWidget({
         {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
-          content: 'Sorry, I encountered an error. Please try again later.',
+          content: 'I am currently experiencing high traffic! Please contact our team directly via WhatsApp at +91 8281001410 or email us at hello@mindstory.in.',
           timestamp: new Date(),
         },
       ]);
