@@ -152,7 +152,7 @@ export default function BlogDetailPage() {
   const handleQuoteSubmit = (e) => {
     e.preventDefault();
     if (quoteText.trim()) {
-      const waUrl = `https://wa.me/918281610051?text=${encodeURIComponent(quoteText)}`;
+      const waUrl = `https://wa.me/918281001410?text=${encodeURIComponent(quoteText)}`;
       window.open(waUrl, '_blank');
       setQuoteText('');
     }
