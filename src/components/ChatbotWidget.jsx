@@ -326,9 +326,11 @@ export default function ChatbotWidget({
           {/* Messages */}
           <div
             className="chat-messages-list"
+            data-lenis-prevent="true"
             style={{
               flex: 1,
               overflowY: 'auto',
+              overscrollBehavior: 'contain',
               padding: '16px',
               display: 'flex',
               flexDirection: 'column',
