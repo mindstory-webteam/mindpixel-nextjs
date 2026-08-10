@@ -194,8 +194,11 @@ const ProjectCard = ({ card, index }) => {
         borderRadius: 24,
         overflow: 'hidden',
         position: 'relative',
-        height: '420px',
+        height: '380px',
         cursor: 'default',
+        isolation: 'isolate',
+        transform: 'translateZ(0)',
+        WebkitMaskImage: '-webkit-radial-gradient(white, black)',
         animation: `fadeUp 0.6s ease ${index * 0.1}s both`,
       }}
     >
@@ -206,7 +209,7 @@ const ProjectCard = ({ card, index }) => {
       />
 
       {/* SVG Ink Effect */}
-      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", transform: "scale(1.8)" }}>
+      <div style={{ position: "absolute", inset: 0, pointerEvents: "none", transform: "scale(1.5)", overflow: "hidden" }}>
         <svg viewBox="0 0 2453 2273" fill="none" style={{ width: "100%", height: "100%" }}>
           <path
             ref={pathRef}
@@ -338,46 +341,48 @@ const OurWork = () => {
   );
 
   return (
-    <section className="pt-20 md:pt-[60px]" style={{ background: '#fff', paddingBottom: '0px', paddingLeft: '40px', paddingRight: '40px', fontFamily: "'DM Sans', sans-serif", color: '#0f0f14' }}>
+    <section className="pt-20 md:pt-[60px]" style={{ background: '#fff', paddingBottom: '60px', paddingLeft: '24px', paddingRight: '24px', fontFamily: "'DM Sans', sans-serif", color: '#0f0f14', overflow: 'hidden' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500&display=swap');
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes dropIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
-        .work-grid { display: grid; gap: 30px; grid-template-columns: 1fr; }
-        @media (min-width: 768px) { .work-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (min-width: 1100px) { .work-grid { grid-template-columns: repeat(3, 1fr); } }
+        .work-grid { display: grid; gap: 24px; grid-template-columns: 1fr; }
+        @media (min-width: 640px) { .work-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 1024px) { .work-grid { grid-template-columns: repeat(3, 1fr); } }
       `}</style>
 
-      {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 64, gap: 40, flexWrap: 'wrap', background: '#f9f9f9', padding: '50px', borderRadius: '20px' }}>
-        <div style={{ flex: '1 1 400px' }}>
-          <h1 style={{ fontFamily: "'Syne', sans-serif", lineHeight: 1.1, margin: 0 }} className='text-3xl md:text-5xl'>
-            Work That Speaks <br />For Itself
-          </h1>
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 48, gap: 32, flexWrap: 'wrap', background: '#f9f9f9', padding: '40px 32px', borderRadius: '20px' }}>
+          <div style={{ flex: '1 1 300px' }}>
+            <h1 style={{ fontFamily: "'Syne', sans-serif", lineHeight: 1.1, margin: 0 }} className='text-3xl md:text-5xl'>
+              Work That Speaks <br />For Itself
+            </h1>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 20, alignItems: 'flex-start' }}>
+            <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
+              <Dropdown label="Industry" options={INDUSTRIES} value={indFilter} onChange={setIndFilter} />
+              <Dropdown label="Expertise" options={EXPERTISES} value={expFilter} onChange={setExpFilter} />
+            </div>
+            <p style={{ fontSize: 14, color: '#000', maxWidth: 420, lineHeight: 1.6, margin: 0 }}>
+              Crafting digital experiences that drive impact across industries and disciplines.
+            </p>
+          </div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 24, alignItems: 'flex-start' }}>
-          <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-            <Dropdown label="Industry" options={INDUSTRIES} value={indFilter} onChange={setIndFilter} />
-            <Dropdown label="Expertise" options={EXPERTISES} value={expFilter} onChange={setExpFilter} />
-          </div>
-          <p style={{ fontSize: 14, color: '#000', maxWidth: 420, lineHeight: 1.6, margin: 0 }}>
-            Crafting digital experiences that drive impact across industries and disciplines.
-          </p>
+        {/* Grid */}
+        <div className="work-grid">
+          {filtered.length === 0 ? (
+            <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '100px 0', color: '#999', fontSize: 16, border: '1px dashed #eee', borderRadius: 20 }}>
+              No projects match your selection.
+            </div>
+          ) : (
+            filtered.map((card, i) => (
+              <ProjectCard key={card.id} card={card} index={i} />
+            ))
+          )}
         </div>
-      </div>
-
-      {/* Grid */}
-      <div className="work-grid">
-        {filtered.length === 0 ? (
-          <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '100px 0', color: '#999', fontSize: 16, border: '1px dashed #eee', borderRadius: 20 }}>
-            No projects match your selection.
-          </div>
-        ) : (
-          filtered.map((card, i) => (
-            <ProjectCard key={card.id} card={card} index={i} />
-          ))
-        )}
       </div>
     </section>
   );

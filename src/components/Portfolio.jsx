@@ -186,16 +186,26 @@ function Tile({ cat }) {
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
       className="tile-card"
-      style={{ position: "relative", cursor: "default", borderRadius: 16, overflow: "hidden", background: "#eee", width: "100%" }}
+      style={{
+        position: "relative",
+        cursor: "default",
+        borderRadius: 16,
+        overflow: "hidden",
+        background: "#eee",
+        width: "100%",
+        isolation: "isolate",
+        transform: "translateZ(0)",
+        WebkitMaskImage: "-webkit-radial-gradient(white, black)",
+      }}
     >
       <img src={cat.img} alt={cat.label} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
 
-      <div style={{ position: "absolute", inset: 0, transform: "scale(1.5)", pointerEvents: "none" }}>
+      <div style={{ position: "absolute", inset: 0, transform: "scale(1.4)", pointerEvents: "none", overflow: "hidden" }}>
         <svg viewBox="0 0 2453 2273" fill="none" style={{ width: "100%", height: "100%" }}>
           <path ref={pathARef} d={PATH_A} stroke={cat.inkA} strokeWidth="100" strokeLinecap="round" />
         </svg>
       </div>
-      <div style={{ position: "absolute", inset: 0, transform: "scale(1.5)", pointerEvents: "none" }}>
+      <div style={{ position: "absolute", inset: 0, transform: "scale(1.4)", pointerEvents: "none", overflow: "hidden" }}>
         <svg viewBox="0 0 2250 2535" fill="none" style={{ width: "100%", height: "100%" }}>
           <path ref={pathBRef} d={PATH_B} stroke={cat.inkB} strokeWidth="100" strokeLinecap="round" />
         </svg>
@@ -258,43 +268,47 @@ export default function Portfolio() {
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');`}</style>
 
       {/* Desktop — lg and above only */}
-      <div className="hidden lg:flex gap-15 max-w-375 mx-auto">
-        <div style={{ minWidth: 320 }}>
-          <h1 style={{ fontSize: "4rem", color: "#1a1a1a", fontFamily: "'Syne', sans-serif", margin: 0 }}>
+      <div className="hidden lg:flex gap-10 max-w-7xl mx-auto w-full">
+        <div style={{ minWidth: 280, maxWidth: 300 }}>
+          <h1 style={{ fontSize: "3.5rem", color: "#1a1a1a", fontFamily: "'Syne', sans-serif", margin: 0 }}>
             Our Works
           </h1>
-          <p style={{ fontSize: 18, color: "#000", maxWidth: 220, marginBottom: 40 }}>
+          <p style={{ fontSize: 16, color: "#000", maxWidth: 220, marginBottom: 30 }}>
             Creating digital experiences with creativity, usability, and impact.
           </p>
-          <div style={{ backgroundColor: "#fafafa", borderRadius: "14px", padding: "45px 20px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "50px", textAlign: "center" }}>
-            <div style={{ display: "flex", gap: 40, justifyContent: "center", width: "100%" }}>
+          <div style={{ backgroundColor: "#fafafa", borderRadius: "14px", padding: "35px 20px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "35px", textAlign: "center" }}>
+            <div style={{ display: "flex", gap: 30, justifyContent: "center", width: "100%" }}>
               <div>
-                <div style={{ fontSize: "2.5rem", color: "#1a1a1a", fontFamily: "'Syne', sans-serif" }}><Counter endValue={150} /></div>
-                <div style={{ fontSize: 12, textTransform: "uppercase", color: "rgba(0,0,0,0.6)", fontFamily: "'Syne', sans-serif" }}>Projects</div>
+                <div style={{ fontSize: "2.2rem", color: "#1a1a1a", fontFamily: "'Syne', sans-serif" }}><Counter endValue={150} /></div>
+                <div style={{ fontSize: 11, textTransform: "uppercase", color: "rgba(0,0,0,0.6)", fontFamily: "'Syne', sans-serif" }}>Projects</div>
               </div>
               <div>
-                <div style={{ fontSize: "2.5rem", color: "#1a1a1a", fontFamily: "'Syne', sans-serif" }}><Counter endValue={100} /></div>
-                <div style={{ fontSize: 12, textTransform: "uppercase", color: "rgba(0,0,0,0.6)", fontFamily: "'Syne', sans-serif" }}>Happy Clients</div>
+                <div style={{ fontSize: "2.2rem", color: "#1a1a1a", fontFamily: "'Syne', sans-serif" }}><Counter endValue={100} /></div>
+                <div style={{ fontSize: 11, textTransform: "uppercase", color: "rgba(0,0,0,0.6)", fontFamily: "'Syne', sans-serif" }}>Happy Clients</div>
               </div>
             </div>
-            <div style={{ display: "flex", gap: 40, justifyContent: "center", width: "100%" }}>
+            <div style={{ display: "flex", gap: 30, justifyContent: "center", width: "100%" }}>
               <div>
-                <div style={{ fontSize: "2.5rem", color: "#1a1a1a", fontFamily: "'Syne', sans-serif" }}><Counter endValue={5} /></div>
-                <div style={{ fontSize: 12, textTransform: "uppercase", color: "rgba(0,0,0,0.6)", fontFamily: "'Syne', sans-serif" }}>Countries</div>
+                <div style={{ fontSize: "2.2rem", color: "#1a1a1a", fontFamily: "'Syne', sans-serif" }}><Counter endValue={5} /></div>
+                <div style={{ fontSize: 11, textTransform: "uppercase", color: "rgba(0,0,0,0.6)", fontFamily: "'Syne', sans-serif" }}>Countries</div>
               </div>
               <div>
-                <div style={{ fontSize: "2.5rem", color: "#1a1a1a", fontFamily: "'Syne', sans-serif" }}><Counter endValue={10} /></div>
-                <div style={{ fontSize: 12, textTransform: "uppercase", color: "rgba(0,0,0,0.6)", fontFamily: "'Syne', sans-serif" }}>Years</div>
+                <div style={{ fontSize: "2.2rem", color: "#1a1a1a", fontFamily: "'Syne', sans-serif" }}><Counter endValue={10} /></div>
+                <div style={{ fontSize: 11, textTransform: "uppercase", color: "rgba(0,0,0,0.6)", fontFamily: "'Syne', sans-serif" }}>Years</div>
               </div>
             </div>
           </div>
         </div>
 
-        <div style={{ flex: 1, overflow: "hidden" }}>
+        <div style={{ flex: 1, minWidth: 0, overflow: "hidden" }}>
           <Swiper
             modules={[Autoplay, FreeMode]}
-            spaceBetween={15}
-            slidesPerView={1.8}
+            spaceBetween={16}
+            slidesPerView={2.2}
+            breakpoints={{
+              1280: { slidesPerView: 2.4 },
+              1536: { slidesPerView: 2.6 },
+            }}
             loop={true}
             freeMode={true}
             speed={6000}
@@ -334,7 +348,10 @@ export default function Portfolio() {
           <Swiper
             modules={[Autoplay, FreeMode]}
             spaceBetween={14}
-            slidesPerView={1.1}
+            slidesPerView={1.2}
+            breakpoints={{
+              640: { slidesPerView: 1.8 },
+            }}
             loop={true}
             freeMode={true}
             speed={6000}
@@ -350,8 +367,8 @@ export default function Portfolio() {
 
       <style>{`
         .swiper-wrapper { transition-timing-function: linear !important; }
-        .tile-card { height: 480px; }
-        @media (max-width: 1023px) { .tile-card { height: 400px; } }
+        .tile-card { height: 420px; }
+        @media (max-width: 1023px) { .tile-card { height: 380px; } }
       `}</style>
     </div>
   );
