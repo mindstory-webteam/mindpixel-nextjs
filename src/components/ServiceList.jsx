@@ -193,7 +193,7 @@ export default function ServicesSticky() {
   }, []);
 
   return (
-    <>
+    <div style={{ overflowX: "hidden", width: "100%", maxWidth: "100%" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
 
@@ -206,15 +206,26 @@ export default function ServicesSticky() {
           --img-overlay: rgba(15,14,12,0.18);
         }
 
-        body { overflow-x: hidden; }
+        body {
+          overflow-x: hidden;
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        body::-webkit-scrollbar, ::-webkit-scrollbar {
+          display: none;
+          width: 0;
+          height: 0;
+        }
 
         .svc-root {
           position: relative;
-          width: 100vw;
+          width: 100%;
+          max-width: 100%;
           height: 100svh;
           padding-top: ${NAVBAR_H}px;
           background: #fff;
-          overflow: hidden;
+          overflow-x: hidden;
+          overflow-y: hidden;
           font-family: 'Syne', sans-serif;
           box-sizing: border-box;
         }
@@ -223,6 +234,7 @@ export default function ServicesSticky() {
           position: relative;
           width: 100%;
           height: 100%;
+          overflow-x: hidden;
         }
 
         .half {
@@ -424,6 +436,10 @@ export default function ServicesSticky() {
             padding: 1.5rem 1rem;
             background: #fff;
             font-family: 'Syne', sans-serif;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
           }
 
           .mob-card {
@@ -594,6 +610,6 @@ export default function ServicesSticky() {
           <MobileServiceCard key={service.id} service={service} />
         ))}
       </div>
-    </>
+    </div>
   );
 }
