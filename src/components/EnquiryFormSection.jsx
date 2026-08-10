@@ -95,7 +95,7 @@ export default function EnquiryFormSection() {
             </p>
 
             {[
-              { label: "Phone", value: "+91-8281001410" },
+              { label: "Phone", value: "+91-8281610051\n+91-9778189712" },
               { label: "Email", value: "hello@mindstory.in" },
               { label: "HQ Location", value: "Indel House Building, Kuriachira,\nThrissur 680006, Kerala" },
               { label: "Response Time", value: "Within 1 business day" },

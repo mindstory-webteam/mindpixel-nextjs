@@ -55,14 +55,14 @@ const Landing = () => {
       {/* Floating Action Buttons */}
       <div className="fixed bottom-6 right-6 z-[100] flex flex-col gap-2">
         <a
-          href="tel:+918281001410"
+          href="tel:+918281610051"
           className="w-11 h-11 bg-orange-500 rounded-full flex items-center justify-center text-white shadow-[0_4px_16px_rgba(249,115,22,0.3)] hover:bg-orange-600 transition-all hover:-translate-y-1"
           aria-label="Call Us"
         >
           <FaPhone size={18} />
         </a>
         <a
-          href="https://wa.me/918281001410?text=Hello%20MPX%20Team%2C%20I'm%20looking%20for%20a%20professional%20website%20for%20my%20business.%20Please%20get%20in%20touch%20with%20me."
+          href="https://wa.me/918281610051?text=Hello%20MPX%20Team%2C%20I'm%20looking%20for%20a%20professional%20website%20for%20my%20business.%20Please%20get%20in%20touch%20with%20me."
           target="_blank"
           rel="noopener noreferrer"
           className="w-11 h-11 bg-[#25D366] rounded-full flex items-center justify-center text-white shadow-[0_4px_16px_rgba(37,211,102,0.3)] hover:bg-[#20b958] transition-all hover:-translate-y-1"

@@ -33,7 +33,8 @@ const defaultNavColumns = [
     heading: "Reach Us",
     links: [
       { name: "hello@mindstory.in", path: "mailto:web@mindstory.com" },
-      { name: "+91-8281001410", path: "tel:+918281001410" },
+      { name: "+91-8281610051", path: "tel:+918281610051" },
+      { name: "+91-9778189712", path: "tel:+919778189712" },
       { name: "Indel House Building, Opposite MTHS, Near Gossayikunnu, Kuriachira, Thrissur 680006", path: "#" }
     ],
   },

@@ -200,7 +200,7 @@ export default function CareerSection() {
                       </svg>
                     ),
                     label: "Phone Number",
-                    value: "+91-9074507592",
+                    value: "+91-8281610051  +91-9778189712 ",
                   },
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-3">

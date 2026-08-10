@@ -76,7 +76,7 @@ export default function ChatbotWidget({
         {
           id: (Date.now() + 1).toString(),
           role: 'assistant',
-          content: 'I am currently experiencing high traffic! Please contact our team directly via WhatsApp at +91 8281001410 or email us at hello@mindstory.in.',
+          content: 'I am currently experiencing high traffic! Please contact our team directly via WhatsApp at +91 8281610051 / +91 9778189712 or email us at hello@mindstory.in.',
           timestamp: new Date(),
         },
       ]);
@@ -231,7 +231,7 @@ export default function ChatbotWidget({
 
       {/* Fixed WhatsApp FAB */}
       <a
-        href="https://wa.me/918281001410"
+        href="https://wa.me/918281610051"
         target="_blank"
         rel="noopener noreferrer"
         className="whatsapp-fab-wrap"
