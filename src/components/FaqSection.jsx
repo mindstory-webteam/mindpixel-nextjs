@@ -1,5 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import emailjs from "@emailjs/browser";
 import AnimatedButton from "./AnimatedButton";
+import TurnstileWidget from "./TurnstileWidget";
+
+const SERVICES = [
+  "SEO",
+  "UI / UX Design",
+  "Enterprise Software",
+  "Custom Software",
+  "SaaS Application",
+  "Mobile App Development"
+];
 
 const FAQS = [
   {
@@ -36,17 +47,90 @@ function useWindowWidth() {
 }
 
 export default function FaqSection() {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [status, setStatus] = useState("idle"); // idle | submitting | error
+  const [errorMsg, setErrorMsg] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState(null);
   const [errors, setErrors] = useState({});
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
 
   const width = useWindowWidth();
   const isMobile = width < 768;
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const setField = (key, val) => {
     setForm((f) => ({ ...f, [key]: val }));
     setErrors((e) => ({ ...e, [key]: false }));
+    setErrorMsg("");
+  };
+
+  const validateEmail = (email) => {
+    return email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setErrorMsg("");
+    const newErrors = {};
+
+    if (!form.name.trim()) newErrors.name = true;
+    if (!form.email.trim() || !validateEmail(form.email)) newErrors.email = true;
+    if (!form.subject.trim()) newErrors.subject = true;
+    if (!form.message.trim()) newErrors.message = true;
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      setErrorMsg("Please fill in all required fields with a valid email.");
+      return;
+    }
+
+    if (!captchaToken) {
+      setErrorMsg("Please complete the CAPTCHA verification.");
+      return;
+    }
+
+    setStatus("submitting");
+
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || process.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || process.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || process.env.VITE_EMAILJS_PUBLIC_KEY;
+
+    emailjs
+      .send(
+        serviceId,
+        templateId,
+        {
+          subject: form.subject,
+          from_name: form.name,
+          from_email: form.email,
+          message: form.message,
+          time: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+        },
+        publicKey
+      )
+      .then(() => {
+        setSubmitted(true);
+        setStatus("idle");
+        setForm({ name: "", email: "", subject: "", message: "" });
+        setCaptchaToken(null);
+      })
+      .catch((err) => {
+        console.error("EmailJS submission error:", err);
+        setErrorMsg("Failed to send message. Please try again or email us directly.");
+        setStatus("error");
+      });
   };
 
   const inputStyle = (key) => ({
@@ -84,6 +168,10 @@ export default function FaqSection() {
         .faq-item { padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.15); cursor: pointer; transition: opacity 0.3s; }
         .faq-item:hover { opacity: 1 !important; }
         input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.4); }
+        .custom-dropdown-menu::-webkit-scrollbar { width: 5px; }
+        .custom-dropdown-menu::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
+        .custom-dropdown-menu::-webkit-scrollbar-thumb { background: rgba(255, 184, 106, 0.5); border-radius: 4px; }
+        .custom-dropdown-menu::-webkit-scrollbar-thumb:hover { background: #ffb86a; }
         `}</style>
 
         <div
@@ -126,13 +214,25 @@ export default function FaqSection() {
                     fontFamily: "'Syne', sans-serif",
                     fontWeight: 400,
                     color: "#fff",
+                    marginBottom: "8px",
                   }}
                 >
                   Message Sent
                 </h3>
+                <p
+                  style={{
+                    fontSize: "14px",
+                    color: "rgba(255,255,255,0.7)",
+                    margin: 0,
+                  }}
+                >
+                  Thank you! We've received your brief and will be in touch shortly.
+                </p>
               </div>
             ) : (
-              <div
+              <form
+                onSubmit={handleSubmit}
+                noValidate
                 style={{
                   border: "1px solid rgba(255,255,255,0.15)",
                   borderRadius: "16px",
@@ -143,35 +243,157 @@ export default function FaqSection() {
               >
                 <input
                   style={inputStyle("name")}
-                  placeholder="Your Name"
+                  placeholder="Your Name *"
                   value={form.name}
                   onChange={(e) => setField("name", e.target.value)}
+                  disabled={status === "submitting"}
                 />
                 <input
+                  type="email"
                   style={inputStyle("email")}
-                  placeholder="Your Email"
+                  placeholder="Your Email *"
                   value={form.email}
                   onChange={(e) => setField("email", e.target.value)}
+                  disabled={status === "submitting"}
                 />
+                {/* Custom React Service / Subject Dropdown */}
+                <div ref={dropdownRef} style={{ position: "relative", marginBottom: "20px" }}>
+                  <div
+                    onClick={() => status !== "submitting" && setIsDropdownOpen((prev) => !prev)}
+                    style={{
+                      ...inputStyle("subject"),
+                      cursor: status === "submitting" ? "not-allowed" : "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      userSelect: "none",
+                      color: form.subject ? "#fff" : "rgba(255,255,255,0.4)",
+                      marginBottom: 0,
+                    }}
+                  >
+                    <span>{form.subject || "Select Service / Subject *"}</span>
+                    <span
+                      style={{
+                        transform: isDropdownOpen ? "rotate(180deg)" : "rotate(0deg)",
+                        transition: "transform 0.3s ease",
+                        fontSize: "10px",
+                        color: "rgba(255,255,255,0.6)",
+                      }}
+                    >
+                      ▼
+                    </span>
+                  </div>
+
+                  {isDropdownOpen && (
+                    <div
+                      className="custom-dropdown-menu"
+                      data-lenis-prevent="true"
+                      data-lenis-prevent-touch="true"
+                      style={{
+                        position: "absolute",
+                        top: "100%",
+                        left: 0,
+                        right: 0,
+                        zIndex: 50,
+                        marginTop: "4px",
+                        background: "#141414",
+                        border: "1px solid rgba(255,255,255,0.2)",
+                        borderRadius: "12px",
+                        maxHeight: "175px",
+                        overflowY: "auto",
+                        overscrollBehavior: "contain",
+                        WebkitOverflowScrolling: "touch",
+                        boxShadow: "0 12px 36px rgba(0,0,0,0.6)",
+                        backdropFilter: "blur(12px)",
+                      }}
+                    >
+                      {SERVICES.map((service) => (
+                        <div
+                          key={service}
+                          onClick={() => {
+                            setField("subject", service);
+                            setIsDropdownOpen(false);
+                          }}
+                          style={{
+                            padding: "12px 16px",
+                            fontSize: "14px",
+                            fontFamily: "'Syne', sans-serif",
+                            color: form.subject === service ? "#ffb86a" : "rgba(255,255,255,0.85)",
+                            background: form.subject === service ? "rgba(255,184,106,0.12)" : "transparent",
+                            cursor: "pointer",
+                            transition: "background 0.2s, color 0.2s",
+                          }}
+                          onMouseEnter={(e) => {
+                            if (form.subject !== service) {
+                              e.currentTarget.style.background = "rgba(255,255,255,0.08)";
+                              e.currentTarget.style.color = "#fff";
+                            }
+                          }}
+                          onMouseLeave={(e) => {
+                            if (form.subject !== service) {
+                              e.currentTarget.style.background = "transparent";
+                              e.currentTarget.style.color = "rgba(255,255,255,0.85)";
+                            }
+                          }}
+                        >
+                          {service}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
                 <textarea
                   style={{
                     ...inputStyle("message"),
                     minHeight: "100px",
                     resize: "vertical",
                   }}
-                  placeholder="Project goals"
+                  placeholder="Project goals *"
                   value={form.message}
                   onChange={(e) => setField("message", e.target.value)}
+                  disabled={status === "submitting"}
                 />
 
+                {/* Cloudflare Turnstile CAPTCHA */}
+                <div style={{ margin: "12px 0 16px", display: "flex", justifyContent: "center" }}>
+                  <TurnstileWidget
+                    theme="dark"
+                    onVerify={(token) => {
+                      setCaptchaToken(token);
+                      setErrorMsg("");
+                    }}
+                    onExpire={() => setCaptchaToken(null)}
+                    onError={() => setCaptchaToken(null)}
+                  />
+                </div>
+
+                {errorMsg && (
+                  <div
+                    style={{
+                      padding: "10px 14px",
+                      marginBottom: "16px",
+                      borderRadius: "8px",
+                      background: "rgba(248, 113, 113, 0.15)",
+                      border: "1px solid rgba(248, 113, 113, 0.3)",
+                      color: "#f87171",
+                      fontSize: "13px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {errorMsg}
+                  </div>
+                )}
+
                 <AnimatedButton
+                  type="submit"
+                  disabled={status === "submitting"}
                   bgColor="#ffb86a"
                   textColor="#111"
                   hoverBgColor="#1a1a1a"
                   hoverTextColor="#fff"
                   style={{ width: "100%", padding: "16px" }}
                 >
-                  Submit Inquiry
+                  {status === "submitting" ? "Sending..." : "Submit Inquiry"}
                 </AnimatedButton>
 
                 <div
@@ -197,7 +419,7 @@ export default function FaqSection() {
                     </strong>
                   </p>
                 </div>
-              </div>
+              </form>
             )}
           </div>
 
