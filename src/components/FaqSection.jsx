@@ -297,7 +297,7 @@ export default function FaqSection() {
                       marginBottom: 0,
                     }}
                   >
-                    <span>{form.subject || "Select Service / Subject *"}</span>
+                    <span>{form.subject || "Select Service *"}</span>
                     <span
                       style={{
                         transform: isDropdownOpen ? "rotate(180deg)" : "rotate(0deg)",
