@@ -218,26 +218,37 @@ export default function FaqSection() {
             {submitted ? (
               <div
                 style={{
-                  padding: "48px 32px",
+                  minHeight: "380px",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: isMobile ? "32px 20px" : "48px 32px",
                   border: "1px solid rgba(255,255,255,0.15)",
-                  borderRadius: "12px",
+                  borderRadius: "16px",
+                  background: "rgba(255,255,255,0.03)",
+                  backdropFilter: "blur(8px)",
                   textAlign: "center",
                 }}
               >
                 <h3
                   style={{
                     fontFamily: "'Syne', sans-serif",
-                    fontWeight: 400,
+                    fontSize: "24px",
+                    fontWeight: 500,
                     color: "#fff",
-                    marginBottom: "8px",
+                    margin: "0 0 12px",
                   }}
                 >
                   Message Sent
                 </h3>
                 <p
                   style={{
-                    fontSize: "14px",
+                    fontFamily: "'Syne', sans-serif",
+                    fontSize: "15px",
                     color: "rgba(255,255,255,0.7)",
+                    lineHeight: 1.6,
+                    maxWidth: "340px",
                     margin: 0,
                   }}
                 >
