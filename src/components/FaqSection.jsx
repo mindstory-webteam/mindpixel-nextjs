@@ -168,10 +168,25 @@ export default function FaqSection() {
         .faq-item { padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.15); cursor: pointer; transition: opacity 0.3s; }
         .faq-item:hover { opacity: 1 !important; }
         input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.4); }
-        .custom-dropdown-menu::-webkit-scrollbar { width: 5px; }
-        .custom-dropdown-menu::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
-        .custom-dropdown-menu::-webkit-scrollbar-thumb { background: rgba(255, 184, 106, 0.5); border-radius: 4px; }
-        .custom-dropdown-menu::-webkit-scrollbar-thumb:hover { background: #ffb86a; }
+        .custom-dropdown-menu {
+          scrollbar-width: thin;
+          scrollbar-color: #ffb86a rgba(255, 255, 255, 0.08);
+        }
+        .custom-dropdown-menu::-webkit-scrollbar {
+          width: 6px;
+          display: block;
+        }
+        .custom-dropdown-menu::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.08);
+          border-radius: 4px;
+        }
+        .custom-dropdown-menu::-webkit-scrollbar-thumb {
+          background: #ffb86a;
+          border-radius: 4px;
+        }
+        .custom-dropdown-menu::-webkit-scrollbar-thumb:hover {
+          background: #ffa843;
+        }
         `}</style>
 
         <div
@@ -300,7 +315,7 @@ export default function FaqSection() {
                         border: "1px solid rgba(255,255,255,0.2)",
                         borderRadius: "12px",
                         maxHeight: "175px",
-                        overflowY: "auto",
+                        overflowY: "scroll",
                         overscrollBehavior: "contain",
                         WebkitOverflowScrolling: "touch",
                         boxShadow: "0 12px 36px rgba(0,0,0,0.6)",
