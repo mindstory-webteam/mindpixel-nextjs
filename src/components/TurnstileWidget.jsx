@@ -8,7 +8,7 @@ const TURNSTILE_SCRIPT_URL = "https://challenges.cloudflare.com/turnstile/v0/api
  * SiteKey defaults to Cloudflare's official testing key (1x00000000000000000000AA) which always passes in local dev.
  */
 export default function TurnstileWidget({
-  siteKey = process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY || "1x00000000000000000000AA",
+  siteKey = process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY || "0x4AAAAAAEN5RWpMofin0t5v",
   onVerify,
   onExpire,
   onError,
