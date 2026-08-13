@@ -92,9 +92,9 @@ const Navbar = () => {
       `}</style>
 
       {/* ══ DESKTOP & TABLET (md+) ══ */}
-      <div className="navbar-syne hidden md:flex fixed top-0 left-0 right-0 z-50 justify-center items-center w-full pointer-events-none px-3 sm:px-5 md:px-6 lg:px-12 xl:px-16">
+      <div className="navbar-syne hidden md:flex fixed top-0 left-0 right-0 z-50 justify-center items-center w-full pointer-events-none px-3 sm:px-5 md:px-6 lg:px-[68px] xl:px-[72px]">
         <nav
-          className="pointer-events-auto relative flex flex-row items-center justify-between w-full max-w-[1340px]"
+          className="pointer-events-auto relative flex flex-row items-center justify-between w-full max-w-[1340px] lg:max-w-none"
           style={{
             paddingLeft: '22px',
             paddingRight: '22px',

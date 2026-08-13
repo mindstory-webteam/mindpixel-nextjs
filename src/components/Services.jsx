@@ -132,7 +132,7 @@ export default function Services() {
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
-      mm.add("(min-width: 1367px)", () => {
+      mm.add("(min-width: 1280px)", () => {
         const cards = cardsRef.current.filter(Boolean);
         if (!cards.length) return;
 
@@ -155,6 +155,8 @@ export default function Services() {
         for (let i = 1; i < cards.length; i++) {
           tl.to(cards[i], { y: 0, ease: "none", duration: 1 }, i - 1);
         }
+        // Hold duration after the last card reaches position before scrolling resumes
+        tl.to({}, { duration: 0.1 });
       });
 
       const timer = setTimeout(() => {
@@ -289,7 +291,7 @@ export default function Services() {
 
         /* ─ scroll track: N×100vh gives scroll distance for all N cards ─ */
         .svc-track {
-          height: ${N * 100}vh;
+          height: ${(N + 1.2) * 100}vh;
           position: relative;
           margin-top: 0px;
           margin-bottom: 60px;
@@ -480,16 +482,16 @@ export default function Services() {
         .svc-tag:hover { opacity: 1; }
 
         /* mobile hidden on desktop */
-        @media (min-width: 1367px) {
+        @media (min-width: 1280px) {
           .svc-mobile { display: none; }
         }
 
         /* ─ responsive desktop ─ */
-        @media (min-width: 1367px) {
+        @media (min-width: 1280px) and (max-width: 1400px) {
           .svc-slot { inset: 14px 28px; }
           .svc-card { padding: 1.6rem 2rem; }
           .svc-grid { gap: 1.6rem; grid-template-columns: 0.85fr 1fr; }
-          .svc-img-wrap { min-height: 380px; }
+          .svc-img-wrap { min-height: 340px; }
           .svc-body { gap: 0.85rem; }
           .svc-desc { font-size: 15px; line-height: 1.55; }
           .svc-lbl { font-size: 17px; }
@@ -497,8 +499,8 @@ export default function Services() {
           .svc-points { gap: 0.5rem; }
         }
 
-        /* ─ mobile & tablet: plain stacked list (iPad Mini, Air, Pro & Mobile) ─ */
-        @media (max-width: 1366px) {
+        /* ─ mobile & tablet: plain stacked list (iPad Mini, Air & Mobile) ─ */
+        @media (max-width: 1279px) {
           .svc-track { display: none; }
           .svc-mobile {
             display: flex;
@@ -526,7 +528,7 @@ export default function Services() {
           .svc-mobile-card .svc-img-tag { font-size: 1rem; }
         }
 
-        @media (min-width: 640px) and (max-width: 1366px) {
+        @media (min-width: 640px) and (max-width: 1279px) {
           .svc-mobile {
             width: calc(100% - 48px);
             margin: 30px auto 50px auto;
@@ -536,7 +538,7 @@ export default function Services() {
           }
         }
 
-        @media (min-width: 1024px) and (max-width: 1366px) {
+        @media (min-width: 1024px) and (max-width: 1279px) {
           .svc-mobile {
             width: calc(100% - 120px);
             margin: 40px auto 60px auto;

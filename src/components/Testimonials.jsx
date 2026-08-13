@@ -3,28 +3,28 @@ import React, { useRef, useEffect, useState } from 'react'
 import Core from 'smooothy'
 
 const slidesData = [
-  { text: "MindPixel delivered exactly what we needed for our business website. Their team was professional, responsive, and completed the project on time with excellent design quality.", username: "Rahul, Kochi", color: '#e6e7e8', stars: 4.5 },
-  { text: "We approached MindPixel for web development and branding support. The entire process was smooth, and the final output exceeded our expectations.", username: "Priya S, Bengaluru", color: '#e6e7e8', stars: 3.5 },
-  { text: "Highly satisfied with the website and support provided by MindPixel. Their attention to detail and technical expertise really helped our business grow online.", username: "Arjun N, Chennai", color: '#e6e7e8', stars: 3 },
-  { text: "MindPixel created a modern and user-friendly website for our company. The team understood our requirements clearly and delivered great results.", username: "Sneha K, Mumbai", color: '#e6e7e8', stars: 4.5 },
-  { text: "Excellent service and timely delivery. MindPixel helped us build a strong online presence with a clean and professional website.", username: "Vishnu R, Hyderabad", color: '#e6e7e8', stars: 4 },
-  { text: "Working with MindPixel was a great experience. Their team handled our website project professionally and provided continuous support throughout the process.", username: "Anjali Krishnan, Kochi", color: '#e6e7e8', stars: 3.5 },
-  { text: "MindPixel delivered a clean, fast, and modern website that perfectly matched our brand vision. Highly recommended for web and software solutions.", username: "Rohit V, Delhi", color: '#e6e7e8', stars: 4.5 },
-  { text: "The team at MindPixel understood our requirements quickly and transformed our ideas into a professional digital platform. Very happy with the outcome.", username: "Meera I, Chennai", color: '#e6e7e8', stars: 5 },
-  { text: "From design to development, MindPixel managed everything smoothly. Their communication and commitment to quality were impressive.", username: "Karthik R, Hyderabad", color: '#e6e7e8', stars: 4.5 },
-  { text: "We partnered with MindPixel for our company website and branding. The final result was professional, responsive, and delivered on schedule.", username: "Neha J, Pune", color: '#e6e7e8', stars: 3.5 },
+  { id: 1, text: "MindPixel delivered exactly what we needed for our business website. Their team was professional, responsive, and completed the project on time with excellent design quality.", username: "Rahul, Kochi", color: '#fafafa', stars: 4.5 },
+  { id: 2, text: "We approached MindPixel for web development and branding support. The entire process was smooth, and the final output exceeded our expectations.", username: "Priya S, Bengaluru", color: '#fafafa', stars: 4 },
+  { id: 3, text: "Highly satisfied with the website and support provided by MindPixel. Their attention to detail and technical expertise really helped our business grow online.", username: "Arjun N, Chennai", color: '#fafafa', stars: 5 },
+  { id: 4, text: "MindPixel created a modern and user-friendly website for our company. The team understood our requirements clearly and delivered great results.", username: "Sneha K, Mumbai", color: '#fafafa', stars: 4.5 },
+  { id: 5, text: "Excellent service and timely delivery. MindPixel helped us build a strong online presence with a clean and professional website.", username: "Vishnu R, Hyderabad", color: '#fafafa', stars: 4 },
+  { id: 6, text: "Working with MindPixel was a great experience. Their team handled our website project professionally and provided continuous support throughout the process.", username: "Anjali Krishnan, Kochi", color: '#fafafa', stars: 4.5 },
+  { id: 7, text: "MindPixel delivered a clean, fast, and modern website that perfectly matched our brand vision. Highly recommended for web and software solutions.", username: "Rohit V, Delhi", color: '#fafafa', stars: 5 },
+  { id: 8, text: "The team at MindPixel understood our requirements quickly and transformed our ideas into a professional digital platform. Very happy with the outcome.", username: "Meera I, Chennai", color: '#fafafa', stars: 5 },
+  { id: 9, text: "From design to development, MindPixel managed everything smoothly. Their communication and commitment to quality were impressive.", username: "Karthik R, Hyderabad", color: '#fafafa', stars: 4.5 },
+  { id: 10, text: "We partnered with MindPixel for our company website and branding. The final result was professional, responsive, and delivered on schedule.", username: "Neha J, Pune", color: '#fafafa', stars: 4 },
 ]
 
 const AUTO_SPEED = 0.6
 const RESUME_DELAY = 1500
 
 const StarRating = ({ count }) => (
-  <div className="flex gap-1 mt-2 ml-11">
+  <div className="flex gap-1 items-center mt-1">
     {[1, 2, 3, 4, 5].map((star) => (
       <svg
         key={star}
         viewBox="0 0 24 24"
-        className="w-4 h-4"
+        className="w-3.5 h-3.5"
         fill={star <= count ? '#f5a623' : 'none'}
         stroke={star <= count ? '#f5a623' : 'rgba(0,0,0,0.25)'}
         strokeWidth="2"
@@ -35,32 +35,67 @@ const StarRating = ({ count }) => (
   </div>
 )
 
+/* ReviewCard layout from EnquiryReview.jsx */
+function ReviewCardContent({ slide }) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const textRef = useRef(null);
+  const [shouldShowReadMore, setShouldShowReadMore] = useState(false);
+
+  useEffect(() => {
+    const el = textRef.current;
+    if (!el) return;
+    const isOverflowing = el.scrollHeight > el.clientHeight;
+    setShouldShowReadMore(isOverflowing);
+  }, [slide.text]);
+
+  const namePart = slide.username.split(',')[0].trim();
+  const initials = namePart.split(' ').slice(0, 2).map((n) => n[0]).join('');
+
+  return (
+    <>
+      <div className="tst-quote-icon">“</div>
+
+      <div className="tst-bottom">
+        <p ref={textRef} className={`tst-desc ${isExpanded ? 'expanded' : 'collapsed'}`}>
+          "{slide.text}"
+        </p>
+        {shouldShowReadMore && (
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsExpanded(!isExpanded);
+            }}
+            className="tst-readmore-btn"
+          >
+            {isExpanded ? 'Read less' : 'Read more'}
+          </button>
+        )}
+      </div>
+
+      <div className="tst-top-row">
+        <div className="tst-img-wrap">
+          <div className="tst-avatar-circle">{initials}</div>
+        </div>
+        <div className="flex flex-col">
+          <span className="tst-name">{slide.username}</span>
+          <StarRating count={slide.stars} />
+        </div>
+      </div>
+    </>
+  );
+}
+
 /* Mobile/Tablet card */
 const SlideCard = ({ slide, index }) => (
   <div
-    className="shrink-0 w-[82vw] sm:w-[50vw] md:w-[42vw] lg:w-[32vw] max-w-[420px] rounded-3xl flex flex-col justify-between p-6 sm:p-7 snap-center"
-    style={{ backgroundColor: slide.color, boxShadow: '0 4px 20px rgba(0,0,0,0.10)' }}
+    className="shrink-0 w-[82vw] sm:w-[50vw] md:w-[42vw] lg:w-[32vw] max-w-[420px] rounded-[24px] flex flex-col justify-between p-6 sm:p-7 snap-center relative overflow-hidden"
+    style={{ backgroundColor: slide.color || '#fafafa', border: '1px solid rgba(0,0,0,0.06)', boxShadow: '0 6px 24px rgba(0,0,0,0.05)' }}
   >
-    <p className="text-[15px] sm:text-[17px] md:text-[18px] font-medium leading-relaxed text-black" style={{ fontFamily: "'Syne', sans-serif" }}>
-      "{slide.text}"
-    </p>
-    <div className="mt-4">
-      <div className="flex items-center gap-3">
-        <img
-          src={`${img.userimg}`}
-          alt={slide.username}
-          className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover shrink-0"
-        />
-        <p className="text-[14px] sm:text-[15px] font-bold tracking-tight text-black/60" style={{ fontFamily: "'Syne', sans-serif" }}>
-          {slide.username}
-        </p>
-      </div>
-      <StarRating count={slide.stars} />
-    </div>
+    <ReviewCardContent slide={slide} />
   </div>
 )
 
-/* Mobile & Tablet swiper with auto-scroll */
+/* Mobile & Tablet swiper with container-only auto-scroll */
 const MobileSwiper = () => {
   const trackRef = useRef(null)
   const [current, setCurrent] = useState(0)
@@ -84,7 +119,6 @@ const MobileSwiper = () => {
     scrollToChild(clamped)
   }
 
-  // Auto scroll timer for mobile & tablet screens (moves cards without pulling window scroll)
   useEffect(() => {
     const timer = setInterval(() => {
       if (!isInteracting.current) {
@@ -168,6 +202,7 @@ const MobileSwiper = () => {
   )
 }
 
+/* GSAP Desktop Slider (Stacked cards with rotation & lerp animation) */
 const DesktopSlider = () => {
   const wrapperRef = useRef(null)
 
@@ -196,7 +231,7 @@ const DesktopSlider = () => {
         slides.forEach((slide, i) => {
           const slideWidth = slide.offsetWidth
           const slideLeft = slide.offsetLeft + instance.current
-          const bgColor = slidesData[i].color
+          const bgColor = slidesData[i].color || '#fafafa'
           const isLast = i === slidesData.length - 1
 
           if (slideLeft < 0 && !isLast) {
@@ -211,7 +246,7 @@ const DesktopSlider = () => {
           } else {
             slide.style.cssText = `
               background-color: ${bgColor};
-              box-shadow: 0 4px 20px rgba(0,0,0,0.10);
+              box-shadow: 0 6px 24px rgba(0,0,0,0.06);
               transform: translateX(${instance.current}px);
               z-index: ${i + 1};
             `
@@ -284,34 +319,10 @@ const DesktopSlider = () => {
           {slidesData.map((slide, index) => (
             <div
               key={index}
-              className={`shrink-0 pointer-events-none w-[22vw] h-[28vw] rounded-[1.5vw] flex flex-col justify-between p-[1.8vw] ${index < slidesData.length - 1 ? 'mr-[1.5vw]' : ''}`}
-              style={{ backgroundColor: slide.color, boxShadow: '0 4px 20px rgba(0,0,0,0.30)' }}
+              className={`shrink-0 w-[24vw] h-[28vw] rounded-[24px] flex flex-col justify-between p-[1.8vw] relative overflow-hidden border border-black/5 ${index < slidesData.length - 1 ? 'mr-[1.5vw]' : ''}`}
+              style={{ backgroundColor: slide.color || '#fafafa', boxShadow: '0 6px 24px rgba(0,0,0,0.06)' }}
             >
-              <p className="text-[1.4vw] font-medium leading-tight text-black" style={{ fontFamily: "'Syne', sans-serif" }}>
-                "{slide.text}"
-              </p>
-              <div>
-                <div className="flex items-center gap-[0.6vw]">
-                  <img
-                    src={`${img.userimg}`}
-                    alt={slide.username}
-                    className="w-[2.2vw] h-[2.2vw] rounded-full object-cover shrink-0"
-                  />
-                  <p className="text-[1.1vw] font-bold tracking-tight text-black/50" style={{ fontFamily: "'Syne', sans-serif" }}>
-                    {slide.username}
-                  </p>
-                </div>
-                <div className="flex gap-[0.2vw] mt-[0.4vw] ml-11">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <svg key={star} viewBox="0 0 24 24" className="w-[1.1vw] h-[1.1vw]"
-                      fill={star <= slide.stars ? '#f5a623' : 'none'}
-                      stroke={star <= slide.stars ? '#f5a623' : 'rgba(0,0,0,0.25)'}
-                      strokeWidth="2">
-                      <polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26" />
-                    </svg>
-                  ))}
-                </div>
-              </div>
+              <ReviewCardContent slide={slide} />
             </div>
           ))}
         </div>
@@ -333,7 +344,103 @@ const Testimonials = () => {
     return () => mq.removeEventListener('change', handler)
   }, [])
 
-  return isDesktop ? <DesktopSlider /> : <MobileSwiper />
+  return (
+    <>
+      <style>{`
+        .tst-quote-icon {
+          font-family: serif;
+          font-size: 80px;
+          line-height: 1;
+          color: #111;
+          position: absolute;
+          top: -10px;
+          right: 18px;
+          opacity: 0.05;
+          pointer-events: none;
+        }
+        .tst-top-row {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          margin-top: auto;
+          padding-top: 16px;
+        }
+        .tst-name {
+          font-family: 'Syne', sans-serif;
+          font-size: 16px;
+          font-weight: 700;
+          color: #111;
+          letter-spacing: 0.01em;
+        }
+        .tst-img-wrap {
+          width: 44px;
+          height: 44px;
+          border-radius: 50%;
+          overflow: hidden;
+          position: relative;
+          flex-shrink: 0;
+          background: #0E100F;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        .tst-avatar-circle {
+          font-family: 'Syne', sans-serif;
+          font-size: 14px;
+          font-weight: 600;
+          color: #fff;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+        .tst-bottom {
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+          position: relative;
+          z-index: 1;
+        }
+        .tst-desc {
+          font-family: 'Syne', sans-serif;
+          font-size: 16px;
+          color: #222;
+          line-height: 1.65;
+          margin: 0;
+        }
+        @media (min-width: 640px) {
+          .tst-desc {
+            font-size: 17px;
+          }
+        }
+        .tst-desc.collapsed {
+          display: -webkit-box;
+          -webkit-line-clamp: 5;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .tst-desc.expanded {
+          display: block;
+        }
+        .tst-readmore-btn {
+          align-self: flex-start;
+          background: transparent;
+          border: none;
+          color: #FF8709;
+          font-size: 12px;
+          font-weight: 600;
+          cursor: pointer;
+          margin-top: 8px;
+          padding: 0;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+        }
+        .tst-readmore-btn:hover {
+          text-decoration: underline;
+        }
+      `}</style>
+      {isDesktop ? <DesktopSlider /> : <MobileSwiper />}
+    </>
+  )
 }
 
 export default Testimonials

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaFacebookF, FaYoutube, FaInstagram } from 'react-icons/fa6';
+import { FaFacebookF, FaYoutube, FaInstagram, FaWhatsapp } from 'react-icons/fa6';
 import emailjs from '@emailjs/browser';
 import AnimatedButton from './AnimatedButton';
 import { Map, MapControls, MapMarker, MarkerContent, MarkerTooltip } from "@/components/ui/map";
@@ -37,7 +37,36 @@ const socialLinks = [
   { icon: <FaYoutube />, url: '#', label: 'YouTube' },
 ];
 
+const SERVICES = [
+  "Web Development & UI/UX",
+  "Growth Marketing & SEO",
+  "Brand Strategy & Identity",
+  "App & Software Solutions",
+  "Other Inquiry"
+];
+
 const ContactSection = () => {
+  const [waForm, setWaForm] = useState({ name: '', phone: '', service: '', message: '' });
+  const [waError, setWaError] = useState('');
+
+  const handleWhatsAppSend = (e) => {
+    e.preventDefault();
+    if (!waForm.name.trim() || !waForm.phone.trim() || !waForm.message.trim()) {
+      setWaError('Please fill in your name, phone number, and message.');
+      return;
+    }
+    setWaError('');
+
+    const text = `*New Contact Request from MindPixel Website*\n\n` +
+      `👤 *Name:* ${waForm.name.trim()}\n` +
+      `📞 *Phone:* ${waForm.phone.trim()}\n` +
+      `💼 *Service:* ${waForm.service || 'General Inquiry'}\n` +
+      `💬 *Message:* ${waForm.message.trim()}`;
+
+    const url = `https://wa.me/918281610051?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
+  };
+
   return (
     <section className="contact-container">
       <style>{`
@@ -200,7 +229,7 @@ const ContactSection = () => {
 
         .map-section { margin-bottom: 0px; }
 
-        .map-header { margin-bottom: 50px; }
+        .map-header { margin-bottom: 30px; }
 
         .map-header h2 {
           font-size: 2rem;
@@ -215,9 +244,97 @@ const ContactSection = () => {
           max-width: 600px;
         }
 
+        .map-section-grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 28px;
+          align-items: stretch;
+        }
+        @media (min-width: 1024px) {
+          .map-section-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 36px;
+          }
+        }
+
+        .wa-form-card {
+          background: #fafafa;
+          border-radius: 24px;
+          padding: 36px 32px;
+          border: 1px solid #e8e8e8;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          box-shadow: 0 6px 24px rgba(0, 0, 0, 0.04);
+        }
+
+        .wa-form-title {
+          font-size: 1.4rem;
+          font-weight: 700;
+          color: #111;
+          margin-bottom: 6px;
+        }
+
+        .wa-form-sub {
+          font-size: 14px;
+          color: #666;
+          margin-bottom: 24px;
+          line-height: 1.5;
+        }
+
+        .wa-form-input {
+          width: 100%;
+          font-family: 'Syne', sans-serif;
+          font-size: 15px;
+          padding: 12px 0;
+          background: transparent;
+          border: none;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.18);
+          outline: none;
+          color: #111;
+          margin-bottom: 18px;
+          box-sizing: border-box;
+          transition: border-color 0.3s;
+          border-radius: 0;
+        }
+
+        .wa-form-input:focus {
+          border-bottom-color: #FF8709;
+        }
+
+        .wa-form-select {
+          cursor: pointer;
+        }
+
+        .wa-submit-btn {
+          width: 100%;
+          background: #25D366;
+          color: #fff;
+          font-family: 'Syne', sans-serif;
+          font-size: 15px;
+          font-weight: 700;
+          padding: 14px 24px;
+          border-radius: 50px;
+          border: none;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+          box-shadow: none;
+          margin-top: 8px;
+        }
+
+        .wa-submit-btn:hover {
+          background: #25D366;
+          transform: none;
+          box-shadow: none;
+        }
+
         .map-wrap {
           width: 100%;
-          height: 480px;
+          height: 100%;
+          min-height: 480px;
           border-radius: 24px;
           overflow: hidden;
           border: 1px solid #e8e8e8;
@@ -245,7 +362,7 @@ const ContactSection = () => {
           .contact-container { padding: 100px 20px 0px 20px; }
           .locations-grid { grid-template-columns: 1fr; }
           .contact-methods-grid { grid-template-columns: 1fr; }
-          .map-wrap { height: 320px; }
+          .map-wrap { height: 360px; min-height: 360px; }
         }
       `}</style>
 
@@ -269,75 +386,141 @@ const ContactSection = () => {
         </div>
       </div>
 
-      {/* MAP */}
+      {/* MAP & WHATSAPP FORM SECTION (HALF & HALF) */}
       <div className="map-section">
         <div className="map-header">
-          <h2>Our Locations on the Map</h2>
-          <p>All three of our offices.</p>
+          <h2>Get in Touch & Our Locations</h2>
+          <p>Send us a direct WhatsApp message or explore our office locations on the map.</p>
         </div>
-        <div className="map-wrap">
-          <Map
-            center={[76.22321, 10.507415]}
-            zoom={7}
-            scrollZoom={false}
-            styles={{
-              light: {
-                version: 8,
-                sources: {
-                  osm: {
-                    type: "raster",
-                    tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
-                    tileSize: 256,
-                    attribution: "",
-                    maxzoom: 19,
+
+        <div className="map-section-grid">
+          {/* LEFT HALF: WHATSAPP FORM */}
+          <form className="wa-form-card" onSubmit={handleWhatsAppSend}>
+            <div>
+              <h3 className="wa-form-title">Send a Direct Message</h3>
+              <p className="wa-form-sub">
+                Fill out the brief below and connect directly with our expert team on WhatsApp.
+              </p>
+
+              {waError && (
+                <div style={{ color: '#e11d48', fontSize: '13px', marginBottom: '14px', fontWeight: 600 }}>
+                  {waError}
+                </div>
+              )}
+
+              <input
+                type="text"
+                className="wa-form-input"
+                placeholder="Your Name *"
+                value={waForm.name}
+                onChange={(e) => setWaForm({ ...waForm, name: e.target.value })}
+              />
+
+              <input
+                type="tel"
+                className="wa-form-input"
+                placeholder="Phone Number *"
+                value={waForm.phone}
+                onChange={(e) => setWaForm({ ...waForm, phone: e.target.value })}
+              />
+
+              <select
+                className="wa-form-input wa-form-select"
+                value={waForm.service}
+                onChange={(e) => setWaForm({ ...waForm, service: e.target.value })}
+                style={{ color: waForm.service ? '#111' : 'rgba(0,0,0,0.45)' }}
+              >
+                <option value="" disabled>Select Service *</option>
+                {SERVICES.map((s) => (
+                  <option key={s} value={s} style={{ color: '#111' }}>{s}</option>
+                ))}
+              </select>
+
+              <textarea
+                className="wa-form-input"
+                rows={3}
+                placeholder="Your Message / Brief *"
+                value={waForm.message}
+                onChange={(e) => setWaForm({ ...waForm, message: e.target.value })}
+                style={{ resize: 'none' }}
+              />
+            </div>
+
+            <AnimatedButton
+              type="submit"
+              bgColor="#FF8709"
+              textColor="#0E100F"
+              hoverBgColor="#0E100F"
+              hoverTextColor="#ffffff"
+              style={{ width: "100%", padding: "14px 16px", marginTop: "12px" }}
+            >
+              Submit Inquiry
+            </AnimatedButton>
+          </form>
+
+          {/* RIGHT HALF: INTERACTIVE MAP */}
+          <div className="map-wrap">
+            <Map
+              center={[76.22321, 10.507415]}
+              zoom={7}
+              scrollZoom={false}
+              styles={{
+                light: {
+                  version: 8,
+                  sources: {
+                    osm: {
+                      type: "raster",
+                      tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+                      tileSize: 256,
+                      attribution: "",
+                      maxzoom: 19,
+                    },
                   },
+                  layers: [{ id: "osm-tiles", type: "raster", source: "osm", minzoom: 0, maxzoom: 19 }],
                 },
-                layers: [{ id: "osm-tiles", type: "raster", source: "osm", minzoom: 0, maxzoom: 19 }],
-              },
-              dark: {
-                version: 8,
-                sources: {
-                  osm: {
-                    type: "raster",
-                    tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
-                    tileSize: 256,
-                    attribution: "",
-                    maxzoom: 19,
+                dark: {
+                  version: 8,
+                  sources: {
+                    osm: {
+                      type: "raster",
+                      tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
+                      tileSize: 256,
+                      attribution: "",
+                      maxzoom: 19,
+                    },
                   },
+                  layers: [{ id: "osm-tiles", type: "raster", source: "osm", minzoom: 0, maxzoom: 19 }],
                 },
-                layers: [{ id: "osm-tiles", type: "raster", source: "osm", minzoom: 0, maxzoom: 19 }],
-              },
-            }}
-          >
-            {locations.map((loc, i) => (
-              <MapMarker key={i} longitude={loc.coords[0]} latitude={loc.coords[1]}>
-                <MarkerContent />
-                <MarkerTooltip closeOnClick={false}>
-                  <div style={{
-                    fontFamily: "'Syne', sans-serif",
-                    width: '240px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: '8px',
-                    padding: '20px',
-                  }}>
-                    <span style={{ fontSize: '10px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#95257b', fontWeight: 700 }}>
-                      {loc.place}
-                    </span>
-                    <div style={{ height: '1px', background: '#eee', margin: '4px 0' }} />
-                    <p style={{ fontSize: '12px', color: '#666', lineHeight: 1.6, margin: 0 }}>
-                      {loc.address}
-                    </p>
-                  </div>
-                </MarkerTooltip>
-              </MapMarker>
-            ))}
-            <MapControls />
-          </Map>
+              }}
+            >
+              {locations.map((loc, i) => (
+                <MapMarker key={i} longitude={loc.coords[0]} latitude={loc.coords[1]}>
+                  <MarkerContent />
+                  <MarkerTooltip closeOnClick={false}>
+                    <div style={{
+                      fontFamily: "'Syne', sans-serif",
+                      width: '240px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '8px',
+                      padding: '20px',
+                    }}>
+                      <span style={{ fontSize: '10px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#95257b', fontWeight: 700 }}>
+                        {loc.place}
+                      </span>
+                      <div style={{ height: '1px', background: '#eee', margin: '4px 0' }} />
+                      <p style={{ fontSize: '12px', color: '#666', lineHeight: 1.6, margin: 0 }}>
+                        {loc.address}
+                      </p>
+                    </div>
+                  </MarkerTooltip>
+                </MapMarker>
+              ))}
+              <MapControls />
+            </Map>
+          </div>
         </div>
       </div>
-
-
 
     </section>
   );
