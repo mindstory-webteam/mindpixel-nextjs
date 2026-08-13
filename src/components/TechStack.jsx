@@ -196,10 +196,9 @@ export default function TechStack() {
           }}
         >
           <h2
-            className="text-center leading-tight mb-10 relative z-10 max-w-4xl"
+            className="text-center leading-tight mb-10 relative z-10 max-w-4xl px-4 text-xl sm:text-2xl md:text-[35px]"
             style={{
               fontFamily: "'Syne', sans-serif",
-              fontSize: "35px",
               fontWeight: 700,
               color: "#ffffff",
             }}
