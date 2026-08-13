@@ -180,8 +180,18 @@ const Navbar = () => {
             menuOpen ? 'translate-x-0' : 'translate-x-full'
           } flex flex-col px-6 pb-6 overflow-y-auto`}
         >
-          {/* Close button inside sidebar */}
-          <div className="flex justify-end pt-5 pb-4">
+          {/* Logo (left) + Close button (right) inside sidebar */}
+          <div className="flex items-center justify-between pt-5 pb-4">
+            <img
+              src={img.myndpixel}
+              alt="Logo"
+              className="h-7 w-auto cursor-pointer"
+              onClick={() => {
+                setMenuOpen(false);
+                navigateTo('/');
+              }}
+              draggable={false}
+            />
             <button
               onClick={() => setMenuOpen(false)}
               type="button"
@@ -197,14 +207,14 @@ const Navbar = () => {
           <ul className="flex flex-col gap-2 list-none p-0 m-0">
             {activeNavLinks.map((it) => (
               <li key={it.to} className="border-b border-gray-100 pb-2">
-                <a
-                  href={it.to}
+                <NavLink
+                  to={it.to}
                   onClick={(e) => handleNavClick(e, it.to)}
                   className="block text-2xl font-bold text-gray-900 no-underline transition-colors hover:text-[#f97316] uppercase"
                   style={{ fontFamily: "'Syne', sans-serif", letterSpacing: '-1px' }}
                 >
                   {it.label}
-                </a>
+                </NavLink>
               </li>
             ))}
           </ul>
