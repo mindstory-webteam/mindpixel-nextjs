@@ -556,6 +556,8 @@ export default function Services() {
           }
         }
 
+        /* ─ sm screen only: subtag capsule becomes border-only (no white fill),
+             with white text. Desktop stacking cards and tablets are untouched. ─ */
         @media (max-width: 640px) {
           .svc-mobile {
             width: calc(100% - 24px);
@@ -572,6 +574,12 @@ export default function Services() {
           .svc-desc { font-size: 14px; }
           .svc-point-label { font-size: 15px; }
           .svc-point-desc { font-size: 13px; }
+
+          .svc-mobile .svc-stack-subtag {
+            background: transparent !important;
+            color: #ffffff !important;
+            border: 1px solid rgba(255, 255, 255, 0.6) !important;
+          }
         }
       `}</style>
     </>
