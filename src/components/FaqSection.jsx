@@ -35,17 +35,6 @@ const FAQS = [
   }
 ];
 
-function useWindowWidth() {
-  const [width, setWidth] = useState(1200);
-  useEffect(() => {
-    setWidth(window.innerWidth);
-    const handler = () => setWidth(window.innerWidth);
-    window.addEventListener("resize", handler);
-    return () => window.removeEventListener("resize", handler);
-  }, []);
-  return width;
-}
-
 export default function FaqSection() {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [status, setStatus] = useState("idle"); // idle | submitting | error
@@ -56,9 +45,6 @@ export default function FaqSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-
-  const width = useWindowWidth();
-  const isMobile = width < 768;
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -133,97 +119,266 @@ export default function FaqSection() {
       });
   };
 
-  const inputStyle = (key) => ({
-    width: "100%",
-    fontFamily: "'Syne', sans-serif",
-    fontSize: "14px",
-    fontWeight: 400,
-    padding: "13px 0",
-    background: "transparent",
-    border: "none",
-    borderBottom: errors[key] ? "2px solid #f87171" : "1px solid rgba(255,255,255,0.3)",
-    outline: "none",
-    color: "#fff",
-    transition: "border-color 0.3s",
-    marginBottom: "20px",
-    boxSizing: "border-box",
-  });
-
   return (
-    <div className="w-full h-auto bg-white pt-5 ">
-
-      <section
-        style={{
-          width: isMobile ? "calc(100% - 32px)" : "calc(100% - 120px)",
-          margin: isMobile ? "15px 16px 70px 16px" : "30px 60px 80px 60px",
-          background: "#000",
-          color: "#fff",
-          overflow: "hidden",
-          position: "relative",
-          borderRadius: isMobile ? "16px" : "24px",
-        }}
-      >
+    <div className="w-full h-auto bg-white pt-5">
+      <section className="faq-section-wrapper">
         <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&display=swap');
-        .faq-item { padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.15); cursor: pointer; transition: opacity 0.3s; }
-        .faq-item:hover { opacity: 1 !important; }
-        input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.4); }
-        .custom-dropdown-menu {
-          scrollbar-width: thin;
-          scrollbar-color: #ffb86a rgba(255, 255, 255, 0.08);
-        }
-        .custom-dropdown-menu::-webkit-scrollbar {
-          width: 6px;
-          display: block;
-        }
-        .custom-dropdown-menu::-webkit-scrollbar-track {
-          background: rgba(255, 255, 255, 0.08);
-          border-radius: 4px;
-        }
-        .custom-dropdown-menu::-webkit-scrollbar-thumb {
-          background: #ffb86a;
-          border-radius: 4px;
-        }
-        .custom-dropdown-menu::-webkit-scrollbar-thumb:hover {
-          background: #ffa843;
-        }
+          @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&display=swap');
+
+          .faq-section-wrapper {
+            width: calc(100% - 24px);
+            margin: 15px auto 50px auto;
+            background: #000;
+            color: #fff;
+            overflow: hidden;
+            position: relative;
+            border-radius: 16px;
+          }
+          @media (min-width: 640px) {
+            .faq-section-wrapper {
+              width: calc(100% - 48px);
+              margin: 20px auto 60px auto;
+              border-radius: 20px;
+            }
+          }
+          @media (min-width: 1024px) {
+            .faq-section-wrapper {
+              width: calc(100% - 120px);
+              margin: 30px auto 80px auto;
+              border-radius: 24px;
+            }
+          }
+
+          .faq-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 40px 14px 40px 14px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            align-items: start;
+          }
+          @media (min-width: 400px) {
+            .faq-container {
+              padding: 48px 20px 48px 20px;
+            }
+          }
+          @media (min-width: 640px) {
+            .faq-container {
+              padding: 56px 32px 56px 32px;
+              gap: 56px;
+            }
+          }
+          @media (min-width: 1024px) {
+            .faq-container {
+              padding: 60px 60px 80px 60px;
+              grid-template-columns: 1fr 1.2fr;
+              gap: 100px;
+            }
+          }
+
+          .faq-form-sticky {
+            position: static;
+          }
+          @media (min-width: 1024px) {
+            .faq-form-sticky {
+              position: sticky;
+              top: 80px;
+            }
+          }
+
+          .faq-form-card {
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 20px 14px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(8px);
+            width: 100%;
+            box-sizing: border-box;
+          }
+          @media (min-width: 400px) {
+            .faq-form-card {
+              padding: 24px 20px;
+            }
+          }
+          @media (min-width: 640px) {
+            .faq-form-card {
+              padding: 28px 24px;
+            }
+          }
+          @media (min-width: 1024px) {
+            .faq-form-card {
+              padding: 32px 28px;
+            }
+          }
+
+          .faq-heading {
+            font-family: 'Syne', sans-serif;
+            font-size: 22px;
+            font-weight: 400;
+            color: #fff;
+            margin: 0 0 24px;
+          }
+          @media (min-width: 400px) {
+            .faq-heading {
+              font-size: 26px;
+              margin: 0 0 28px;
+            }
+          }
+          @media (min-width: 640px) {
+            .faq-heading {
+              font-size: 30px;
+            }
+          }
+          @media (min-width: 1024px) {
+            .faq-heading {
+              font-size: 38px;
+              margin: 0 0 32px;
+            }
+          }
+
+          .faq-input {
+            width: 100%;
+            font-family: 'Syne', sans-serif;
+            font-size: 16px; /* 16px prevents iOS Safari auto-zoom on iPhone SE */
+            font-weight: 400;
+            padding: 12px 0;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            outline: none;
+            color: #fff;
+            transition: border-color 0.3s;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            border-radius: 0;
+          }
+          .faq-input:focus {
+            border-bottom-color: rgba(255, 255, 255, 0.8);
+          }
+          .faq-input-error {
+            border-bottom: 2px solid #f87171 !important;
+          }
+          input::placeholder, textarea::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+          }
+
+          .faq-item {
+            padding: 16px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            cursor: pointer;
+            transition: opacity 0.3s;
+          }
+          @media (min-width: 640px) {
+            .faq-item {
+              padding: 20px 0;
+            }
+          }
+          .faq-item:hover {
+            opacity: 1 !important;
+          }
+
+          .faq-q-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 15px;
+            font-weight: 400;
+            margin: 0 0 8px;
+            color: #fff;
+            line-height: 1.4;
+          }
+          @media (min-width: 400px) {
+            .faq-q-title {
+              font-size: 16px;
+            }
+          }
+          @media (min-width: 640px) {
+            .faq-q-title {
+              font-size: 17px;
+              margin: 0 0 10px;
+            }
+          }
+          @media (min-width: 1024px) {
+            .faq-q-title {
+              font-size: 19px;
+            }
+          }
+
+          .faq-a-text {
+            font-family: 'Syne', sans-serif;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.6;
+            margin: 0;
+          }
+          @media (min-width: 640px) {
+            .faq-a-text {
+              font-size: 16px;
+              line-height: 1.65;
+            }
+          }
+          @media (min-width: 1024px) {
+            .faq-a-text {
+              font-size: 18px;
+              line-height: 1.7;
+            }
+          }
+
+          .turnstile-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 12px 0 16px;
+            overflow: hidden;
+          }
+          @media (max-width: 360px) {
+            .turnstile-wrapper > div {
+              transform: scale(0.85);
+              transform-origin: center center;
+            }
+          }
+          @media (max-width: 325px) {
+            .turnstile-wrapper > div {
+              transform: scale(0.75);
+              transform-origin: center center;
+            }
+          }
+
+          .custom-dropdown-menu {
+            scrollbar-width: thin;
+            scrollbar-color: #ffb86a rgba(255, 255, 255, 0.08);
+          }
+          .custom-dropdown-menu::-webkit-scrollbar {
+            width: 6px;
+            display: block;
+          }
+          .custom-dropdown-menu::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+          }
+          .custom-dropdown-menu::-webkit-scrollbar-thumb {
+            background: #ffb86a;
+            border-radius: 4px;
+          }
+          .custom-dropdown-menu::-webkit-scrollbar-thumb:hover {
+            background: #ffa843;
+          }
         `}</style>
 
-        <div
-          style={{
-            maxWidth: "1300px",
-            margin: "0 auto",
-            padding: isMobile ? "60px 20px 50px 20px" : "60px 60px 60px",
-            paddingBottom: isMobile ? "50px" : "80px",
-            display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "1fr 1.2fr",
-            gap: isMobile ? "56px" : "100px",
-            alignItems: "start",
-          }}
-        >
+        <div className="faq-container">
           {/* LEFT — Contact Form */}
-          <div style={isMobile ? {} : { position: "sticky", top: "80px" }}>
-            <h2
-              style={{
-                fontFamily: "'Syne', sans-serif",
-                fontSize: isMobile ? "28px" : "38px",
-                fontWeight: 400,
-                color: "#fff",
-                margin: "0 0 32px",
-              }}
-            >
-              Send us a brief.
-            </h2>
+          <div className="faq-form-sticky">
+            <h2 className="faq-heading">Send us a brief.</h2>
 
             {submitted ? (
               <div
                 style={{
-                  minHeight: "380px",
+                  minHeight: "340px",
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
-                  padding: isMobile ? "32px 20px" : "48px 32px",
+                  padding: "32px 20px",
                   border: "1px solid rgba(255,255,255,0.15)",
                   borderRadius: "16px",
                   background: "rgba(255,255,255,0.03)",
@@ -234,7 +389,7 @@ export default function FaqSection() {
                 <h3
                   style={{
                     fontFamily: "'Syne', sans-serif",
-                    fontSize: "24px",
+                    fontSize: "22px",
                     fontWeight: 500,
                     color: "#fff",
                     margin: "0 0 12px",
@@ -245,7 +400,7 @@ export default function FaqSection() {
                 <p
                   style={{
                     fontFamily: "'Syne', sans-serif",
-                    fontSize: "15px",
+                    fontSize: "14px",
                     color: "rgba(255,255,255,0.7)",
                     lineHeight: 1.6,
                     maxWidth: "340px",
@@ -256,19 +411,9 @@ export default function FaqSection() {
                 </p>
               </div>
             ) : (
-              <form
-                onSubmit={handleSubmit}
-                noValidate
-                style={{
-                  border: "1px solid rgba(255,255,255,0.15)",
-                  borderRadius: "16px",
-                  padding: isMobile ? "24px 20px" : "32px 28px",
-                  background: "rgba(255,255,255,0.03)",
-                  backdropFilter: "blur(8px)",
-                }}
-              >
+              <form onSubmit={handleSubmit} noValidate className="faq-form-card">
                 <input
-                  style={inputStyle("name")}
+                  className={`faq-input ${errors.name ? "faq-input-error" : ""}`}
                   placeholder="Your Name *"
                   value={form.name}
                   onChange={(e) => setField("name", e.target.value)}
@@ -276,7 +421,7 @@ export default function FaqSection() {
                 />
                 <input
                   type="email"
-                  style={inputStyle("email")}
+                  className={`faq-input ${errors.email ? "faq-input-error" : ""}`}
                   placeholder="Your Email *"
                   value={form.email}
                   onChange={(e) => setField("email", e.target.value)}
@@ -286,8 +431,8 @@ export default function FaqSection() {
                 <div ref={dropdownRef} style={{ position: "relative", marginBottom: "20px" }}>
                   <div
                     onClick={() => status !== "submitting" && setIsDropdownOpen((prev) => !prev)}
+                    className={`faq-input ${errors.subject ? "faq-input-error" : ""}`}
                     style={{
-                      ...inputStyle("subject"),
                       cursor: status === "submitting" ? "not-allowed" : "pointer",
                       display: "flex",
                       alignItems: "center",
@@ -297,13 +442,17 @@ export default function FaqSection() {
                       marginBottom: 0,
                     }}
                   >
-                    <span>{form.subject || "Select Service *"}</span>
+                    <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                      {form.subject || "Select Service *"}
+                    </span>
                     <span
                       style={{
                         transform: isDropdownOpen ? "rotate(180deg)" : "rotate(0deg)",
                         transition: "transform 0.3s ease",
                         fontSize: "10px",
                         color: "rgba(255,255,255,0.6)",
+                        marginLeft: "8px",
+                        flexShrink: 0,
                       }}
                     >
                       ▼
@@ -326,7 +475,7 @@ export default function FaqSection() {
                         border: "1px solid rgba(255,255,255,0.2)",
                         borderRadius: "12px",
                         maxHeight: "175px",
-                        overflowY: "scroll",
+                        overflowY: "auto",
                         overscrollBehavior: "contain",
                         WebkitOverflowScrolling: "touch",
                         boxShadow: "0 12px 36px rgba(0,0,0,0.6)",
@@ -368,10 +517,11 @@ export default function FaqSection() {
                     </div>
                   )}
                 </div>
+
                 <textarea
+                  className={`faq-input ${errors.message ? "faq-input-error" : ""}`}
                   style={{
-                    ...inputStyle("message"),
-                    minHeight: "100px",
+                    minHeight: "90px",
                     resize: "vertical",
                   }}
                   placeholder="Project goals *"
@@ -381,7 +531,7 @@ export default function FaqSection() {
                 />
 
                 {/* Cloudflare Turnstile CAPTCHA */}
-                <div style={{ margin: "12px 0 16px", display: "flex", justifyContent: "center" }}>
+                <div className="turnstile-wrapper">
                   <TurnstileWidget
                     theme="dark"
                     onVerify={(token) => {
@@ -417,7 +567,7 @@ export default function FaqSection() {
                   textColor="#111"
                   hoverBgColor="#1a1a1a"
                   hoverTextColor="#fff"
-                  style={{ width: "100%", padding: "16px" }}
+                  style={{ width: "100%", padding: "14px 16px" }}
                 >
                   {status === "submitting" ? "Sending..." : "Submit Inquiry"}
                 </AnimatedButton>
@@ -425,7 +575,7 @@ export default function FaqSection() {
                 <div
                   style={{
                     marginTop: "20px",
-                    padding: "16px 20px",
+                    padding: "14px 16px",
                     background: "rgba(255,255,255,0.05)",
                     borderRadius: "8px",
                     border: "1px solid rgba(255,255,255,0.1)",
@@ -437,6 +587,7 @@ export default function FaqSection() {
                       fontSize: "13px",
                       fontFamily: "'Syne', sans-serif",
                       color: "rgba(255,255,255,0.7)",
+                      wordBreak: "break-word",
                     }}
                   >
                     Or reach us at{" "}
@@ -451,17 +602,7 @@ export default function FaqSection() {
 
           {/* RIGHT — FAQs */}
           <div>
-            <h2
-              style={{
-                fontFamily: "'Syne', sans-serif",
-                fontSize: isMobile ? "28px" : "38px",
-                fontWeight: 400,
-                color: "#fff",
-                margin: "0 0 32px",
-              }}
-            >
-              Common Questions
-            </h2>
+            <h2 className="faq-heading">Common Questions</h2>
 
             <div>
               {FAQS.map((f, i) => (
@@ -469,33 +610,15 @@ export default function FaqSection() {
                   key={i}
                   className="faq-item"
                   onClick={() => setActiveIndex(i)}
-                  onMouseEnter={() => !isMobile && setActiveIndex(i)}
+                  onMouseEnter={() => {
+                    if (window.innerWidth >= 768) {
+                      setActiveIndex(i);
+                    }
+                  }}
                   style={{ opacity: activeIndex === i ? 1 : 0.4 }}
                 >
-                  <h4
-                    style={{
-                      fontFamily: "'Syne', sans-serif",
-                      fontSize: isMobile ? "16px" : "19px",
-                      fontWeight: 400,
-                      margin: "0 0 10px",
-                      color: "#fff",
-                    }}
-                  >
-                    {f.q}
-                  </h4>
-                  {activeIndex === i && (
-                    <p
-                      style={{
-                        fontFamily: "'Syne', sans-serif",
-                        fontSize: "18px",
-                        color: "rgba(255,255,255,0.65)",
-                        lineHeight: 1.7,
-                        margin: 0,
-                      }}
-                    >
-                      {f.a}
-                    </p>
-                  )}
+                  <h4 className="faq-q-title">{f.q}</h4>
+                  {activeIndex === i && <p className="faq-a-text">{f.a}</p>}
                 </div>
               ))}
             </div>
@@ -504,4 +627,4 @@ export default function FaqSection() {
       </section>
     </div>
   );
-}
+}
