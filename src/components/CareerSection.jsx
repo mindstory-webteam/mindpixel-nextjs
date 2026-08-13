@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoIosArrowForward } from "react-icons/io";
+import Script from "next/script";
 import emailjs from "@emailjs/browser";
 import { img } from "../assets/assest";
 
@@ -48,6 +49,25 @@ export default function CareerSection() {
   });
   const [applyStatus, setApplyStatus] = useState("idle");
   const [expandedJob, setExpandedJob] = useState(null);
+  const [turnstileToken, setTurnstileToken] = useState(null);
+
+  useEffect(() => {
+    window.onTurnstileSuccess = (token) => {
+      setTurnstileToken(token);
+    };
+    window.onTurnstileExpired = () => {
+      setTurnstileToken(null);
+    };
+    return () => {
+      try {
+        delete window.onTurnstileSuccess;
+        delete window.onTurnstileExpired;
+      } catch (e) {
+        window.onTurnstileSuccess = undefined;
+        window.onTurnstileExpired = undefined;
+      }
+    };
+  }, []);
 
   const inputBase =
     "w-full border border-gray-200 rounded px-3 py-2 text-xs outline-none focus:border-orange-500 bg-white placeholder-gray-400 disabled:opacity-50 disabled:cursor-not-allowed";
@@ -56,6 +76,10 @@ export default function CareerSection() {
 
   const handleApplySubmit = (e) => {
     e.preventDefault();
+    if (!turnstileToken) {
+      alert("Please complete the Turnstile verification.");
+      return;
+    }
     setApplyStatus("submitting");
 
     emailjs
@@ -69,21 +93,34 @@ export default function CareerSection() {
           position: applyForm.position,
           message: applyForm.message || "No additional message provided.",
           time: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+          "g-recaptcha-response": turnstileToken,
         },
         process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
       )
       .then(() => {
         setApplyStatus("success");
         setApplyForm({ name: "", email: "", mobile: "", position: "", message: "" });
+        setTurnstileToken(null);
+        if (window.turnstile) {
+          window.turnstile.reset();
+        }
       })
       .catch((err) => {
         console.error("EmailJS career error:", err);
         setApplyStatus("error");
+        setTurnstileToken(null);
+        if (window.turnstile) {
+          window.turnstile.reset();
+        }
       });
   };
 
   return (
     <div style={{ fontFamily: "'Syne', sans-serif" }} className="bg-white text-gray-900">
+      <Script
+        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+        strategy="afterInteractive"
+      />
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
         .job-desc { display:grid; grid-template-rows:0fr; transition:grid-template-rows 0.32s ease; }
@@ -300,11 +337,20 @@ export default function CareerSection() {
                 disabled={applyStatus === "submitting"}
               />
 
-              <div className="flex justify-end">
+              <div className="flex flex-col lg:flex-row items-center lg:justify-between gap-4 mb-5">
+                <div className="overflow-hidden flex justify-center w-full lg:w-auto">
+                  <div
+                    className="cf-turnstile"
+                    data-sitekey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY || "1x00000000000000000000AA"}
+                    data-callback="onTurnstileSuccess"
+                    data-expired-callback="onTurnstileExpired"
+                    data-theme="light"
+                  />
+                </div>
                 <button
                   type="submit"
-                  disabled={applyStatus === "submitting"}
-                  className="bg-orange-600 text-white text-xs font-semibold px-6 py-2.5 rounded hover:bg-orange-700 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={applyStatus === "submitting" || !turnstileToken}
+                  className="bg-orange-600 text-white text-xs font-semibold px-6 py-2.5 rounded hover:bg-orange-700 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed max-lg:w-full"
                 >
                   {applyStatus === "submitting" ? "Sending…" : "Submit Application"}
                 </button>
