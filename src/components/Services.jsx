@@ -309,7 +309,7 @@ export default function Services() {
         /* ─ card slot: fills the sticky window ─ */
         .svc-slot {
           position: absolute;
-          inset: 16px 40px;
+          inset: 16px 72px;
           will-change: transform;
           transform: translateZ(0);
         }
@@ -488,7 +488,7 @@ export default function Services() {
 
         /* ─ responsive desktop ─ */
         @media (min-width: 1280px) and (max-width: 1400px) {
-          .svc-slot { inset: 14px 28px; }
+          .svc-slot { inset: 14px 72px; }
           .svc-card { padding: 1.6rem 2rem; }
           .svc-grid { gap: 1.6rem; grid-template-columns: 0.85fr 1fr; }
           .svc-img-wrap { min-height: 340px; }
@@ -540,7 +540,7 @@ export default function Services() {
 
         @media (min-width: 1024px) and (max-width: 1279px) {
           .svc-mobile {
-            width: calc(100% - 120px);
+            width: calc(100% - 136px);
             margin: 40px auto 60px auto;
           }
           .svc-mobile-card .svc-mobile-img-wrap {
