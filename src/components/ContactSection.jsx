@@ -58,10 +58,10 @@ const ContactSection = () => {
     setWaError('');
 
     const text = `*New Contact Request from MindPixel Website*\n\n` +
-      `👤 *Name:* ${waForm.name.trim()}\n` +
-      `📞 *Phone:* ${waForm.phone.trim()}\n` +
-      `💼 *Service:* ${waForm.service || 'General Inquiry'}\n` +
-      `💬 *Message:* ${waForm.message.trim()}`;
+      ` *Name:* ${waForm.name.trim()}\n` +
+      ` *Phone:* ${waForm.phone.trim()}\n` +
+      ` *Service:* ${waForm.service || 'General Inquiry'}\n` +
+      ` *Message:* ${waForm.message.trim()}`;
 
     const url = `https://wa.me/918281610051?text=${encodeURIComponent(text)}`;
     window.open(url, '_blank');
@@ -446,7 +446,7 @@ const ContactSection = () => {
               />
             </div>
 
-            <AnimatedButton
+             <AnimatedButton
               type="submit"
               bgColor="#FF8709"
               textColor="#0E100F"
