@@ -193,38 +193,48 @@ export default function ChatbotWidget({
 
         @media (max-width: 640px) {
           .chat-fab-wrap {
-            right: 20px;
-            bottom: 20px;
+            right: 16px;
+            bottom: 16px;
+          }
+          .chat-fab-wrap.is-open {
+            display: none;
           }
           .whatsapp-fab-wrap {
-            right: 20px;
-            bottom: 80px;
+            right: 16px;
+            bottom: 76px;
           }
           .chat-window {
-            left: 16px;
-            right: 16px;
-            bottom: 80px;
-            width: auto;
-            max-width: none;
-            height: 380px;
-            max-height: 60vh;
-            border-radius: 14px;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            max-width: 100vw;
+            max-height: 100dvh;
+            border-radius: 0;
+            border: none;
+            z-index: 99999;
+          }
+          .chat-header {
+            padding-top: max(14px, env(safe-area-inset-top)) !important;
           }
           .chat-messages-list {
-            padding: 12px !important;
-            gap: 10px !important;
+            padding: 14px !important;
+            gap: 12px !important;
           }
           .chat-input-container {
-            padding: 8px 10px !important;
+            padding: 10px 12px max(12px, env(safe-area-inset-bottom)) 12px !important;
             gap: 8px !important;
           }
           .chat-input-field {
-            padding: 8px 12px !important;
-            font-size: 13px !important;
+            padding: 10px 14px !important;
+            font-size: 16px !important; /* Prevents iOS Safari auto-zoom */
           }
           .chat-send-btn {
-            width: 38px !important;
-            height: 38px !important;
+            width: 44px !important;
+            height: 44px !important;
           }
         }
       `}</style>
@@ -247,7 +257,7 @@ export default function ChatbotWidget({
 
       {/* Fixed Lottie Chat FAB */}
       <div
-        className="chat-fab-wrap"
+        className={`chat-fab-wrap ${isOpen ? 'is-open' : ''}`}
         role="button"
         aria-label="Toggle chat"
         tabIndex={0}
@@ -274,6 +284,7 @@ export default function ChatbotWidget({
         <div className="chat-window-anim chat-window">
           {/* Header */}
           <div
+            className="chat-header"
             style={{
               backgroundColor: brandColor,
               color: '#fff',
@@ -309,8 +320,8 @@ export default function ChatbotWidget({
                 background: 'rgba(255,255,255,0.15)',
                 border: 'none',
                 borderRadius: '50%',
-                width: 32,
-                height: 32,
+                width: 36,
+                height: 36,
                 color: '#fff',
                 display: 'flex',
                 alignItems: 'center',
@@ -319,7 +330,7 @@ export default function ChatbotWidget({
               }}
               aria-label="Close chat"
             >
-              <X size={16} />
+              <X size={18} />
             </button>
           </div>
 
