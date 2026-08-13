@@ -106,7 +106,7 @@ export default function Footer() {
       `}</style>
 
       {/* DESKTOP FOOTER */}
-      <div className="hidden md:block" style={{ padding: "0 50px" }}>
+      <div className="hidden lg:block" style={{ padding: "0 50px" }}>
         <footer
           className="relative font-syne"
           style={{
@@ -115,7 +115,7 @@ export default function Footer() {
           }}
         >
           <div className="relative z-10 max-w-375 mx-auto px-10 pt-16 pb-10">
-            <div className="grid grid-cols-1 md:grid-cols-[1.6fr_1fr_1fr_1fr] gap-12 pb-14 border-b border-black/[0.07]">
+            <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr_1fr_1.2fr] gap-12 pb-14 border-b border-black/[0.07]">
 
               <div>
                 <div className="flex items-center gap-3 mb-5">
@@ -158,22 +158,22 @@ export default function Footer() {
 
               {/* BRAND IMAGES — DESKTOP */}
               <div>
-                <h4 className="font-mono-dm text-[0.66rem] tracking-[0.16em] uppercase text-orange-400 mb-5 pl-10" style={{ fontWeight: 400 }}>Our Brands</h4>
-                <div className="brand-img-wrap pl-10 pr-4">
+                <h4 className="font-mono-dm text-[0.66rem] tracking-[0.16em] uppercase text-orange-400 mb-5 pl-4" style={{ fontWeight: 400 }}>Our Brands</h4>
+                <div className="brand-img-wrap pl-4 pr-2">
 
-                  <div className="brand-img-item  items-center flex rounded-2xl">
+                  <div className="brand-img-item items-center flex rounded-2xl">
                     <a href="https://mindstory.in/" target="_blank" rel="noreferrer">
                       <img src={img.mindstory} alt="MindStory" style={{ width: "120px", height: "40px" }} />
                     </a>
                   </div>
 
-                  <div className="brand-img-item  items-center flex rounded-2xl">
+                  <div className="brand-img-item items-center flex rounded-2xl">
                     <a href="https://seorankbird.com/" target="_blank" rel="noreferrer">
                       <img src={img.rankbird} alt="Rankbird" style={{ width: "85px", height: "30px" }} />
                     </a>
                   </div>
 
-                  <div className="brand-img-item  items-center flex rounded-2xl">
+                  <div className="brand-img-item items-center flex rounded-2xl">
                     <a href="https://viralcatmeow.com/" target="_blank" rel="noreferrer">
                       <img src={img.vc} alt="VC" style={{ width: "75px", height: "35px", paddingRight: "10px" }} />
                     </a>
@@ -204,89 +204,93 @@ export default function Footer() {
         </footer>
       </div>
 
-      {/* MOBILE FOOTER */}
-      <div className="md:hidden">
-        <div className="mobile-footer-scroll font-syne" style={{ background: "#e6e7e8", borderRadius: "0", padding: "32px 20px 20px" }}>
-          <div className="flex items-center gap-3 mb-4">
-            <img src={img.myndpixel} alt="Mynd Pixel Logo" className="h-10 w-auto object-contain" />
-          </div>
-          <p className="font-mono-dm text-[0.75rem] leading-relaxed text-black/60 mb-5" style={{ fontWeight: 400 }}>
-            We craft digital experiences at the intersection of bold ideas and pixel-perfect execution.
-          </p>
-          <div className="flex gap-2 mb-8">
-            {socials.map(({ label, Icon, href }) => (
-              <a key={label} href={href} target={href.startsWith('http') ? "_blank" : "_self"} rel="noreferrer" aria-label={label} className="w-8 h-8 border border-black/10 rounded-lg flex items-center justify-center">
-                <Icon className="text-sm" />
-              </a>
-            ))}
-          </div>
-          <div className="grid grid-cols-2 gap-6 pb-8 border-b border-black/[0.07] mb-8">
-            {activeNavColumns.slice(0, 1).map(({ heading, links }) => (
-              <div key={heading}>
-                <h4 className="font-mono-dm text-[0.6rem] tracking-[0.16em] uppercase text-orange-400 mb-3" style={{ fontWeight: 400 }}>{heading}</h4>
-                <ul className="flex flex-col gap-2">
-                  {links.map((link) => (
-                    <li key={link.name}><NavLink to={link.path} onClick={(e) => handleNavClick(e, link.path)} className="text-[0.8rem]" style={{ fontWeight: 400 }}>{link.name}</NavLink></li>
-                  ))}
-                </ul>
+      {/* MOBILE & TABLET FOOTER (iPad Mini, iPad Air, iPad Pro & Mobile) */}
+      <div className="lg:hidden">
+        <div className="mobile-footer-scroll font-syne" style={{ background: "#e6e7e8", borderRadius: "0", padding: "32px 24px 20px" }}>
+          
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-8 border-b border-black/[0.07] mb-8">
+            {/* BRAND HEADER & SOCIALS */}
+            <div className="md:col-span-1">
+              <div className="flex items-center gap-3 mb-4">
+                <img src={img.myndpixel} alt="Mynd Pixel Logo" className="h-10 w-auto object-contain" />
               </div>
-            ))}
-          </div>
-          <div className="pb-8 border-b border-black/[0.07] mb-8">
-            <h4 className="font-mono-dm text-[0.6rem] tracking-[0.16em] uppercase text-orange-400 mb-3" style={{ fontWeight: 400 }}>Reach Us</h4>
-            <ul className="flex flex-col gap-2">
-              {activeNavColumns[1].links.map((link) => (
-                <li key={link.name}>
-                  {link.path.startsWith('http') || link.path.startsWith('mailto') ? (
-                    <a href={link.path} className="text-[0.8rem]" style={{ fontWeight: 400 }}>{link.name}</a>
-                  ) : (
-                    <span className="text-[0.8rem]" style={{ fontWeight: 400 }}>{link.name}</span>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* BRAND IMAGES — MOBILE */}
-          <div className="pb-8 border-b border-black/[0.07] mb-8">
-            <h4 className="font-mono-dm text-[0.6rem] tracking-[0.16em] uppercase text-orange-400 mb-3" style={{ fontWeight: 400 }}>Our Brands</h4>
-            <div className="grid grid-cols-2 gap-3">
-
-              <div className="brand-img-item">
-                <a href="https://mindstory.in/" target="_blank" rel="noreferrer">
-                  <img src={img.mindstory} alt="MindStory" style={{ width: "100px", height: "30px" }} />
-                </a>
+              <p className="font-mono-dm text-[0.78rem] leading-relaxed text-black/60 mb-5" style={{ fontWeight: 400 }}>
+                We craft digital experiences at the intersection of bold ideas and pixel-perfect execution.
+              </p>
+              <div className="flex gap-2 mb-4">
+                {socials.map(({ label, Icon, href }) => (
+                  <a key={label} href={href} target={href.startsWith('http') ? "_blank" : "_self"} rel="noreferrer" aria-label={label} className="w-8 h-8 border border-black/10 rounded-lg flex items-center justify-center">
+                    <Icon className="text-sm" />
+                  </a>
+                ))}
               </div>
+            </div>
 
-              <div className="brand-img-item">
-                <a href="https://seorankbird.com/" target="_blank" rel="noreferrer">
-                  <img src={img.rankbird} alt="Rankbird" style={{ width: "85px", height: "28px" }} />
-                </a>
+            {/* MAIN MENU */}
+            <div className="md:col-span-1">
+              <h4 className="font-mono-dm text-[0.66rem] tracking-[0.16em] uppercase text-orange-400 mb-3" style={{ fontWeight: 400 }}>Main Menu</h4>
+              <ul className="flex flex-col gap-2.5">
+                {activeNavColumns[0].links.map((link) => (
+                  <li key={link.name}>
+                    <NavLink to={link.path} onClick={(e) => handleNavClick(e, link.path)} className="text-[0.84rem]" style={{ fontWeight: 400 }}>{link.name}</NavLink>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* REACH US */}
+            <div className="md:col-span-1">
+              <h4 className="font-mono-dm text-[0.66rem] tracking-[0.16em] uppercase text-orange-400 mb-3" style={{ fontWeight: 400 }}>Reach Us</h4>
+              <ul className="flex flex-col gap-2.5">
+                {activeNavColumns[1].links.map((link) => (
+                  <li key={link.name}>
+                    {link.path.startsWith('http') || link.path.startsWith('mailto') || link.path.startsWith('tel') ? (
+                      <a href={link.path} className="text-[0.84rem]" style={{ fontWeight: 400 }}>{link.name}</a>
+                    ) : (
+                      <span className="text-[0.84rem]" style={{ fontWeight: 400 }}>{link.name}</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* OUR BRANDS */}
+            <div className="md:col-span-1">
+              <h4 className="font-mono-dm text-[0.66rem] tracking-[0.16em] uppercase text-orange-400 mb-3" style={{ fontWeight: 400 }}>Our Brands</h4>
+              <div className="grid grid-cols-2 gap-3">
+                <div className="brand-img-item">
+                  <a href="https://mindstory.in/" target="_blank" rel="noreferrer">
+                    <img src={img.mindstory} alt="MindStory" style={{ width: "100px", height: "30px" }} />
+                  </a>
+                </div>
+                <div className="brand-img-item">
+                  <a href="https://seorankbird.com/" target="_blank" rel="noreferrer">
+                    <img src={img.rankbird} alt="Rankbird" style={{ width: "85px", height: "28px" }} />
+                  </a>
+                </div>
+                <div className="brand-img-item">
+                  <a href="https://viralcatmeow.com/" target="_blank" rel="noreferrer">
+                    <img src={img.vc} alt="VC" style={{ width: "60px", height: "40px" }} />
+                  </a>
+                </div>
+                <div className="brand-img-item">
+                  <a href="https://21fiftyone.com/" target="_blank" rel="noreferrer">
+                    <img src={img.twentyonefiftyone} alt="twentyonefiftyone" style={{ paddingRight: "20px", width: "110px", height: "25px" }} />
+                  </a>
+                </div>
               </div>
-
-              <div className="brand-img-item">
-                <a href="https://viralcatmeow.com/" target="_blank" rel="noreferrer">
-                  <img src={img.vc} alt="VC" style={{ width: "60px", height: "40px" }} />
-                </a>
-              </div>
-
-              <div className="brand-img-item">
-                <a href="https://21fiftyone.com/" target="_blank" rel="noreferrer">
-                  <img src={img.twentyonefiftyone} alt="twentyonefiftyone" style={{ paddingRight: "40px", width: "110px", height: "25px" }} />
-                </a>
-              </div>
-
             </div>
           </div>
 
-          <div className="flex flex-col items-center gap-2 pt-2 pb-4">
-            <p className="font-mono-dm text-[0.7rem] text-black/50 text-center" style={{ fontWeight: 400 }}>
+          {/* BOTTOM BAR */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 pb-4">
+            <p className="font-mono-dm text-[0.74rem] text-black/50 text-center sm:text-left" style={{ fontWeight: 400 }}>
               © 2026 <span className="text-orange-400" style={{ fontWeight: 400 }}>MindPixel</span>. All rights reserved.
             </p>
             {location.pathname !== '/enquiry' && (
               <div className="flex gap-5">
-                <NavLink to="/privacy-policy" className="font-mono-dm text-[0.7rem] text-black/40" style={{ fontWeight: 400 }}>Privacy Policy</NavLink>
-                <NavLink to="/terms" className="font-mono-dm text-[0.7rem] text-black/40" style={{ fontWeight: 400 }}>Terms & Condition</NavLink>
+                <NavLink to="/privacy-policy" className="font-mono-dm text-[0.74rem] text-black/40" style={{ fontWeight: 400 }}>Privacy Policy</NavLink>
+                <NavLink to="/terms" className="font-mono-dm text-[0.74rem] text-black/40" style={{ fontWeight: 400 }}>Terms & Condition</NavLink>
               </div>
             )}
           </div>

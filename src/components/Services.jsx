@@ -132,7 +132,7 @@ export default function Services() {
     const ctx = gsap.context(() => {
       const mm = gsap.matchMedia();
 
-      mm.add("(min-width: 1200px)", () => {
+      mm.add("(min-width: 1367px)", () => {
         const cards = cardsRef.current.filter(Boolean);
         if (!cards.length) return;
 
@@ -207,7 +207,7 @@ export default function Services() {
 
                     {/* text */}
                     <div className="svc-body">
-                      <p className="svc-desc" style={{ color: "rgba(255,255,255,0.82)" }}>
+                      <p className="svc-desc">
                         {svc.description}
                       </p>
 
@@ -217,7 +217,7 @@ export default function Services() {
                             <div className="svc-dot" />
                             <div className="svc-point-body">
                               <span className="svc-lbl">{pt.label}</span>
-                              <span className="svc-ptdesc" style={{ color: "rgba(255,255,255,0.68)" }}>
+                              <span className="svc-ptdesc">
                                 {pt.desc}
                               </span>
                             </div>
@@ -243,40 +243,44 @@ export default function Services() {
 
       {/* ── MOBILE ───────────────────────────────────────────────────────── */}
       <div className="svc-mobile">
-        {services.map((svc, i) => (
-          <motion.div
-            key={svc.id}
-            className="svc-mobile-card"
-            initial={{ opacity: 0, y: 28 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.15 }}
-            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: i * 0.05 }}
-          >
-            <div className="svc-img-wrap" style={{ height: 220, borderRadius: 0 }}>
-              <Image src={svc.image} alt={svc.title} fill className="svc-img" sizes="100vw" loading="lazy" />
-              <span className="svc-img-tag">{svc.tag}</span>
-            </div>
-            <div className="svc-body" style={{ height: "auto", padding: "1.4rem 1.2rem" }}>
-              <p className="svc-desc" style={{ color: "rgba(255,255,255,0.82)" }}>{svc.description}</p>
-              <div className="svc-points">
-                {svc.points.map((pt) => (
-                  <div className="svc-point-item" key={pt.label}>
-                    <div className="svc-dot" />
-                    <div className="svc-point-body">
-                      <span className="svc-lbl">{pt.label}</span>
-                      <span className="svc-ptdesc" style={{ color: "rgba(255,255,255,0.68)" }}>{pt.desc}</span>
+        {services.map((svc, i) => {
+          const accent = cardAccents[i % cardAccents.length];
+          return (
+            <motion.div
+              key={svc.id}
+              className="svc-mobile-card"
+              style={{ background: accent.bg, color: accent.text }}
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: i * 0.05 }}
+            >
+              <div className="svc-img-wrap svc-mobile-img-wrap">
+                <Image src={svc.image} alt={svc.title} fill className="svc-img" sizes="(max-width:1199px) 100vw, 40vw" loading="lazy" />
+                <span className="svc-img-tag">{svc.tag}</span>
+              </div>
+              <div className="svc-body" style={{ height: "auto", padding: "1.6rem 1.4rem" }}>
+                <p className="svc-desc">{svc.description}</p>
+                <div className="svc-points">
+                  {svc.points.map((pt) => (
+                    <div className="svc-point-item" key={pt.label}>
+                      <div className="svc-dot" />
+                      <div className="svc-point-body">
+                        <span className="svc-lbl">{pt.label}</span>
+                        <span className="svc-ptdesc">{pt.desc}</span>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+                <div className="svc-tags">
+                  {svc.subtags.map((t) => (
+                    <span key={t} className="svc-tag">{t}</span>
+                  ))}
+                </div>
               </div>
-              <div className="svc-tags">
-                {svc.subtags.map((t) => (
-                  <span key={t} className="svc-tag">{t}</span>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-        ))}
+            </motion.div>
+          );
+        })}
       </div>
 
       {/* ── STYLES ──────────────────────────────────────────────────────── */}
@@ -303,7 +307,7 @@ export default function Services() {
         /* ─ card slot: fills the sticky window ─ */
         .svc-slot {
           position: absolute;
-          inset: 20px 60px;
+          inset: 16px 40px;
           will-change: transform;
           transform: translateZ(0);
         }
@@ -313,7 +317,7 @@ export default function Services() {
           width: 100%;
           height: 100%;
           border-radius: 2rem;
-          padding: 2.5rem;
+          padding: 2rem 2.4rem;
           position: relative;
           overflow: hidden;
           will-change: transform;
@@ -336,10 +340,11 @@ export default function Services() {
         .svc-grid {
           display: grid;
           grid-template-columns: 0.85fr 1fr;
+          gap: 2.2rem;
           height: 100%;
           position: relative;
           z-index: 1;
-          align-items: stretch;
+          align-items: center;
           min-height: 0;
         }
 
@@ -348,6 +353,8 @@ export default function Services() {
           border-radius: 1.25rem;
           overflow: hidden;
           height: 100%;
+          min-height: 320px;
+          max-height: 560px;
           width: 100%;
           transform: translateZ(0);
         }
@@ -374,7 +381,7 @@ export default function Services() {
           pointer-events: none;
           z-index: 2;
           color: #fff;
-          background: rgba(0,0,0,0.28);
+          background: rgba(0,0,0,0.35);
           backdrop-filter: blur(10px);
           -webkit-backdrop-filter: blur(10px);
           border: 1px solid rgba(255,255,255,0.22);
@@ -384,8 +391,8 @@ export default function Services() {
           display: flex;
           flex-direction: column;
           justify-content: center;
-          padding: 1.5rem 2rem;
-          gap: 1rem;
+          padding: 0.5rem 0.5rem;
+          gap: 1.1rem;
           overflow: hidden;
           height: 100%;
           min-height: 0;
@@ -394,117 +401,149 @@ export default function Services() {
 
         .svc-desc {
           font-family: 'Syne', sans-serif;
-          font-size: 15px;
+          font-size: 17px;
           font-weight: 400;
-          line-height: 1.72;
+          line-height: 1.65;
           margin: 0;
+          color: inherit;
+          opacity: 0.88;
         }
 
         .svc-points {
           display: flex;
           flex-direction: column;
-          gap: 0.62rem;
+          gap: 0.65rem;
         }
 
         .svc-point-item {
           display: flex;
           align-items: flex-start;
-          gap: 0.6rem;
+          gap: 0.7rem;
           transition: transform 0.25s ease;
         }
         .svc-point-item:hover { transform: translateX(3px); }
 
         .svc-dot {
           flex-shrink: 0;
-          width: 7px;
-          height: 7px;
+          width: 8px;
+          height: 8px;
           border-radius: 50%;
-          background: rgba(255,255,255,0.6);
-          margin-top: 0.38rem;
+          background: currentColor;
+          opacity: 0.75;
+          margin-top: 0.42rem;
         }
 
         .svc-point-body {
           display: flex;
           flex-direction: column;
-          gap: 0.08rem;
+          gap: 0.1rem;
         }
 
         .svc-lbl {
           font-family: 'Syne', sans-serif;
-          font-size: 16px;
+          font-size: 18px;
           font-weight: 600;
           letter-spacing: 0.01em;
-          line-height: 1.3;
-          color: #fff;
+          line-height: 1.35;
+          color: inherit;
         }
 
         .svc-ptdesc {
           font-family: 'Syne', sans-serif;
           font-size: 15px;
           font-weight: 400;
-          line-height: 1.5;
+          line-height: 1.55;
+          color: inherit;
+          opacity: 0.78;
         }
 
         .svc-tags {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.42rem;
+          gap: 0.5rem;
+          margin-top: 0.2rem;
         }
 
         .svc-tag {
           font-family: 'Syne', sans-serif;
-          font-size: 11px;
+          font-size: 12px;
           font-weight: 500;
-          padding: 5px 14px;
+          padding: 6px 15px;
           border-radius: 9999px;
-          color: #fff;
-          border: 1px solid rgba(255,255,255,0.4);
+          color: inherit;
+          border: 1px solid currentColor;
           opacity: 0.85;
-          letter-spacing: 0.04em;
+          letter-spacing: 0.03em;
           cursor: default;
           transition: opacity 0.2s ease;
         }
         .svc-tag:hover { opacity: 1; }
 
         /* mobile hidden on desktop */
-        @media (min-width: 1200px) {
+        @media (min-width: 1367px) {
           .svc-mobile { display: none; }
         }
 
-        /* ─ responsive ─ */
-        @media (max-width: 1366px) and (min-width: 1200px) {
-          .svc-slot { inset: 20px 40px; }
-          .svc-desc { font-size: 14px; }
-          .svc-lbl { font-size: 15px; }
-          .svc-ptdesc { font-size: 13px; }
+        /* ─ responsive desktop ─ */
+        @media (min-width: 1367px) {
+          .svc-slot { inset: 14px 28px; }
+          .svc-card { padding: 1.6rem 2rem; }
+          .svc-grid { gap: 1.6rem; grid-template-columns: 0.85fr 1fr; }
+          .svc-img-wrap { min-height: 380px; }
+          .svc-body { gap: 0.85rem; }
+          .svc-desc { font-size: 15px; line-height: 1.55; }
+          .svc-lbl { font-size: 17px; }
+          .svc-ptdesc { font-size: 14px; line-height: 1.45; }
+          .svc-points { gap: 0.5rem; }
         }
 
-        /* ─ mobile & tablet: plain stacked list ─ */
-        @media (max-width: 1199px) {
+        /* ─ mobile & tablet: plain stacked list (iPad Mini, Air, Pro & Mobile) ─ */
+        @media (max-width: 1366px) {
           .svc-track { display: none; }
           .svc-mobile {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            padding: 20px;
-            margin-top: 40px;
-            margin-bottom: 40px;
+            gap: 24px;
+            width: calc(100% - 24px);
+            margin: 20px auto 40px auto;
             background: #fff;
-            max-width: 720px;
-            margin-left: auto;
-            margin-right: auto;
+            max-width: 1300px;
+            box-sizing: border-box;
           }
           .svc-mobile-card {
-            border-radius: 1.5rem;
-            background: linear-gradient(135deg, #95257b 0%, #6b1958 100%);
-            color: #fff;
+            border-radius: 1.8rem;
             overflow: hidden;
+            width: 100%;
           }
           .svc-mobile-card .svc-grid { grid-template-columns: 1fr; height: auto; }
-          .svc-mobile-card .svc-desc   { font-size: 0.92rem; }
-          .svc-mobile-card .svc-lbl    { font-size: 1rem; }
-          .svc-mobile-card .svc-ptdesc { font-size: 0.85rem; }
-          .svc-mobile-card .svc-img-tag { font-size: 0.95rem; }
+          .svc-mobile-card .svc-mobile-img-wrap {
+            height: 280px;
+            border-radius: 0;
+          }
+          .svc-mobile-card .svc-desc   { font-size: 1.05rem; line-height: 1.65; }
+          .svc-mobile-card .svc-lbl    { font-size: 1.15rem; }
+          .svc-mobile-card .svc-ptdesc { font-size: 0.98rem; line-height: 1.5; }
+          .svc-mobile-card .svc-img-tag { font-size: 1rem; }
+        }
+
+        @media (min-width: 640px) and (max-width: 1366px) {
+          .svc-mobile {
+            width: calc(100% - 48px);
+            margin: 30px auto 50px auto;
+          }
+          .svc-mobile-card .svc-mobile-img-wrap {
+            height: 420px;
+          }
+        }
+
+        @media (min-width: 1024px) and (max-width: 1366px) {
+          .svc-mobile {
+            width: calc(100% - 120px);
+            margin: 40px auto 60px auto;
+          }
+          .svc-mobile-card .svc-mobile-img-wrap {
+            height: 480px;
+          }
         }
       `}</style>
     </>

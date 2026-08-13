@@ -109,28 +109,28 @@ const WhoWeAre = () => {
             </div>
           </div>
           <p ref={paraRef} className="syne max-w-full lg:max-w-95 text-base leading-[1.7] text-black font-light lg:pt-2">
-MindPixel is the web and design division of MindStory in Thrissur, Kerala. We build websites, software, and digital experiences with clean design, fast performance, and user-friendly features that help businesses grow and succeed online.
+            MindPixel is the web and design division of MindStory in Thrissur, Kerala. We build websites, software, and digital experiences with clean design, fast performance, and user-friendly features that help businesses grow and succeed online.
           </p>
         </div>
 
         {/*  Cards  */}
         <div className="grid grid-cols-1 gap-4 lg:grid lg:gap-4" style={{ gridTemplateColumns: 'repeat(1, 1fr)' }}>
 
-          {/* Mobile layout */}
-          <div className="flex flex-col gap-4 lg:hidden">
-            <div ref={card1Ref} className="relative overflow-hidden rounded-[20px] min-h-64 flex flex-col justify-between p-7">
+          {/* Mobile & Tablet layout (iPad Mini, iPad Air, iPad Pro) */}
+          <div className="flex flex-col gap-4 xl:hidden">
+            <div ref={card1Ref} className="relative overflow-hidden rounded-[20px] min-h-64 sm:min-h-72 flex flex-col justify-between p-7 md:p-8">
               <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0">
                 <source src={img.WhatWeDoVideo} type="video/webm" />
               </video>
               <div className="absolute inset-0 bg-black/40 rounded-[20px] z-1" />
               <div className="relative z-10">
                 <span className="syne inline-block text-[0.7rem] font-medium tracking-widest uppercase py-1 mb-5 text-white/70">digital marketing · thrissur</span>
-                <h2 className="syne text-[1.4rem] font-normal leading-[1.2] text-white mb-3">Where strategy<br />meets story</h2>
-                <p className="syne text-[0.82rem] leading-[1.6] font-light text-white/65 m-0"> identity to performance campaigns we build digital presence that drives real results.</p>
+                <h2 className="syne text-[1.4rem] sm:text-[1.7rem] font-normal leading-[1.2] text-white mb-3">Where strategy<br />meets story</h2>
+                <p className="syne text-[0.85rem] sm:text-[0.95rem] leading-[1.6] font-light text-white/65 m-0 max-w-xl">From brand identity to performance campaigns we build digital presence that drives real results.</p>
               </div>
               <div className="relative z-10 flex justify-between items-end">
                 <div>
-                  <div className="syne text-[2.2rem] leading-none text-white/90">150+</div>
+                  <div className="syne text-[2.2rem] sm:text-[2.6rem] leading-none text-white/90">150+</div>
                   <div className="syne text-[0.72rem] text-white/45 mt-1 font-light">brands elevated</div>
                 </div>
                 <NavLink to="/contact">
@@ -142,32 +142,32 @@ MindPixel is the web and design division of MindStory in Thrissur, Kerala. We bu
             </div>
 
             <div className="grid grid-cols-2 gap-4">
-              <div ref={card2Ref} className="relative overflow-hidden rounded-[20px] bg-black flex flex-col justify-between min-h-56 p-5">
+              <div ref={card2Ref} className="relative overflow-hidden rounded-[20px] bg-black flex flex-col justify-between min-h-56 sm:min-h-64 p-5 md:p-7">
                 <div>
-                  <span className="syne inline-block text-[0.65rem] font-medium tracking-widest uppercase py-1 mb-4 text-white/70">Web Design & Develop</span>
-                  <h2 className="syne text-[1.1rem] font-normal leading-[1.2] text-white mb-2">Sites that sell,<br />not just shine</h2>
-                  <p className="syne text-[0.75rem] leading-[1.6] font-light text-white/65 m-0">Conversion-focused UI by MindPixel.</p>
+                  <span className="syne inline-block text-[0.65rem] sm:text-[0.7rem] font-medium tracking-widest uppercase py-1 mb-4 text-white/70">Web Design & Develop</span>
+                  <h2 className="syne text-[1.1rem] sm:text-[1.4rem] font-normal leading-[1.2] text-white mb-2">Sites that sell,<br />not just shine</h2>
+                  <p className="syne text-[0.78rem] sm:text-[0.88rem] leading-[1.6] font-light text-white/65 m-0">Conversion-focused UI by MindPixel.</p>
                 </div>
                 <div className="flex justify-between items-end mt-4">
-                  <div className="syne text-[0.65rem] text-white/40 font-light">SEO · UX</div>
+                  <div className="syne text-[0.65rem] sm:text-[0.72rem] text-white/40 font-light">SEO · UX</div>
                   <NavLink to="/contact">
-                    <button className="arrow-hover w-8 h-8 rounded-full border border-white/20 bg-transparent flex items-center justify-center text-white/70 transition-colors">
+                    <button className="arrow-hover w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-white/20 bg-transparent flex items-center justify-center text-white/70 transition-colors">
                       <IoIosArrowForward />
                     </button>
                   </NavLink>
                 </div>
               </div>
 
-              <div ref={card3Ref} className="relative overflow-hidden rounded-[20px] bg-[#fafafa] border border-[#ddd9ce] flex flex-col justify-between min-h-56 p-5">
+              <div ref={card3Ref} className="relative overflow-hidden rounded-[20px] bg-[#fafafa] border border-[#ddd9ce] flex flex-col justify-between min-h-56 sm:min-h-64 p-5 md:p-7">
                 <div>
-                  <span className="syne inline-block text-[0.65rem] font-medium tracking-widest uppercase py-1 mb-4 text-black">Growth Marketing</span>
-                  <h2 className="syne text-[1.1rem] font-normal leading-[1.2] text-[#1a1a1a] mb-2">Data-driven<br />growth</h2>
-                  <p className="syne text-[0.75rem] leading-[1.6] font-light text-[#6a6a6a] m-0">SEO, paid ads & social that convert.</p>
+                  <span className="syne inline-block text-[0.65rem] sm:text-[0.7rem] font-medium tracking-widest uppercase py-1 mb-4 text-black">Growth Marketing</span>
+                  <h2 className="syne text-[1.1rem] sm:text-[1.4rem] font-normal leading-[1.2] text-[#1a1a1a] mb-2">Data-driven<br />growth</h2>
+                  <p className="syne text-[0.78rem] sm:text-[0.88rem] leading-[1.6] font-light text-[#6a6a6a] m-0">SEO, paid ads & social that convert.</p>
                 </div>
                 <div className="flex justify-between items-end mt-4">
-                  <div className="syne text-[0.65rem] text-[#999] font-light">ROI-focused</div>
+                  <div className="syne text-[0.65rem] sm:text-[0.72rem] text-[#999] font-light">ROI-focused</div>
                   <NavLink to="/contact">
-                    <button className="arrow-hover-dark w-8 h-8 rounded-full border border-black/15 bg-transparent flex items-center justify-center text-[#1a1a1a] transition-colors">
+                    <button className="arrow-hover-dark w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-black/15 bg-transparent flex items-center justify-center text-[#1a1a1a] transition-colors">
                       <IoIosArrowForward />
                     </button>
                   </NavLink>
@@ -176,8 +176,8 @@ MindPixel is the web and design division of MindStory in Thrissur, Kerala. We bu
             </div>
           </div>
 
-          {/* Desktop layout */}
-          <div className="hidden lg:grid gap-4" style={{ gridTemplateColumns: '1.8fr 1fr 1fr' }}>
+          {/* Desktop layout (Large Desktop) */}
+          <div className="hidden xl:grid gap-4" style={{ gridTemplateColumns: '1.8fr 1fr 1fr' }}>
             <div ref={card1Ref} className="card-hover relative overflow-hidden rounded-[20px] min-h-65 flex flex-col justify-between p-9">
               <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0">
                 <source src={img.WhatWeDoVideo} type="video/webm" />

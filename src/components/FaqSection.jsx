@@ -32,6 +32,10 @@ const FAQS = [
   {
     q: "What is your design philosophy?",
     a: "Our design approach is simple to make it clear, useful, and memorable. We focus on clean visuals, easy navigation, fast-loading pages, and digital experiences that support both the user and the business goal."
+  },
+  {
+    q: "Can you redesign our existing website or application?",
+    a: "Yes. We conduct a thorough audit of your existing platform to modernize the UI/UX, improve loading speed, and optimize for conversions while preserving your valuable data."
   }
 ];
 
@@ -188,13 +192,14 @@ export default function FaqSection() {
           }
 
           .faq-form-card {
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(0, 0, 0, 0.08);
             border-radius: 16px;
             padding: 20px 14px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(8px);
+            background: #fafafa;
+            backdrop-filter: blur(12px);
             width: 100%;
             box-sizing: border-box;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
           }
           @media (min-width: 400px) {
             .faq-form-card {
@@ -216,7 +221,7 @@ export default function FaqSection() {
             font-family: 'Syne', sans-serif;
             font-size: 22px;
             font-weight: 400;
-            color: #fff;
+            color: #ffffff;
             margin: 0 0 24px;
           }
           @media (min-width: 400px) {
@@ -245,27 +250,27 @@ export default function FaqSection() {
             padding: 12px 0;
             background: transparent;
             border: none;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.2);
             outline: none;
-            color: #fff;
+            color: #0E100F;
             transition: border-color 0.3s;
             margin-bottom: 20px;
             box-sizing: border-box;
             border-radius: 0;
           }
           .faq-input:focus {
-            border-bottom-color: rgba(255, 255, 255, 0.8);
+            border-bottom-color: #FF8709;
           }
           .faq-input-error {
-            border-bottom: 2px solid #f87171 !important;
+            border-bottom: 2px solid #e11d48 !important;
           }
           input::placeholder, textarea::placeholder {
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(0, 0, 0, 0.45);
           }
 
           .faq-item {
             padding: 16px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
             cursor: pointer;
             transition: opacity 0.3s;
           }
@@ -281,9 +286,9 @@ export default function FaqSection() {
           .faq-q-title {
             font-family: 'Syne', sans-serif;
             font-size: 15px;
-            font-weight: 400;
+            font-weight: 500;
             margin: 0 0 8px;
-            color: #fff;
+            color: #ffffff;
             line-height: 1.4;
           }
           @media (min-width: 400px) {
@@ -306,7 +311,7 @@ export default function FaqSection() {
           .faq-a-text {
             font-family: 'Syne', sans-serif;
             font-size: 14px;
-            color: rgba(255, 255, 255, 0.65);
+            color: rgba(255, 255, 255, 0.9);
             line-height: 1.6;
             margin: 0;
           }
@@ -346,22 +351,22 @@ export default function FaqSection() {
 
           .custom-dropdown-menu {
             scrollbar-width: thin;
-            scrollbar-color: #ffb86a rgba(255, 255, 255, 0.08);
+            scrollbar-color: #FF8709 rgba(0, 0, 0, 0.06);
           }
           .custom-dropdown-menu::-webkit-scrollbar {
             width: 6px;
             display: block;
           }
           .custom-dropdown-menu::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(0, 0, 0, 0.06);
             border-radius: 4px;
           }
           .custom-dropdown-menu::-webkit-scrollbar-thumb {
-            background: #ffb86a;
+            background: #FF8709;
             border-radius: 4px;
           }
           .custom-dropdown-menu::-webkit-scrollbar-thumb:hover {
-            background: #ffa843;
+            background: #0E100F;
           }
         `}</style>
 
@@ -379,10 +384,10 @@ export default function FaqSection() {
                   alignItems: "center",
                   justifyContent: "center",
                   padding: "32px 20px",
-                  border: "1px solid rgba(255,255,255,0.15)",
+                  border: "1px solid rgba(0, 0, 0, 0.08)",
                   borderRadius: "16px",
-                  background: "rgba(255,255,255,0.03)",
-                  backdropFilter: "blur(8px)",
+                  background: "#fafafa",
+                  backdropFilter: "blur(12px)",
                   textAlign: "center",
                 }}
               >
@@ -390,8 +395,8 @@ export default function FaqSection() {
                   style={{
                     fontFamily: "'Syne', sans-serif",
                     fontSize: "22px",
-                    fontWeight: 500,
-                    color: "#fff",
+                    fontWeight: 600,
+                    color: "#0E100F",
                     margin: "0 0 12px",
                   }}
                 >
@@ -401,7 +406,7 @@ export default function FaqSection() {
                   style={{
                     fontFamily: "'Syne', sans-serif",
                     fontSize: "14px",
-                    color: "rgba(255,255,255,0.7)",
+                    color: "rgba(0, 0, 0, 0.7)",
                     lineHeight: 1.6,
                     maxWidth: "340px",
                     margin: 0,
@@ -438,7 +443,7 @@ export default function FaqSection() {
                       alignItems: "center",
                       justifyContent: "space-between",
                       userSelect: "none",
-                      color: form.subject ? "#fff" : "rgba(255,255,255,0.4)",
+                      color: form.subject ? "#0E100F" : "rgba(0, 0, 0, 0.45)",
                       marginBottom: 0,
                     }}
                   >
@@ -450,7 +455,7 @@ export default function FaqSection() {
                         transform: isDropdownOpen ? "rotate(180deg)" : "rotate(0deg)",
                         transition: "transform 0.3s ease",
                         fontSize: "10px",
-                        color: "rgba(255,255,255,0.6)",
+                        color: "rgba(0, 0, 0, 0.6)",
                         marginLeft: "8px",
                         flexShrink: 0,
                       }}
@@ -471,14 +476,14 @@ export default function FaqSection() {
                         right: 0,
                         zIndex: 50,
                         marginTop: "4px",
-                        background: "#141414",
-                        border: "1px solid rgba(255,255,255,0.2)",
+                        background: "#ffffff",
+                        border: "1px solid rgba(0, 0, 0, 0.12)",
                         borderRadius: "12px",
                         maxHeight: "175px",
                         overflowY: "auto",
                         overscrollBehavior: "contain",
                         WebkitOverflowScrolling: "touch",
-                        boxShadow: "0 12px 36px rgba(0,0,0,0.6)",
+                        boxShadow: "0 12px 36px rgba(0, 0, 0, 0.12)",
                         backdropFilter: "blur(12px)",
                       }}
                     >
@@ -493,21 +498,21 @@ export default function FaqSection() {
                             padding: "12px 16px",
                             fontSize: "14px",
                             fontFamily: "'Syne', sans-serif",
-                            color: form.subject === service ? "#ffb86a" : "rgba(255,255,255,0.85)",
-                            background: form.subject === service ? "rgba(255,184,106,0.12)" : "transparent",
+                            color: form.subject === service ? "#FF8709" : "rgba(0, 0, 0, 0.85)",
+                            background: form.subject === service ? "rgba(255, 135, 9, 0.15)" : "transparent",
                             cursor: "pointer",
                             transition: "background 0.2s, color 0.2s",
                           }}
                           onMouseEnter={(e) => {
                             if (form.subject !== service) {
-                              e.currentTarget.style.background = "rgba(255,255,255,0.08)";
-                              e.currentTarget.style.color = "#fff";
+                              e.currentTarget.style.background = "rgba(0, 0, 0, 0.05)";
+                              e.currentTarget.style.color = "#0E100F";
                             }
                           }}
                           onMouseLeave={(e) => {
                             if (form.subject !== service) {
                               e.currentTarget.style.background = "transparent";
-                              e.currentTarget.style.color = "rgba(255,255,255,0.85)";
+                              e.currentTarget.style.color = "rgba(0, 0, 0, 0.85)";
                             }
                           }}
                         >
@@ -523,6 +528,7 @@ export default function FaqSection() {
                   style={{
                     minHeight: "90px",
                     resize: "vertical",
+                    marginBottom: "16px",
                   }}
                   placeholder="Project goals *"
                   value={form.message}
@@ -533,7 +539,7 @@ export default function FaqSection() {
                 {/* Cloudflare Turnstile CAPTCHA */}
                 <div className="turnstile-wrapper">
                   <TurnstileWidget
-                    theme="dark"
+                    theme="light"
                     onVerify={(token) => {
                       setCaptchaToken(token);
                       setErrorMsg("");
@@ -547,11 +553,12 @@ export default function FaqSection() {
                   <div
                     style={{
                       padding: "10px 14px",
+                      marginTop: "8px",
                       marginBottom: "16px",
                       borderRadius: "8px",
-                      background: "rgba(248, 113, 113, 0.15)",
-                      border: "1px solid rgba(248, 113, 113, 0.3)",
-                      color: "#f87171",
+                      background: "rgba(225, 29, 72, 0.08)",
+                      border: "1px solid rgba(225, 29, 72, 0.25)",
+                      color: "#e11d48",
                       fontSize: "13px",
                       textAlign: "center",
                     }}
@@ -563,11 +570,11 @@ export default function FaqSection() {
                 <AnimatedButton
                   type="submit"
                   disabled={status === "submitting"}
-                  bgColor="#ffb86a"
-                  textColor="#111"
-                  hoverBgColor="#1a1a1a"
-                  hoverTextColor="#fff"
-                  style={{ width: "100%", padding: "14px 16px" }}
+                  bgColor="#FF8709"
+                  textColor="#0E100F"
+                  hoverBgColor="#0E100F"
+                  hoverTextColor="#ffffff"
+                  style={{ width: "100%", padding: "14px 16px", marginTop: "12px" }}
                 >
                   {status === "submitting" ? "Sending..." : "Submit Inquiry"}
                 </AnimatedButton>
@@ -576,9 +583,9 @@ export default function FaqSection() {
                   style={{
                     marginTop: "20px",
                     padding: "14px 16px",
-                    background: "rgba(255,255,255,0.05)",
+                    background: "rgba(0, 0, 0, 0.04)",
                     borderRadius: "8px",
-                    border: "1px solid rgba(255,255,255,0.1)",
+                    border: "1px solid rgba(0, 0, 0, 0.08)",
                   }}
                 >
                   <p
@@ -586,12 +593,12 @@ export default function FaqSection() {
                       margin: 0,
                       fontSize: "13px",
                       fontFamily: "'Syne', sans-serif",
-                      color: "rgba(255,255,255,0.7)",
+                      color: "rgba(0, 0, 0, 0.7)",
                       wordBreak: "break-word",
                     }}
                   >
                     Or reach us at{" "}
-                    <strong style={{ color: "#fff", fontWeight: 500 }}>
+                    <strong style={{ color: "#0E100F", fontWeight: 600 }}>
                       hello@mindstory.in
                     </strong>
                   </p>
@@ -627,4 +634,4 @@ export default function FaqSection() {
       </section>
     </div>
   );
-}
+}

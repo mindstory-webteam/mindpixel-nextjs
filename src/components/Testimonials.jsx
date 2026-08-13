@@ -38,20 +38,20 @@ const StarRating = ({ count }) => (
 /* Mobile/Tablet card */
 const SlideCard = ({ slide, index }) => (
   <div
-    className="shrink-0 w-[78vw] md:w-[44vw] rounded-3xl flex flex-col justify-between p-7 snap-center"
+    className="shrink-0 w-[82vw] sm:w-[50vw] md:w-[42vw] lg:w-[32vw] max-w-[420px] rounded-3xl flex flex-col justify-between p-6 sm:p-7 snap-center"
     style={{ backgroundColor: slide.color, boxShadow: '0 4px 20px rgba(0,0,0,0.10)' }}
   >
-    <p className="text-[4.2vw] md:text-[2.4vw] font-medium leading-snug text-black" style={{ fontFamily: "'Syne', sans-serif" }}>
+    <p className="text-[15px] sm:text-[17px] md:text-[18px] font-medium leading-relaxed text-black" style={{ fontFamily: "'Syne', sans-serif" }}>
       "{slide.text}"
     </p>
-    <div>
+    <div className="mt-4">
       <div className="flex items-center gap-3">
         <img
           src={`${img.userimg}`}
           alt={slide.username}
-          className="w-9 h-9 rounded-full object-cover shrink-0"
+          className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover shrink-0"
         />
-        <p className="text-[3.2vw] md:text-[1.8vw] font-bold tracking-tight text-black/50" style={{ fontFamily: "'Syne', sans-serif" }}>
+        <p className="text-[14px] sm:text-[15px] font-bold tracking-tight text-black/60" style={{ fontFamily: "'Syne', sans-serif" }}>
           {slide.username}
         </p>
       </div>
@@ -60,21 +60,62 @@ const SlideCard = ({ slide, index }) => (
   </div>
 )
 
-/* Mobile swiper */
+/* Mobile & Tablet swiper with auto-scroll */
 const MobileSwiper = () => {
   const trackRef = useRef(null)
   const [current, setCurrent] = useState(0)
   const touchStart = useRef(null)
   const touchDelta = useRef(0)
+  const isInteracting = useRef(false)
+  const resumeTimer = useRef(null)
 
-  const goTo = (idx) => {
-    const clamped = Math.max(0, Math.min(slidesData.length - 1, idx))
-    setCurrent(clamped)
-    trackRef.current?.children[clamped]?.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' })
+  const scrollToChild = (idx) => {
+    const track = trackRef.current
+    if (!track) return
+    const child = track.children[idx]
+    if (!child) return
+    const childOffset = child.offsetLeft - (track.offsetWidth - child.offsetWidth) / 2
+    track.scrollTo({ left: Math.max(0, childOffset), behavior: 'smooth' })
   }
 
-  const onTouchStart = (e) => { touchStart.current = e.touches[0].clientX }
-  const onTouchMove = (e) => { touchDelta.current = e.touches[0].clientX - touchStart.current }
+  const goTo = (idx) => {
+    const clamped = (idx + slidesData.length) % slidesData.length
+    setCurrent(clamped)
+    scrollToChild(clamped)
+  }
+
+  // Auto scroll timer for mobile & tablet screens (moves cards without pulling window scroll)
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (!isInteracting.current) {
+        setCurrent((prev) => {
+          const next = (prev + 1) % slidesData.length
+          scrollToChild(next)
+          return next
+        })
+      }
+    }, 3200)
+
+    return () => clearInterval(timer)
+  }, [])
+
+  const pauseAutoPlay = () => {
+    isInteracting.current = true
+    if (resumeTimer.current) clearTimeout(resumeTimer.current)
+    resumeTimer.current = setTimeout(() => {
+      isInteracting.current = false
+    }, 3000)
+  }
+
+  const onTouchStart = (e) => {
+    pauseAutoPlay()
+    touchStart.current = e.touches[0].clientX
+  }
+
+  const onTouchMove = (e) => {
+    touchDelta.current = e.touches[0].clientX - touchStart.current
+  }
+
   const onTouchEnd = () => {
     if (Math.abs(touchDelta.current) > 40) {
       goTo(touchDelta.current < 0 ? current + 1 : current - 1)
@@ -83,12 +124,15 @@ const MobileSwiper = () => {
   }
 
   return (
-    <div className="w-full flex flex-col items-center gap-5 py-6 bg-white overflow-hidden">
+    <div
+      className="w-full flex flex-col items-center gap-5 py-6 bg-white overflow-hidden"
+      onMouseEnter={pauseAutoPlay}
+    >
       <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');`}</style>
 
       <div
         ref={trackRef}
-        className="w-full flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth px-[11vw] md:px-[6vw] pb-2"
+        className="w-full flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth px-[8vw] sm:px-[6vw] pb-2"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
@@ -104,7 +148,10 @@ const MobileSwiper = () => {
         {slidesData.map((_, i) => (
           <button
             key={i}
-            onClick={() => goTo(i)}
+            onClick={() => {
+              pauseAutoPlay()
+              goTo(i)
+            }}
             className="transition-all duration-300 rounded-full"
             style={{
               width: i === current ? 20 : 8,
@@ -279,7 +326,7 @@ const Testimonials = () => {
   const [isDesktop, setIsDesktop] = useState(false)
 
   useEffect(() => {
-    const mq = window.matchMedia('(min-width: 1024px)')
+    const mq = window.matchMedia('(min-width: 1367px)')
     setIsDesktop(mq.matches)
     const handler = (e) => setIsDesktop(e.matches)
     mq.addEventListener('change', handler)

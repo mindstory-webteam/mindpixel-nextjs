@@ -91,39 +91,39 @@ const Navbar = () => {
         }
       `}</style>
 
-      {/* ══ DESKTOP (md+) ══ */}
-      <div className="navbar-syne hidden md:flex fixed top-0 left-0 right-0 z-50 justify-center items-center w-full pointer-events-none px-4 md:px-10 lg:px-15">
+      {/* ══ DESKTOP & TABLET (md+) ══ */}
+      <div className="navbar-syne hidden md:flex fixed top-0 left-0 right-0 z-50 justify-center items-center w-full pointer-events-none px-3 sm:px-5 md:px-6 lg:px-12 xl:px-16">
         <nav
-          className="pointer-events-auto relative flex flex-row items-center justify-between w-full"
+          className="pointer-events-auto relative flex flex-row items-center justify-between w-full max-w-[1340px]"
           style={{
-            paddingLeft: '20px',
-            paddingRight: '20px',
+            paddingLeft: '22px',
+            paddingRight: '22px',
             paddingTop: '10px',
             paddingBottom: '10px',
             marginTop: '10px',
-            backgroundColor: 'rgba(255,255,255,0.85)',
+            backgroundColor: 'rgba(255,255,255,0.88)',
             backdropFilter: 'blur(12px)',
             WebkitBackdropFilter: 'blur(12px)',
             borderRadius: '50px',
             boxShadow: '0 4px 30px rgba(0,0,0,0.08)'
           }}
         >
-          <div className="shrink-0">
-            <img src={img.myndpixel} alt="Logo" className="w-28 cursor-pointer" onClick={() => navigateTo('/')} />
+          <div className="shrink-0 flex items-center">
+            <img src={img.myndpixel} alt="Logo" className="w-24 sm:w-26 md:w-28 cursor-pointer" onClick={() => navigateTo('/')} />
           </div>
-          <div className="absolute left-1/2 -translate-x-1/2">
-            <ul className="flex flex-row gap-6">
+          <div className="flex-1 flex justify-center px-2 sm:px-4">
+            <ul className="flex flex-row gap-3 sm:gap-4 md:gap-5 lg:gap-7 items-center m-0 p-0">
               {activeNavLinks.map(({ to, label }) => (
                 <li key={to}>
                   <NavLink to={to} onClick={(e) => handleNavClick(e, to)}
-                    className={({ isActive }) => isActive ? 'text-black text-sm' : 'text-gray-600 hover:text-black transition-colors text-sm'}
+                    className={({ isActive }) => isActive ? 'text-black text-xs sm:text-xs md:text-[13px] lg:text-sm font-semibold' : 'text-gray-600 hover:text-black transition-colors text-xs sm:text-xs md:text-[13px] lg:text-sm'}
                     style={syneBase}>{label}</NavLink>
                 </li>
               ))}
             </ul>
           </div>
           <div
-            className="rounded-full p-2 cursor-pointer"
+            className="shrink-0 rounded-full p-2 cursor-pointer transition-transform hover:scale-105"
             style={glassStyle}
             onClick={() => navigateTo('/contact')}
           >

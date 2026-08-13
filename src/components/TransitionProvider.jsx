@@ -12,7 +12,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useLenis } from "lenis/react";
 import gsap from "gsap";
 
-const MD_BREAKPOINT = 768;
+const TRANSITION_MIN_WIDTH = 1025; // Hide page transition overlay on iPad Mini (768px), Air (820px), Pro (1024px), and mobile viewports
 
 // ─── Routes that should NOT trigger the page transition overlay ──────────────
 function shouldSkipTransition(href) {
@@ -141,8 +141,8 @@ export default function TransitionProvider({ children, column = 6 }) {
       if (isTransitioning.current) return;
       if (pathname === href) return;
 
-      // Skip transition overlay for blog detail pages, thank-you, and small screens
-      if (shouldSkipTransition(href) || window.innerWidth < MD_BREAKPOINT) {
+      // Skip transition overlay for blog detail pages, thank-you, iPad Mini/Air/Pro, and tablet/mobile screens
+      if (shouldSkipTransition(href) || window.innerWidth < TRANSITION_MIN_WIDTH) {
         router.push(href);
         return;
       }
@@ -170,7 +170,7 @@ export default function TransitionProvider({ children, column = 6 }) {
 
   const overlay = (
     <div
-      className="hidden md:flex"
+      className="hidden lg:flex"
       style={{
         position: "fixed",
         inset: 0,
