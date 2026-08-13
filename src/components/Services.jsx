@@ -1,18 +1,19 @@
 "use client";
-import { useEffect, useRef } from "react";
-import Image from "next/image";
-import { gsap } from "gsap";
+import { useRef, useEffect } from "react";
+import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { motion } from "framer-motion";
 import { img } from "../assets/assest";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const cardAccents = [
-  { bg: "linear-gradient(135deg, #95257b 0%, #6b1958 100%)", text: "#ffffff" },
-  { bg: "linear-gradient(135deg, #95257b 0%, #7c1d66 100%)", text: "#ffffff" },
-  { bg: "linear-gradient(135deg, #95257b 0%, #6b1958 100%)", text: "#ffffff" },
-  { bg: "linear-gradient(135deg, #95257b 0%, #7c1d66 100%)", text: "#ffffff" },
-  { bg: "linear-gradient(135deg, #95257b 0%, #6b1958 100%)", text: "#ffffff" },
-  { bg: "linear-gradient(135deg, #95257b 0%, #7c1d66 100%)", text: "#ffffff" },
+  { bg: "#95257b", text: "#ffffff" },
+  { bg: "#95257b", text: "#ffffff" },
+  { bg: "#95257b", text: "#ffffff" },
+  { bg: "#95257b", text: "#ffffff" },
+  { bg: "#95257b", text: "#ffffff" },
+  { bg: "#95257b", text: "#ffffff" },
 ];
 
 const services = [
@@ -86,8 +87,8 @@ const services = [
     points: [
       { label: "Technical Audit", desc: "Crawl errors, Core Web Vitals, indexing issues, and site structure fixes." },
       { label: "Keyword Strategy", desc: "Search intent-based keyword mapping aligned with your business goals." },
-      { label: "Content Optimization", desc: "On-page improvements that make your content clearer and easier for search engines." },
-      { label: "Performance Tracking", desc: "Clear reporting with measurable KPIs, ranking movement, and traffic insights." },
+      { label: "Content Optimization", desc: "On-page improvements that make your content clearer, more useful, and easier for search engines to understand." },
+      { label: "Performance Tracking", desc: "Clear reporting with measurable KPIs, ranking movement, traffic insights, and improvement areas." },
     ],
     image: `${img.seoservice}`,
   },
@@ -101,7 +102,7 @@ const services = [
     points: [
       { label: "User Research", desc: "Understanding real user needs, behaviour, and pain points before planning the design." },
       { label: "Wireframes & Prototypes", desc: "Clickable layouts that help validate ideas before development begins." },
-      { label: "Design Systems", desc: "Consistent, scalable design components that make future updates faster." },
+      { label: "Design Systems", desc: "Consistent, scalable design components that make future updates faster and easier." },
       { label: "Accessibility", desc: "Designs planned to work clearly for different users across devices and screen sizes." },
     ],
     image: `${img.uiux}`,
@@ -109,224 +110,242 @@ const services = [
 ];
 
 const swirlPaths = [
-  "M 1030 55 C 905 95, 808 58, 688 118 C 568 178, 528 305, 408 345 C 290 383, 182 322, 102 382 C 42 424, -30 505, -30 625",
-  "M 180 -30 C 210 70, 280 160, 230 270 C 180 375, 70 390, 90 490 C 110 565, 250 600, 400 580 C 550 558, 660 490, 790 520 C 890 542, 960 590, 1030 585",
-  "M 1030 410 C 920 390, 820 440, 700 375 C 580 310, 530 190, 390 165 C 265 143, 158 225, 65 185 C 15 163, -30 115, -30 50",
-  "M 1030 75 C 905 55, 830 125, 795 230 C 758 335, 820 415, 775 500 C 730 572, 625 608, 505 588 C 385 568, 285 505, 162 525 C 82 540, 18 585, -30 625",
-  "M -30 590 C 95 525, 175 445, 275 385 C 375 325, 435 225, 555 205 C 655 188, 758 248, 860 205 C 942 170, 985 100, 1030 35",
-  "M 1030 55 C 905 95, 808 58, 688 118 C 568 178, 528 305, 408 345 C 290 383, 182 322, 102 382 C 42 424, -30 505, -30 625",
+  `M 1030 55 C 905 95, 808 58, 688 118 C 568 178, 528 305, 408 345 C 290 383, 182 322, 102 382 C 42 424, -30 505, -30 625`,
+  `M 180 -30 C 210 70, 280 160, 230 270 C 180 375, 70 390, 90 490 C 110 565, 250 600, 400 580 C 550 558, 660 490, 790 520 C 890 542, 960 590, 1030 585`,
+  `M 1030 410 C 920 390, 820 440, 700 375 C 580 310, 530 190, 390 165 C 265 143, 158 225, 65 185 C 15 163, -30 115, -30 50`,
+  `M 1030 75 C 905 55, 830 125, 795 230 C 758 335, 820 415, 775 500 C 730 572, 625 608, 505 588 C 385 568, 285 505, 162 525 C 82 540, 18 585, -30 625`,
+  `M -30 590 C 95 525, 175 445, 275 385 C 375 325, 435 225, 555 205 C 655 188, 758 248, 860 205 C 942 170, 985 100, 1030 35`,
+  `M 1030 55 C 905 95, 808 58, 688 118 C 568 178, 528 305, 408 345 C 290 383, 182 322, 102 382 C 42 424, -30 505, -30 625`,
 ];
 
-const N = services.length;
-const STICKY_TOP = 85; // navbar height in px
-
 export default function Services() {
-  const trackRef = useRef(null);
-  const cardsRef = useRef([]);
+  const cardRefs = useRef([]);
+  const outroRef = useRef(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      gsap.registerPlugin(ScrollTrigger);
-    }
+    let mm = gsap.matchMedia();
 
-    const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
+    // Enable GSAP pin & scale animation ONLY on lg screens (desktop: min-width 1280px)
+    mm.add("(min-width: 1280px)", () => {
+      const cards = cardRefs.current.filter(Boolean);
 
-      mm.add("(min-width: 1280px)", () => {
-        const cards = cardsRef.current.filter(Boolean);
-        if (!cards.length) return;
+      cards.forEach((card, index) => {
+        const isLast = index === cards.length - 1;
+        const inner = card.querySelector(".svc-stack-inner");
 
-        gsap.set(cards[0], { y: 0, force3D: true });
-        for (let i = 1; i < cards.length; i++) {
-          gsap.set(cards[i], { y: "100vh", force3D: true });
-        }
-
-        // ── Scrubbed slide-up timeline ────────────────────────
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: trackRef.current,
-            start: `top ${STICKY_TOP}px`,
-            end: "bottom bottom",
-            scrub: 0.6,
-            invalidateOnRefresh: true,
-          },
+        ScrollTrigger.create({
+          trigger: card,
+          start: "top 65px",
+          endTrigger: outroRef.current,
+          end: "top 100%",
+          pin: true,
+          pinSpacing: false,
+          invalidateOnRefresh: true,
         });
 
-        for (let i = 1; i < cards.length; i++) {
-          tl.to(cards[i], { y: 0, ease: "none", duration: 1 }, i - 1);
+        if (!isLast) {
+          gsap.to(inner, {
+            scale: 0.95,
+            ease: "none",
+            scrollTrigger: {
+              trigger: cards[index + 1],
+              start: "top 100%",
+              end: "top 40px",
+              scrub: true,
+            },
+          });
         }
-        // Hold duration after the last card reaches position before scrolling resumes
-        tl.to({}, { duration: 0.1 });
       });
+    });
 
-      const timer = setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 100);
-
-      return () => clearTimeout(timer);
-    }, trackRef);
-
-    return () => ctx.revert();
+    return () => mm.revert();
   }, []);
 
   return (
     <>
-      {/* ── DESKTOP & TABLET ─────────────────────────────────────────────── */}
-      <div ref={trackRef} className="svc-track">
-        <div className="svc-win">
-          {services.map((svc, i) => {
-            const accent = cardAccents[i % cardAccents.length];
-            return (
+      {/* ── DESKTOP ONLY: PINNED STACKING CARDS (lg screens) ──────────────── */}
+      <section className="svc-stack-section">
+        {services.map((service, index) => {
+          const accent = cardAccents[index % cardAccents.length];
+          const isLight = accent.text === "#ffffff";
+          return (
+            <div
+              key={service.id}
+              ref={(el) => (cardRefs.current[index] = el)}
+              className="svc-card-block"
+            >
               <div
-                key={svc.id}
-                ref={(el) => (cardsRef.current[i] = el)}
-                className="svc-slot"
-                style={{ zIndex: i + 1 }}
+                className="svc-stack-inner"
+                style={{
+                  background: accent.bg,
+                  color: accent.text,
+                  border: `1px solid ${isLight ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.12)"}`,
+                }}
               >
-                <div
-                  className="svc-card"
-                  style={{ background: accent.bg, color: accent.text }}
+                <svg
+                  className="svc-swirl-svg"
+                  viewBox="0 0 1000 600"
+                  preserveAspectRatio="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
                 >
-                  {/* decorative swirl */}
-                  <svg className="svc-swirl" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden>
-                    <path
-                      className="svc-swirl-path"
-                      d={swirlPaths[i]}
-                      fill="none"
-                      stroke="#e9d5ff"
-                      strokeWidth="56"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
+                  <path
+                    d={swirlPaths[index]}
+                    fill="none"
+                    stroke="#e9d5ff"
+                    strokeWidth="30"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    opacity="0.38"
+                  />
+                </svg>
 
-                  <div className="svc-grid">
-                    {/* image */}
-                    <div className="svc-img-wrap">
-                      <Image src={svc.image} alt={svc.title} fill className="svc-img" sizes="(max-width:1024px) 50vw, 40vw" loading="lazy" />
-                      <span className="svc-img-tag">{svc.tag}</span>
+                <div className="svc-stack-grid">
+                  <div className="svc-stack-img-wrap">
+                    <img
+                      src={service.image}
+                      alt={service.title}
+                      className="svc-stack-img"
+                    />
+                    <span className="svc-img-tag">{service.tag}</span>
+                  </div>
+
+                  <div className="svc-stack-text">
+                    <p
+                      className="svc-desc"
+                      style={{
+                        color: isLight ? "rgba(255,255,255,0.75)" : "rgba(0,0,0,0.6)",
+                      }}
+                    >
+                      {service.description}
+                    </p>
+
+                    <div className="svc-points">
+                      {service.points.map((pt) => (
+                        <div className="svc-point-item" key={pt.label}>
+                          <div className="svc-point-dot" />
+                          <div className="svc-point-body">
+                            <span className="svc-point-label" style={{ color: accent.text }}>
+                              {pt.label}
+                            </span>
+                            <span
+                              className="svc-point-desc"
+                              style={{
+                                color: isLight ? "rgba(255,255,255,0.65)" : "rgba(0,0,0,0.55)",
+                              }}
+                            >
+                              {pt.desc}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
                     </div>
 
-                    {/* text */}
-                    <div className="svc-body">
-                      <p className="svc-desc">
-                        {svc.description}
-                      </p>
-
-                      <div className="svc-points">
-                        {svc.points.map((pt) => (
-                          <div className="svc-point-item" key={pt.label}>
-                            <div className="svc-dot" />
-                            <div className="svc-point-body">
-                              <span className="svc-lbl">{pt.label}</span>
-                              <span className="svc-ptdesc">
-                                {pt.desc}
-                              </span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-
-                      <div className="svc-tags">
-                        {svc.subtags.map((sub) => (
-                          <span key={sub} className="svc-tag">
-                            {sub}
-                          </span>
-                        ))}
-                      </div>
+                    <div className="svc-subtags">
+                      {service.subtags.map((sub) => (
+                        <span
+                          key={sub}
+                          className="svc-stack-subtag bg-white text-black"
+                          style={{
+                            border: `1px solid ${isLight ? "rgba(255,255,255,0.45)" : "rgba(0,0,0,0.3)"}`,
+                          }}
+                        >
+                          {sub}
+                        </span>
+                      ))}
                     </div>
                   </div>
                 </div>
               </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* ── MOBILE ───────────────────────────────────────────────────────── */}
-      <div className="svc-mobile">
-        {services.map((svc, i) => {
-          const accent = cardAccents[i % cardAccents.length];
-          return (
-            <motion.div
-              key={svc.id}
-              className="svc-mobile-card"
-              style={{ background: accent.bg, color: accent.text }}
-              initial={{ opacity: 0, y: 28 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
-              transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: i * 0.05 }}
-            >
-              <div className="svc-img-wrap svc-mobile-img-wrap">
-                <Image src={svc.image} alt={svc.title} fill className="svc-img" sizes="(max-width:1199px) 100vw, 40vw" loading="lazy" />
-                <span className="svc-img-tag">{svc.tag}</span>
-              </div>
-              <div className="svc-body" style={{ height: "auto", padding: "1.6rem 1.4rem" }}>
-                <p className="svc-desc">{svc.description}</p>
-                <div className="svc-points">
-                  {svc.points.map((pt) => (
-                    <div className="svc-point-item" key={pt.label}>
-                      <div className="svc-dot" />
-                      <div className="svc-point-body">
-                        <span className="svc-lbl">{pt.label}</span>
-                        <span className="svc-ptdesc">{pt.desc}</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div className="svc-tags">
-                  {svc.subtags.map((t) => (
-                    <span key={t} className="svc-tag">{t}</span>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
+            </div>
           );
         })}
+        <div ref={outroRef} className="svc-outro-spacer" />
+      </section>
+
+      {/* ── MOBILE & TABLETS (sm, iPad mini, iPad, iPad Pro): OLD CARDS & ANIMATION ── */}
+      <div className="svc-mobile">
+        {services.map((svc, i) => (
+          <motion.div
+            key={svc.id}
+            className="svc-mobile-card"
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.15 }}
+            transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1], delay: i * 0.05 }}
+          >
+            <div className="svc-mobile-img-wrap">
+              <img src={svc.image} alt={svc.title} className="svc-mobile-img" />
+              <span className="svc-img-tag">{svc.tag}</span>
+            </div>
+            <div className="svc-mobile-body">
+              <p className="svc-desc" style={{ color: "rgba(255,255,255,0.85)" }}>
+                {svc.description}
+              </p>
+              <div className="svc-points">
+                {svc.points.map((pt) => (
+                  <div className="svc-point-item" key={pt.label}>
+                    <div className="svc-point-dot" />
+                    <div className="svc-point-body">
+                      <span className="svc-point-label" style={{ color: "#ffffff" }}>
+                        {pt.label}
+                      </span>
+                      <span className="svc-point-desc" style={{ color: "rgba(255,255,255,0.7)" }}>
+                        {pt.desc}
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="svc-subtags">
+                {svc.subtags.map((t) => (
+                  <span key={t} className="svc-stack-subtag bg-white text-black">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        ))}
       </div>
 
-      {/* ── STYLES ──────────────────────────────────────────────────────── */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
 
-        /* ─ scroll track: N×100vh gives scroll distance for all N cards ─ */
-        .svc-track {
-          height: ${(N + 1.2) * 100}vh;
+        /* ─ DESKTOP PINNED STACKING ─ */
+        .svc-stack-section {
           position: relative;
-          margin-top: 0px;
-          margin-bottom: 60px;
-        }
-
-        /* ─ sticky window: sticks until track ends ─ */
-        .svc-win {
-          position: sticky;
-          top: ${STICKY_TOP}px;
-          height: calc(100vh - ${STICKY_TOP}px);
-          overflow: hidden;
-          background: #fff;
-        }
-
-        /* ─ card slot: fills the sticky window ─ */
-        .svc-slot {
-          position: absolute;
-          inset: 16px 72px;
-          will-change: transform;
-          transform: translateZ(0);
-        }
-
-        /* ─ card: rounded, NO shadows ─ */
-        .svc-card {
           width: 100%;
-          height: 100%;
+          background: #fff;
+          padding-bottom: 10px;
+        }
+
+        .svc-card-block {
+          position: relative;
+          width: 100%;
+          height: 100vh;
+          display: flex;
+          align-items: flex-start;
+          justify-content: center;
+          padding-top: 40px;
+          box-sizing: border-box;
+        }
+
+        .svc-stack-inner {
+          width: calc(100% - 144px);
+          height: 75vh;
           border-radius: 2rem;
-          padding: 2rem 2.4rem;
+          padding: 2.5rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
           position: relative;
           overflow: hidden;
           will-change: transform;
           box-sizing: border-box;
         }
 
-        .svc-swirl {
+        .svc-swirl-svg {
           position: absolute;
           inset: 0;
           width: 100%;
@@ -335,66 +354,57 @@ export default function Services() {
           pointer-events: none;
         }
 
-        .svc-swirl-path {
-          opacity: 0.45;
-        }
-
-        .svc-grid {
+        .svc-stack-grid {
           display: grid;
           grid-template-columns: 0.85fr 1fr;
-          gap: 2.2rem;
-          height: 100%;
+          gap: 0;
           position: relative;
           z-index: 1;
-          align-items: center;
+          height: 100%;
+          align-items: stretch;
           min-height: 0;
         }
 
-        .svc-img-wrap {
+        .svc-stack-img-wrap {
           position: relative;
           border-radius: 1.25rem;
           overflow: hidden;
           height: 100%;
-          min-height: 320px;
-          max-height: 560px;
+          max-height: 100%;
           width: 100%;
-          transform: translateZ(0);
         }
 
-        .svc-img {
+        .svc-stack-img {
           width: 100%;
           height: 100%;
           object-fit: cover;
           display: block;
-          transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-          will-change: transform;
+          transition: transform 0.7s ease;
         }
-        .svc-card:hover .svc-img { transform: scale(1.05); }
 
         .svc-img-tag {
           position: absolute;
-          bottom: 14px;
-          left: 14px;
+          bottom: 10px;
+          left: 12px;
           font-family: 'Syne', sans-serif;
           font-size: 20px;
           font-weight: 600;
-          padding: 6px 16px;
+          padding: 4px 14px;
           border-radius: 9999px;
+          opacity: 0.92;
           pointer-events: none;
           z-index: 2;
           color: #fff;
-          background: rgba(0,0,0,0.35);
-          backdrop-filter: blur(10px);
-          -webkit-backdrop-filter: blur(10px);
-          border: 1px solid rgba(255,255,255,0.22);
+          background: rgba(0,0,0,0.3);
+          backdrop-filter: blur(8px);
         }
 
-        .svc-body {
+        .svc-stack-text {
           display: flex;
           flex-direction: column;
           justify-content: center;
-          padding: 0.5rem 0.5rem;
-          gap: 1.1rem;
+          padding: 1.5rem 2rem;
+          gap: 1rem;
           overflow: hidden;
           height: 100%;
           min-height: 0;
@@ -403,12 +413,10 @@ export default function Services() {
 
         .svc-desc {
           font-family: 'Syne', sans-serif;
-          font-size: 17px;
+          font-size: 15px;
           font-weight: 400;
-          line-height: 1.65;
+          line-height: 1.7;
           margin: 0;
-          color: inherit;
-          opacity: 0.88;
         }
 
         .svc-points {
@@ -420,132 +428,150 @@ export default function Services() {
         .svc-point-item {
           display: flex;
           align-items: flex-start;
-          gap: 0.7rem;
-          transition: transform 0.25s ease;
+          gap: 0.65rem;
         }
-        .svc-point-item:hover { transform: translateX(3px); }
 
-        .svc-dot {
+        .svc-point-dot {
           flex-shrink: 0;
-          width: 8px;
-          height: 8px;
+          width: 7px;
+          height: 7px;
           border-radius: 50%;
-          background: currentColor;
-          opacity: 0.75;
-          margin-top: 0.42rem;
+          background: rgba(255, 255, 255, 0.6);
+          margin-top: 0.35rem;
         }
 
         .svc-point-body {
           display: flex;
           flex-direction: column;
-          gap: 0.1rem;
+          gap: 0.12rem;
         }
 
-        .svc-lbl {
+        .svc-point-label {
           font-family: 'Syne', sans-serif;
-          font-size: 18px;
+          font-size: 16px;
           font-weight: 600;
           letter-spacing: 0.01em;
-          line-height: 1.35;
-          color: inherit;
+          line-height: 1.3;
         }
 
-        .svc-ptdesc {
+        .svc-point-desc {
           font-family: 'Syne', sans-serif;
           font-size: 15px;
           font-weight: 400;
           line-height: 1.55;
-          color: inherit;
-          opacity: 0.78;
         }
 
-        .svc-tags {
+        .svc-subtags {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.5rem;
-          margin-top: 0.2rem;
+          gap: 0.45rem;
         }
 
-        .svc-tag {
+        .svc-stack-subtag {
           font-family: 'Syne', sans-serif;
-          font-size: 12px;
+          font-size: 11px;
           font-weight: 500;
-          padding: 6px 15px;
+          padding: 4px 12px;
           border-radius: 9999px;
-          color: inherit;
-          border: 1px solid currentColor;
-          opacity: 0.85;
-          letter-spacing: 0.03em;
+          letter-spacing: 0.04em;
           cursor: default;
-          transition: opacity 0.2s ease;
         }
-        .svc-tag:hover { opacity: 1; }
 
-        /* mobile hidden on desktop */
+        .svc-outro-spacer { height: 1px; }
+
+        /* ─ HIDE MOBILE CARDS ON LARGE SCREENS ─ */
         @media (min-width: 1280px) {
           .svc-mobile { display: none; }
         }
 
-        /* ─ responsive desktop ─ */
-        @media (min-width: 1280px) and (max-width: 1400px) {
-          .svc-slot { inset: 14px 72px; }
-          .svc-card { padding: 1.6rem 2rem; }
-          .svc-grid { gap: 1.6rem; grid-template-columns: 0.85fr 1fr; }
-          .svc-img-wrap { min-height: 340px; }
-          .svc-body { gap: 0.85rem; }
-          .svc-desc { font-size: 15px; line-height: 1.55; }
-          .svc-lbl { font-size: 17px; }
-          .svc-ptdesc { font-size: 14px; line-height: 1.45; }
-          .svc-points { gap: 0.5rem; }
-        }
-
-        /* ─ mobile & tablet: plain stacked list (iPad Mini, Air & Mobile) ─ */
+        /* ─ MOBILE & TABLETS (sm, iPad mini, iPad, iPad Pro): HIDE STACKING & SHOW OLD CARDS ─ */
         @media (max-width: 1279px) {
-          .svc-track { display: none; }
+          .svc-stack-section { display: none !important; }
+
           .svc-mobile {
             display: flex;
             flex-direction: column;
             gap: 24px;
-            width: calc(100% - 24px);
+            width: calc(100% - 32px);
             margin: 20px auto 40px auto;
             background: #fff;
-            max-width: 1300px;
             box-sizing: border-box;
           }
+
           .svc-mobile-card {
             border-radius: 1.8rem;
+            background: linear-gradient(135deg, #95257b 0%, #6b1958 100%);
+            color: #fff;
             overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+          }
+
+          .svc-mobile-img-wrap {
+            position: relative;
+            height: 240px;
             width: 100%;
+            overflow: hidden;
           }
-          .svc-mobile-card .svc-grid { grid-template-columns: 1fr; height: auto; }
-          .svc-mobile-card .svc-mobile-img-wrap {
-            height: 280px;
-            border-radius: 0;
+
+          .svc-mobile-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
           }
-          .svc-mobile-card .svc-desc   { font-size: 1.05rem; line-height: 1.65; }
-          .svc-mobile-card .svc-lbl    { font-size: 1.15rem; }
-          .svc-mobile-card .svc-ptdesc { font-size: 0.98rem; line-height: 1.5; }
-          .svc-mobile-card .svc-img-tag { font-size: 1rem; }
+
+          .svc-mobile-body {
+            padding: 1.75rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+          }
         }
 
-        @media (min-width: 640px) and (max-width: 1279px) {
+        /* ─ iPad Mini, Air, Pro 11" (768px to 1023px): match Navbar md:px-6 (48px) & increase img height ─ */
+        @media (min-width: 768px) and (max-width: 1023px) {
           .svc-mobile {
             width: calc(100% - 48px);
             margin: 30px auto 50px auto;
           }
-          .svc-mobile-card .svc-mobile-img-wrap {
+          .svc-mobile-img-wrap {
             height: 420px;
+          }
+          .svc-mobile-body {
+            padding: 2rem 1.75rem;
           }
         }
 
+        /* ─ iPad Pro 12.9" / Tablet Landscape (1024px to 1279px): match Navbar lg:px-[68px] (136px) & increase img height ─ */
         @media (min-width: 1024px) and (max-width: 1279px) {
           .svc-mobile {
             width: calc(100% - 136px);
-            margin: 40px auto 60px auto;
+            margin: 35px auto 55px auto;
           }
-          .svc-mobile-card .svc-mobile-img-wrap {
+          .svc-mobile-img-wrap {
             height: 480px;
           }
+          .svc-mobile-body {
+            padding: 2.25rem 2rem;
+          }
+        }
+
+        @media (max-width: 640px) {
+          .svc-mobile {
+            width: calc(100% - 24px);
+            margin: 20px auto 40px auto;
+            gap: 18px;
+          }
+          .svc-mobile-img-wrap {
+            height: 220px;
+          }
+          .svc-mobile-body {
+            padding: 1.4rem 1.2rem;
+            gap: 1rem;
+          }
+          .svc-desc { font-size: 14px; }
+          .svc-point-label { font-size: 15px; }
+          .svc-point-desc { font-size: 13px; }
         }
       `}</style>
     </>

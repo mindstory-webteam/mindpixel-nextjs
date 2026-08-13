@@ -156,20 +156,16 @@ export default function FaqSection() {
           .faq-container {
             max-width: 1300px;
             margin: 0 auto;
-            padding: 40px 14px 40px 14px;
+            padding: 32px 16px;
             display: grid;
             grid-template-columns: 1fr;
-            gap: 40px;
+            gap: 36px;
             align-items: start;
-          }
-          @media (min-width: 400px) {
-            .faq-container {
-              padding: 48px 20px 48px 20px;
-            }
+            box-sizing: border-box;
           }
           @media (min-width: 640px) {
             .faq-container {
-              padding: 56px 32px 56px 32px;
+              padding: 56px 32px;
               gap: 56px;
             }
           }
@@ -194,17 +190,12 @@ export default function FaqSection() {
           .faq-form-card {
             border: 1px solid rgba(0, 0, 0, 0.08);
             border-radius: 16px;
-            padding: 20px 14px;
+            padding: 20px 16px;
             background: #fafafa;
             backdrop-filter: blur(12px);
             width: 100%;
             box-sizing: border-box;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
-          }
-          @media (min-width: 400px) {
-            .faq-form-card {
-              padding: 24px 20px;
-            }
           }
           @media (min-width: 640px) {
             .faq-form-card {
@@ -336,13 +327,13 @@ export default function FaqSection() {
             margin: 12px 0 16px;
             overflow: hidden;
           }
-          @media (max-width: 360px) {
+          @media (max-width: 440px) {
             .turnstile-wrapper > div {
               transform: scale(0.85);
               transform-origin: center center;
             }
           }
-          @media (max-width: 325px) {
+          @media (max-width: 340px) {
             .turnstile-wrapper > div {
               transform: scale(0.75);
               transform-origin: center center;
