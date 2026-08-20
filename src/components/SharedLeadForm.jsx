@@ -68,9 +68,13 @@ export default function SharedLeadForm({ theme = "light", buttonColor = "var(--p
     if (!form.name.trim()) missingFields.push("Name");
     if (!form.email.trim()) missingFields.push("Email ID");
     if (!form.phone.trim()) missingFields.push("Phone Number");
+    if (!form.brand.trim()) missingFields.push("Brand/Company Name");
+    if (!form.budget.trim()) missingFields.push("Marketing Budget");
+    if (!form.website.trim()) missingFields.push("Website/URL");
+    if (!form.description.trim()) missingFields.push("Description");
 
     if (missingFields.length > 0) {
-      setErrorMsg(`Please fill in required fields: ${missingFields.join(", ")}.`);
+      setErrorMsg(`Please fill in all required fields: ${missingFields.join(", ")}.`);
       return;
     } else if (!validateEmail(form.email)) {
       setErrorMsg("Please enter a valid email address.");
@@ -239,15 +243,15 @@ export default function SharedLeadForm({ theme = "light", buttonColor = "var(--p
             <input type="tel" id="shared-phone" name="phone" value={form.phone} onChange={handleChange} required placeholder="Enter your phone number" className="shared-form-input" />
           </div>
           <div className="shared-form-group">
-            <label htmlFor="shared-brand">Brand/Company Name</label>
-            <input type="text" id="shared-brand" name="brand" value={form.brand} onChange={handleChange} placeholder="Your brand/company name" className="shared-form-input" />
+            <label htmlFor="shared-brand">Brand/Company Name *</label>
+            <input type="text" id="shared-brand" name="brand" value={form.brand} onChange={handleChange} required placeholder="Your brand/company name" className="shared-form-input" />
           </div>
         </div>
         <div className="shared-form-row">
           <div className="shared-form-group">
-            <label htmlFor="shared-budget">Marketing Budget (optional)</label>
-            <select id="shared-budget" name="budget" value={form.budget} onChange={handleChange} className="shared-form-input shared-form-select">
-              <option value="">Your current marketing budget (optional)</option>
+            <label htmlFor="shared-budget">Marketing Budget *</label>
+            <select id="shared-budget" name="budget" value={form.budget} onChange={handleChange} required className="shared-form-input shared-form-select">
+              <option value="">Select your marketing budget</option>
               <option value="Below ₹50,000/month">Below ₹50,000/month</option>
               <option value="₹50,000 - ₹1,00,000/month">₹50,000 - ₹1,00,000/month</option>
               <option value="₹1,00,000 - ₹5,00,000/month">₹1,00,000 - ₹5,00,000/month</option>
@@ -255,13 +259,13 @@ export default function SharedLeadForm({ theme = "light", buttonColor = "var(--p
             </select>
           </div>
           <div className="shared-form-group">
-            <label htmlFor="shared-website">Website/URL</label>
-            <input type="text" id="shared-website" name="website" value={form.website} onChange={handleChange} placeholder="Your website/URL (optional)" className="shared-form-input" />
+            <label htmlFor="shared-website">Website/URL *</label>
+            <input type="text" id="shared-website" name="website" value={form.website} onChange={handleChange} required placeholder="Your website/URL" className="shared-form-input" />
           </div>
         </div>
         <div className="shared-form-group">
-          <label htmlFor="shared-description">Description</label>
-          <textarea id="shared-description" name="description" value={form.description} onChange={handleChange} rows="3" placeholder="Tell us more about your goals (optional)" className="shared-form-input"></textarea>
+          <label htmlFor="shared-description">Description *</label>
+          <textarea id="shared-description" name="description" value={form.description} onChange={handleChange} required rows="3" placeholder="Tell us more about your goals" className="shared-form-input"></textarea>
         </div>
         
         {errorMsg && (
