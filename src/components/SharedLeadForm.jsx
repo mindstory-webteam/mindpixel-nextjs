@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import AnimatedButton from "./AnimatedButton";
+import TurnstileWidget from "./TurnstileWidget";
 
 // ─── GOOGLE SHEET CONFIGURATION ──────────────────────
 // Paste your deployed Google Apps Script Web App URL below:
@@ -31,13 +32,13 @@ const submitToGoogleSheet = (data) => {
       // Passing URLSearchParams directly automatically sets the correct Content-Type header
       body: formData
     })
-    .then(() => {
-      resolve();
-    })
-    .catch((err) => {
-      console.error("Google Sheet submission error:", err);
-      resolve(); // resolve anyway to avoid blocking user flow
-    });
+      .then(() => {
+        resolve();
+      })
+      .catch((err) => {
+        console.error("Google Sheet submission error:", err);
+        resolve(); // resolve anyway to avoid blocking user flow
+      });
   });
 };
 
@@ -47,6 +48,7 @@ export default function SharedLeadForm({ theme = "light", buttonColor = "var(--p
     name: "", email: "", phone: "", brand: "", budget: "", website: "", description: ""
   });
   const [errorMsg, setErrorMsg] = useState("");
+  const [captchaToken, setCaptchaToken] = useState(null);
 
   const isDark = theme === "dark";
 
@@ -62,7 +64,7 @@ export default function SharedLeadForm({ theme = "light", buttonColor = "var(--p
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     // Validation
     const missingFields = [];
     if (!form.name.trim()) missingFields.push("Name");
@@ -78,6 +80,11 @@ export default function SharedLeadForm({ theme = "light", buttonColor = "var(--p
       return;
     } else if (!validateEmail(form.email)) {
       setErrorMsg("Please enter a valid email address.");
+      return;
+    }
+
+    if (!captchaToken) {
+      setErrorMsg("Please complete the CAPTCHA verification.");
       return;
     }
 
@@ -98,6 +105,7 @@ export default function SharedLeadForm({ theme = "light", buttonColor = "var(--p
       setTimeout(() => {
         setStatus("idle");
         setForm({ name: "", email: "", phone: "", brand: "", budget: "", website: "", description: "" });
+        setCaptchaToken(null);
       }, 4000);
     }).catch((err) => {
       console.error("Google Sheets submission error:", err);
@@ -128,30 +136,30 @@ export default function SharedLeadForm({ theme = "light", buttonColor = "var(--p
           width: 100%;
         }
         .shared-form-group {
-          margin-bottom: 16px;
+          margin-bottom: 10px;
           display: flex;
           flex-direction: column;
-          gap: 6px;
+          gap: 4px;
         }
         .shared-form-row {
           display: flex;
-          gap: 16px;
+          gap: 12px;
         }
         .shared-form-row .shared-form-group {
           flex: 1;
         }
         .shared-form-group label {
-          font-size: 13px;
+          font-size: 12px;
           font-weight: 700;
-          color: ${isDark ? 'rgba(255,255,255,0.8)' : '#334155'};
+          color: ${isDark ? 'rgba(255,255,255,0.85)' : '#334155'};
         }
         .shared-form-input {
           width: 100%;
-          padding: 12px 14px;
+          padding: 9px 12px;
           border: 1px solid ${isDark ? 'rgba(255,255,255,0.2)' : '#e2e8f0'};
-          border-radius: 8px;
+          border-radius: 7px;
           font-family: inherit;
-          font-size: 14px;
+          font-size: 13.5px;
           background: ${isDark ? 'rgba(255,255,255,0.05)' : '#fff'};
           color: ${isDark ? '#fff' : '#1e293b'};
           transition: border-color 0.2s, box-shadow 0.2s;
@@ -171,17 +179,17 @@ export default function SharedLeadForm({ theme = "light", buttonColor = "var(--p
           background-repeat: no-repeat;
           background-position: right 12px center;
           background-size: 16px;
-          padding-right: 40px;
+          padding-right: 36px;
         }
         .shared-form-select option {
           color: #1e293b;
           background: #fff;
         }
         .shared-popup-btn {
-          padding: 14px 24px;
-          border-radius: 8px;
+          padding: 12px 20px;
+          border-radius: 7px;
           font-weight: 700;
-          font-size: 15px;
+          font-size: 14.5px;
           cursor: pointer;
           transition: all 0.2s ease;
           border: none;
@@ -208,16 +216,43 @@ export default function SharedLeadForm({ theme = "light", buttonColor = "var(--p
           gap: 8px;
           background: rgba(234, 67, 53, 0.1);
           color: ${isDark ? '#ff8a80' : '#ea4335'};
-          padding: 12px 16px;
-          border-radius: 8px;
-          font-size: 13.5px;
+          padding: 8px 12px;
+          border-radius: 6px;
+          font-size: 12.5px;
           font-weight: 500;
-          margin-top: 16px;
+          margin-top: 8px;
         }
         .shared-form-error-msg svg {
-          width: 18px;
-          height: 18px;
+          width: 16px;
+          height: 16px;
           flex-shrink: 0;
+        }
+        .shared-turnstile-wrapper {
+          width: 100%;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          margin: 0;
+          overflow: hidden;
+          min-height: 65px;
+        }
+        @media (max-width: 580px) {
+          .shared-turnstile-wrapper > div {
+            transform: scale(0.9);
+            transform-origin: left center;
+          }
+        }
+        @media (max-width: 440px) {
+          .shared-turnstile-wrapper > div {
+            transform: scale(0.85);
+            transform-origin: left center;
+          }
+        }
+        @media (max-width: 340px) {
+          .shared-turnstile-wrapper > div {
+            transform: scale(0.75);
+            transform-origin: left center;
+          }
         }
         @media (max-width: 768px) {
           .shared-form-row {
@@ -265,25 +300,52 @@ export default function SharedLeadForm({ theme = "light", buttonColor = "var(--p
         </div>
         <div className="shared-form-group">
           <label htmlFor="shared-description">Description *</label>
-          <textarea id="shared-description" name="description" value={form.description} onChange={handleChange} required rows="3" placeholder="Tell us more about your goals" className="shared-form-input"></textarea>
+          <textarea
+            id="shared-description"
+            name="description"
+            value={form.description}
+            onChange={handleChange}
+            required
+            rows="2"
+            placeholder="Tell us more about your goals"
+            className="shared-form-input"
+            style={{ minHeight: "48px", resize: "vertical" }}
+          ></textarea>
         </div>
-        
+
+        <div className="shared-form-row">
+          <div className="shared-form-group">
+            <div className="shared-turnstile-wrapper">
+              <TurnstileWidget
+                theme={isDark ? "dark" : "light"}
+                onVerify={(token) => {
+                  setCaptchaToken(token);
+                  setErrorMsg("");
+                }}
+                onExpire={() => setCaptchaToken(null)}
+                onError={() => setCaptchaToken(null)}
+              />
+            </div>
+          </div>
+          <div className="shared-form-group" />
+        </div>
+
         {errorMsg && (
           <div className="shared-form-error-msg">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" /></svg>
             <span className="error-text">{errorMsg}</span>
           </div>
         )}
-        
-        <div style={{ marginTop: "24px", width: "100%" }}>
-          <AnimatedButton 
-            type="submit" 
-            disabled={status === "submitting"} 
+
+        <div style={{ marginTop: "10px", width: "100%" }}>
+          <AnimatedButton
+            type="submit"
+            disabled={status === "submitting"}
             bgColor={buttonColor}
             textColor={isDark ? '#111' : 'white'}
             hoverBgColor={isDark ? 'white' : '#111'}
             hoverTextColor={isDark ? '#111' : 'white'}
-            style={{ width: "100%", padding: "14px 24px", fontSize: "15px" }}
+            style={{ width: "100%", padding: "12px 20px", fontSize: "14.5px" }}
           >
             {status === "submitting" ? "Submitting..." : "Submit Inquiry"}
           </AnimatedButton>

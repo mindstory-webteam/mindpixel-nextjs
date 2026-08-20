@@ -296,7 +296,7 @@ export default function InteractivePopup() {
         }
       `}</style>
 
-      <div 
+      <div
         className={`popup-overlay ${isOpen ? 'active' : ''}`}
         onClick={(e) => {
           if (e.target.classList.contains('popup-overlay')) setIsOpen(false);
@@ -308,7 +308,7 @@ export default function InteractivePopup() {
             <div className="popup-header">
               <h2>Get in Touch</h2>
             </div>
-            
+
             <div className="popup-content">
               <SharedLeadForm theme="light" buttonColor="var(--purple)" onSuccess={() => {
                 setIsOpen(false);

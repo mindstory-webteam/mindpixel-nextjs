@@ -12,7 +12,9 @@ export default function TurnstileWidget({
   onVerify,
   onExpire,
   onError,
-  theme = "light"
+  theme = "light",
+  size = "normal",
+  className = ""
 }) {
   const containerRef = useRef(null);
   const widgetIdRef = useRef(null);
@@ -30,24 +32,26 @@ export default function TurnstileWidget({
 
   useEffect(() => {
     let isMounted = true;
+    let intervalId = null;
 
     const renderWidget = () => {
-      if (!containerRef.current || !window.turnstile) return;
+      if (!isMounted || !containerRef.current || !window.turnstile) return;
 
-      // Only remove if container has child nodes and a widget ID exists
+      // If already rendered, do not render duplicate
       if (widgetIdRef.current !== null) {
-        if (containerRef.current.hasChildNodes()) {
-          try {
-            window.turnstile.remove(widgetIdRef.current);
-          } catch (e) {}
-        }
-        widgetIdRef.current = null;
+        return;
+      }
+
+      // Clear any existing children before rendering
+      if (containerRef.current.hasChildNodes()) {
+        containerRef.current.innerHTML = "";
       }
 
       try {
         widgetIdRef.current = window.turnstile.render(containerRef.current, {
           sitekey: siteKey,
           theme: theme,
+          size: size,
           callback: (token) => {
             if (isMounted && onVerifyRef.current) onVerifyRef.current(token);
           },
@@ -63,6 +67,17 @@ export default function TurnstileWidget({
       }
     };
 
+    const checkAndRender = () => {
+      if (!isMounted) return;
+      if (window.turnstile) {
+        if (intervalId) {
+          clearInterval(intervalId);
+          intervalId = null;
+        }
+        renderWidget();
+      }
+    };
+
     if (window.turnstile) {
       renderWidget();
     } else {
@@ -75,34 +90,23 @@ export default function TurnstileWidget({
         document.head.appendChild(script);
       }
 
-      const handleLoad = () => {
-        if (window.turnstile && isMounted) {
-          renderWidget();
-        }
-      };
-
-      script.addEventListener("load", handleLoad);
-
-      return () => {
-        script.removeEventListener("load", handleLoad);
-        if (widgetIdRef.current !== null && window.turnstile && containerRef.current?.hasChildNodes()) {
-          try {
-            window.turnstile.remove(widgetIdRef.current);
-          } catch (e) {}
-        }
-        isMounted = false;
-      };
+      script.addEventListener("load", checkAndRender);
+      intervalId = setInterval(checkAndRender, 100);
     }
 
     return () => {
-      if (widgetIdRef.current !== null && window.turnstile && containerRef.current?.hasChildNodes()) {
+      isMounted = false;
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+      if (widgetIdRef.current !== null && window.turnstile) {
         try {
           window.turnstile.remove(widgetIdRef.current);
-        } catch (e) {}
+        } catch (e) { }
+        widgetIdRef.current = null;
       }
-      isMounted = false;
     };
-  }, [siteKey, theme]);
+  }, [siteKey, theme, size]);
 
-  return <div ref={containerRef} className="my-3 flex justify-center" />;
+  return <div ref={containerRef} className={`flex justify-start ${className}`} />;
 }
