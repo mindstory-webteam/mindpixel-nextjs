@@ -63,10 +63,9 @@ const Navbar = () => {
     }
 
     if (menuOpen) {
+      e.preventDefault();
       setMenuOpen(false);
-      setTimeout(() => navigateTo(to), 320);
-    } else {
-      navigateTo(to);
+      setTimeout(() => navigateTo(to), 300);
     }
   }, [location.pathname, menuOpen, navigateTo, lenis]);
 

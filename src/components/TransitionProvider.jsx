@@ -12,30 +12,26 @@ import { useRouter, usePathname } from "next/navigation";
 import { useLenis } from "lenis/react";
 import gsap from "gsap";
 
-const TRANSITION_MIN_WIDTH = 1025; // Hide page transition overlay on iPad Mini (768px), Air (820px), Pro (1024px), and mobile viewports
+const TRANSITION_MIN_WIDTH = 1025; // Disable transition overlay on mobile and tablet for optimal performance
 
-// ─── Routes that should NOT trigger the page transition overlay ──────────────
-function shouldSkipTransition(href) {
-  if (!href) return false;
-
-  // Clean and normalize the href string
+function normalizePath(href) {
+  if (!href) return "";
   let path = href.toLowerCase();
-
   try {
     if (path.startsWith("http://") || path.startsWith("https://")) {
       path = new URL(href).pathname;
     }
   } catch (e) { }
 
-  // Ensure it starts with a leading slash
-  if (!path.startsWith("/")) {
-    path = "/" + path;
-  }
+  path = path.split("#")[0].split("?")[0];
+  if (!path.startsWith("/")) path = "/" + path;
+  if (path.length > 1 && path.endsWith("/")) path = path.slice(0, -1);
+  return path;
+}
 
-  // Strip trailing slash for consistent matching
-  if (path.length > 1 && path.endsWith("/")) {
-    path = path.slice(0, -1);
-  }
+function shouldSkipTransition(href) {
+  if (!href) return false;
+  const path = normalizePath(href);
 
   // Skip for thank-you page
   if (path === "/thank-you" || path.startsWith("/thank-you/")) {
@@ -43,7 +39,6 @@ function shouldSkipTransition(href) {
   }
 
   // Skip for individual blog detail pages (e.g., /blogs/my-post-slug)
-  // while keeping transitions active on the main /blogs listing page.
   if (path.startsWith("/blogs/")) {
     return true;
   }
@@ -51,11 +46,9 @@ function shouldSkipTransition(href) {
   return false;
 }
 
-// ─── Context ────────────────────────────────────────────────────────────────
 export const TransitionContext = createContext({ navigateTo: () => { } });
 export const usePageTransition = () => useContext(TransitionContext);
 
-// ─── Portal root ─────────────────────────────────────────────────────────────
 function getPortalRoot() {
   let el = document.getElementById("transition-portal");
   if (!el) {
@@ -66,83 +59,130 @@ function getPortalRoot() {
   return el;
 }
 
-// ─── Provider ────────────────────────────────────────────────────────────────
 export default function TransitionProvider({ children, column = 6 }) {
   const router = useRouter();
   const pathname = usePathname();
   const lenis = useLenis();
   const colRefs = useRef([]);
-  const tweenRef = useRef(null);
-  const isTransitioning = useRef(false);
+  const timelineRef = useRef(null);
+  const isTransitioningRef = useRef(false);
+  const watchdogTimerRef = useRef(null);
   const [portalReady, setPortalReady] = useState(false);
 
-  // Portal root initialization
   useEffect(() => {
     getPortalRoot();
     setPortalReady(true);
   }, []);
 
-  // Trim stale refs when column count changes
   useEffect(() => {
     colRefs.current = colRefs.current.slice(0, column);
   }, [column]);
 
   const getCols = () => colRefs.current.filter(Boolean);
 
-  // Animate overlay OUT after route change
-  useEffect(() => {
-    if (!isTransitioning.current) return;
+  const resetOverlay = useCallback(() => {
+    if (watchdogTimerRef.current) {
+      clearTimeout(watchdogTimerRef.current);
+      watchdogTimerRef.current = null;
+    }
+    timelineRef.current?.kill();
+    const cols = getCols();
+    if (cols.length) {
+      gsap.set(cols, { y: "100%" });
+    }
+    isTransitioningRef.current = false;
+  }, []);
+
+  const animateOut = useCallback(() => {
+    if (watchdogTimerRef.current) {
+      clearTimeout(watchdogTimerRef.current);
+      watchdogTimerRef.current = null;
+    }
 
     const cols = getCols();
     if (!cols.length) {
-      isTransitioning.current = false;
+      isTransitioningRef.current = false;
       return;
     }
 
-    tweenRef.current?.kill();
-    tweenRef.current = gsap.to(cols, {
-      y: "-100%",
-      duration: 0.5,
-      ease: "power3.inOut",
-      stagger: 0.05,
-      delay: 0.02,
+    if (lenis) {
+      lenis.scrollTo(0, { immediate: true });
+    }
+    window.scrollTo(0, 0);
+
+    timelineRef.current?.kill();
+    timelineRef.current = gsap.timeline({
       onComplete: () => {
-        gsap.set(getCols(), { y: "100%" });
-        isTransitioning.current = false;
+        gsap.set(cols, { y: "100%" });
+        isTransitioningRef.current = false;
       },
     });
 
-    return () => tweenRef.current?.kill();
-  }, [pathname]);
+    timelineRef.current.to(cols, {
+      y: "-100%",
+      duration: 0.36,
+      ease: "power3.inOut",
+      stagger: 0.025,
+    });
+  }, [lenis]);
+
+  // When pathname changes, trigger OUT animation if currently transitioning
+  useEffect(() => {
+    if (isTransitioningRef.current) {
+      animateOut();
+    } else {
+      resetOverlay();
+    }
+  }, [pathname, animateOut, resetOverlay]);
+
+  useEffect(() => {
+    return () => {
+      resetOverlay();
+    };
+  }, [resetOverlay]);
 
   const navigateTo = useCallback(
     (href) => {
       if (!href) return;
 
-      // Handle anchor hash links on the current page — never animate
-      if (href.includes('#')) {
-        const [targetPath, hash] = href.split('#');
-        const currentCleanPath = pathname.replace(/\/$/, '');
-        const targetCleanPath = targetPath ? targetPath.replace(/\/$/, '') : currentCleanPath;
+      // Handle anchor hash links
+      if (href.includes("#")) {
+        const [targetPath, hash] = href.split("#");
+        const currentClean = normalizePath(pathname);
+        const targetClean = normalizePath(targetPath);
 
-        if (targetCleanPath === currentCleanPath || !targetPath) {
+        if (!targetPath || targetClean === currentClean) {
           const el = document.getElementById(hash);
           if (el) {
             if (lenis) {
               lenis.scrollTo(el);
             } else {
-              el.scrollIntoView({ behavior: 'smooth' });
+              el.scrollIntoView({ behavior: "smooth" });
             }
             return;
           }
         }
       }
 
-      if (isTransitioning.current) return;
-      if (pathname === href) return;
+      const currentNorm = normalizePath(pathname);
+      const targetNorm = normalizePath(href);
 
-      // Skip transition overlay for blog detail pages, thank-you, iPad Mini/Air/Pro, and tablet/mobile screens
-      if (shouldSkipTransition(href) || window.innerWidth < TRANSITION_MIN_WIDTH) {
+      // If already on this page, do nothing
+      if (currentNorm === targetNorm) {
+        return;
+      }
+
+      // If already in middle of transition, do not duplicate
+      if (isTransitioningRef.current) {
+        return;
+      }
+
+      // Skip transition for tablet/mobile or specific skipped routes
+      if (
+        shouldSkipTransition(href) ||
+        typeof window === "undefined" ||
+        window.innerWidth < TRANSITION_MIN_WIDTH
+      ) {
         router.push(href);
         return;
       }
@@ -153,19 +193,35 @@ export default function TransitionProvider({ children, column = 6 }) {
         return;
       }
 
-      isTransitioning.current = true;
-      tweenRef.current?.kill();
+      isTransitioningRef.current = true;
+      timelineRef.current?.kill();
+
+      // Safety Watchdog: If pathname change never fires within 900ms, force unlock and animate out
+      if (watchdogTimerRef.current) {
+        clearTimeout(watchdogTimerRef.current);
+      }
+      watchdogTimerRef.current = setTimeout(() => {
+        if (isTransitioningRef.current) {
+          animateOut();
+        }
+      }, 900);
 
       gsap.set(cols, { y: "100%" });
-      tweenRef.current = gsap.to(cols, {
+
+      timelineRef.current = gsap.timeline({
+        onComplete: () => {
+          router.push(href);
+        },
+      });
+
+      timelineRef.current.to(cols, {
         y: "0%",
-        duration: 0.32,
+        duration: 0.26,
         ease: "power3.inOut",
-        stagger: 0.025,
-        onComplete: () => router.push(href),
+        stagger: 0.02,
       });
     },
-    [router, pathname]
+    [router, pathname, lenis, animateOut]
   );
 
   const overlay = (
@@ -174,19 +230,28 @@ export default function TransitionProvider({ children, column = 6 }) {
       style={{
         position: "fixed",
         inset: 0,
+        width: "100vw",
+        height: "100vh",
         pointerEvents: "none",
         zIndex: 10000,
+        overflow: "hidden",
       }}
     >
       {Array.from({ length: column }).map((_, idx) => (
         <div
           key={idx}
-          ref={(el) => { colRefs.current[idx] = el; }}
+          ref={(el) => {
+            colRefs.current[idx] = el;
+          }}
           style={{
-            flex: 1,
+            width: `calc(100% / ${column} + 2px)`,
+            marginLeft: idx === 0 ? 0 : "-2px",
+            flexShrink: 0,
             height: "100%",
             background: "#f78624",
             transform: "translateY(100%)",
+            willChange: "transform",
+            outline: "1px solid #f78624",
           }}
         />
       ))}
