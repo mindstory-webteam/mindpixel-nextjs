@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
-import Script from "next/script";
 import emailjs from "@emailjs/browser";
 import { img } from "../assets/assest";
+import TurnstileWidget from "./TurnstileWidget";
 
 const jobs = [
   {
@@ -51,24 +51,6 @@ export default function CareerSection() {
   const [expandedJob, setExpandedJob] = useState(null);
   const [turnstileToken, setTurnstileToken] = useState(null);
 
-  useEffect(() => {
-    window.onTurnstileSuccess = (token) => {
-      setTurnstileToken(token);
-    };
-    window.onTurnstileExpired = () => {
-      setTurnstileToken(null);
-    };
-    return () => {
-      try {
-        delete window.onTurnstileSuccess;
-        delete window.onTurnstileExpired;
-      } catch (e) {
-        window.onTurnstileSuccess = undefined;
-        window.onTurnstileExpired = undefined;
-      }
-    };
-  }, []);
-
   const inputBase =
     "w-full border border-gray-200 rounded px-3 py-2 text-xs outline-none focus:border-orange-500 bg-white placeholder-gray-400 disabled:opacity-50 disabled:cursor-not-allowed";
 
@@ -101,26 +83,16 @@ export default function CareerSection() {
         setApplyStatus("success");
         setApplyForm({ name: "", email: "", mobile: "", position: "", message: "" });
         setTurnstileToken(null);
-        if (window.turnstile) {
-          window.turnstile.reset();
-        }
       })
       .catch((err) => {
         console.error("EmailJS career error:", err);
         setApplyStatus("error");
         setTurnstileToken(null);
-        if (window.turnstile) {
-          window.turnstile.reset();
-        }
       });
   };
 
   return (
     <div style={{ fontFamily: "'Syne', sans-serif" }} className="bg-white text-gray-900">
-      <Script
-        src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-        strategy="afterInteractive"
-      />
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
         .job-desc { display:grid; grid-template-rows:0fr; transition:grid-template-rows 0.32s ease; }
@@ -339,12 +311,10 @@ export default function CareerSection() {
 
               <div className="flex flex-col lg:flex-row items-center lg:justify-between gap-4 mb-5">
                 <div className="overflow-hidden flex justify-center w-full lg:w-auto">
-                  <div
-                    className="cf-turnstile"
-                    data-sitekey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY || "1x00000000000000000000AA"}
-                    data-callback="onTurnstileSuccess"
-                    data-expired-callback="onTurnstileExpired"
-                    data-theme="light"
+                  <TurnstileWidget
+                    onVerify={(token) => setTurnstileToken(token)}
+                    onExpire={() => setTurnstileToken(null)}
+                    onError={() => setTurnstileToken(null)}
                   />
                 </div>
                 <button

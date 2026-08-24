@@ -3,6 +3,38 @@ import React, { useEffect, useRef } from "react";
 
 const TURNSTILE_SCRIPT_URL = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
 
+let turnstileScriptPromise = null;
+
+function loadTurnstileScript() {
+  if (typeof window === "undefined") return Promise.resolve();
+  if (window.turnstile) return Promise.resolve(window.turnstile);
+
+  if (!turnstileScriptPromise) {
+    turnstileScriptPromise = new Promise((resolve, reject) => {
+      const existingScript = document.querySelector(`script[src*="challenges.cloudflare.com/turnstile"]`);
+      if (existingScript) {
+        if (window.turnstile) {
+          resolve(window.turnstile);
+        } else {
+          existingScript.addEventListener("load", () => resolve(window.turnstile));
+          existingScript.addEventListener("error", (e) => reject(e));
+        }
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src = TURNSTILE_SCRIPT_URL;
+      script.async = true;
+      script.defer = true;
+      script.onload = () => resolve(window.turnstile);
+      script.onerror = (e) => reject(e);
+      document.head.appendChild(script);
+    });
+  }
+
+  return turnstileScriptPromise;
+}
+
 /**
  * Cloudflare Turnstile CAPTCHA Component
  * SiteKey defaults to Cloudflare's official testing key (1x00000000000000000000AA) which always passes in local dev.
@@ -32,73 +64,46 @@ export default function TurnstileWidget({
 
   useEffect(() => {
     let isMounted = true;
-    let intervalId = null;
 
-    const renderWidget = () => {
-      if (!isMounted || !containerRef.current || !window.turnstile) return;
+    loadTurnstileScript()
+      .then(() => {
+        if (!isMounted || !containerRef.current || !window.turnstile) return;
 
-      // If already rendered, do not render duplicate
-      if (widgetIdRef.current !== null) {
-        return;
-      }
-
-      // Clear any existing children before rendering
-      if (containerRef.current.hasChildNodes()) {
-        containerRef.current.innerHTML = "";
-      }
-
-      try {
-        widgetIdRef.current = window.turnstile.render(containerRef.current, {
-          sitekey: siteKey,
-          theme: theme,
-          size: size,
-          callback: (token) => {
-            if (isMounted && onVerifyRef.current) onVerifyRef.current(token);
-          },
-          "expired-callback": () => {
-            if (isMounted && onExpireRef.current) onExpireRef.current();
-          },
-          "error-callback": (code) => {
-            if (isMounted && onErrorRef.current) onErrorRef.current(code);
-          }
-        });
-      } catch (err) {
-        console.error("Turnstile rendering error:", err);
-      }
-    };
-
-    const checkAndRender = () => {
-      if (!isMounted) return;
-      if (window.turnstile) {
-        if (intervalId) {
-          clearInterval(intervalId);
-          intervalId = null;
+        // If already rendered, do not render duplicate
+        if (widgetIdRef.current !== null) {
+          return;
         }
-        renderWidget();
-      }
-    };
 
-    if (window.turnstile) {
-      renderWidget();
-    } else {
-      let script = document.querySelector(`script[src*="challenges.cloudflare.com/turnstile"]`);
-      if (!script) {
-        script = document.createElement("script");
-        script.src = TURNSTILE_SCRIPT_URL;
-        script.async = true;
-        script.defer = true;
-        document.head.appendChild(script);
-      }
+        // Clear any existing children before rendering
+        if (containerRef.current.hasChildNodes()) {
+          containerRef.current.innerHTML = "";
+        }
 
-      script.addEventListener("load", checkAndRender);
-      intervalId = setInterval(checkAndRender, 100);
-    }
+        try {
+          widgetIdRef.current = window.turnstile.render(containerRef.current, {
+            sitekey: siteKey,
+            theme: theme,
+            size: size,
+            callback: (token) => {
+              if (isMounted && onVerifyRef.current) onVerifyRef.current(token);
+            },
+            "expired-callback": () => {
+              if (isMounted && onExpireRef.current) onExpireRef.current();
+            },
+            "error-callback": (code) => {
+              if (isMounted && onErrorRef.current) onErrorRef.current(code);
+            }
+          });
+        } catch (err) {
+          console.error("Turnstile rendering error:", err);
+        }
+      })
+      .catch((err) => {
+        console.error("Turnstile script load error:", err);
+      });
 
     return () => {
       isMounted = false;
-      if (intervalId) {
-        clearInterval(intervalId);
-      }
       if (widgetIdRef.current !== null && window.turnstile) {
         try {
           window.turnstile.remove(widgetIdRef.current);
