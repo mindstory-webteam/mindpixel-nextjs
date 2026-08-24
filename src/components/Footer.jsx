@@ -24,7 +24,7 @@ const defaultNavColumns = [
       { name: "About", path: "/about" },
       { name: "Services", path: "/service" },
       { name: "Portfolio", path: "/portfolio" },
-      { name: "Career", path: "/career" },
+      { name: "Careers", path: "/careers" },
       { name: "Contact", path: "/contact" },
       { name: "Blogs", path: "/blogs" }
     ],

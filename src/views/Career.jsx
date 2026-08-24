@@ -35,7 +35,7 @@ const Career = () => {
       />
 
       <div ref={sliderRef} className="w-full">
-        <Breadcrumb pageName="Career" />
+        <Breadcrumb pageName="Careers" />
       </div>
 
       <div style={{

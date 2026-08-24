@@ -11,7 +11,7 @@ const defaultNavLinks = [
   { to: '/about', label: 'About' },
   { to: '/service', label: 'Services' },
   { to: '/portfolio', label: 'Portfolio' },
-  { to: '/career', label: 'Career' },
+  { to: '/careers', label: 'Careers' },
   { to: '/contact', label: 'Contact' },
 ]
 

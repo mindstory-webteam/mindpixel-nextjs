@@ -198,7 +198,7 @@ export default function CareerSection() {
             <div className="rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 h-44 flex items-center justify-center relative">
               <img
                 src={img.questionmark}
-                alt="Career illustration"
+                alt="Careers illustration"
                 className="w-full h-full object-cover object-top"
               />
               <div className="absolute inset-0 bg-linear-to-t from-white/30 to-transparent" />
