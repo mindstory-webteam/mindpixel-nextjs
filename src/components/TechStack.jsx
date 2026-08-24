@@ -38,7 +38,7 @@ const techData = {
     { name: "Azure", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/azure/azure-original.svg" },
     { name: "Docker", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" },
     { name: "Hostinger", icon: "https://cdn.simpleicons.org/hostinger/673DE6" },
-    { name: "Vercel", icon: "https://cdn.simpleicons.org/vercel/000000" },
+    { name: "Vercel", icon: "/assets/vercel-white-logo.png" },
     { name: "Render", icon: "https://cdn.simpleicons.org/render/46E3B7" },
   ],
   databases: [
@@ -52,10 +52,7 @@ const techData = {
   ],
   devops: [
     { name: "Nginx", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg" },
-    { name: "GitHub", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" },
-
-
-
+    { name: "GitHub", icon: "/assets/github-white-logo.png" },
   ],
   ai: [
     { name: "TensorFlow", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tensorflow/tensorflow-original.svg" },
@@ -69,7 +66,7 @@ const techData = {
     { name: "Shopify", icon: "https://cdn.simpleicons.org/shopify/96BF48" },
     { name: "Drupal", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/drupal/drupal-original.svg" },
     { name: "Strapi", icon: "https://cdn.simpleicons.org/strapi/2E7EEA" },
-    { name: "Wix", icon: "https://cdn.simpleicons.org/wix/000000" },
+    { name: "Wix", icon: "/assets/wix-logo-white.png" },
   ],
 };
 
