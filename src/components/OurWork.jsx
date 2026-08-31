@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
 import { IoIosArrowUp } from "react-icons/io";
 import gsap from "gsap";
 import { useNavigate } from '@/lib/react-router-dom-compat';
@@ -202,10 +203,13 @@ const ProjectCard = ({ card, index }) => {
         animation: `fadeUp 0.6s ease ${index * 0.1}s both`,
       }}
     >
-      <img
+      <Image
         src={card.img}
         alt={card.title}
-        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+        fill
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        style={{ objectFit: 'cover' }}
+        priority={index < 3}
       />
 
       {/* SVG Ink Effect */}
@@ -243,7 +247,15 @@ const ProjectCard = ({ card, index }) => {
         {card.icons && (
           <div style={{ display: "flex", gap: "12px", marginBottom: "14px", marginTop: "10px" }}>
             {card.icons.map((icon, idx) => (
-              <img key={idx} src={icon} alt="tech" style={{ width: "32px", height: "32px", objectFit: "contain" }} />
+              <Image
+                key={idx}
+                src={icon}
+                alt="tech"
+                width={32}
+                height={32}
+                unoptimized
+                style={{ objectFit: "contain" }}
+              />
             ))}
           </div>
         )}
@@ -341,7 +353,7 @@ const OurWork = () => {
   );
 
   return (
-    <section className="pt-20 md:pt-[60px]" style={{ background: '#fff', paddingBottom: '60px', paddingLeft: '24px', paddingRight: '24px', fontFamily: "'DM Sans', sans-serif", color: '#0f0f14', overflow: 'hidden' }}>
+    <section className="pt-20 md:pt-15" style={{ background: '#fff', paddingBottom: '60px', paddingLeft: '24px', paddingRight: '24px', fontFamily: "'DM Sans', sans-serif", color: '#0f0f14', overflow: 'hidden' }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500&display=swap');
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }

@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useParams, Link, useNavigate } from '@/lib/react-router-dom-compat';
 import { PortableText } from '@portabletext/react';
 import Breadcrumb from '../components/BreadCrums';
@@ -81,10 +82,12 @@ const portableTextComponents = {
       const imageUrl = urlFor(value).width(900).auto('format').url();
       return (
         <figure className="my-10">
-          <img
+          <Image
             src={imageUrl}
-            alt={value.alt || ''}
-            className="w-full rounded-2xl object-cover"
+            alt={value.alt || 'Blog article image'}
+            width={900}
+            height={500}
+            className="w-full rounded-2xl object-cover h-auto"
           />
           {value.caption && (
             <figcaption className="text-center text-sm text-gray-400 mt-3 font-mono-dm">
@@ -106,6 +109,13 @@ export default function BlogDetailPage() {
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [quoteText, setQuoteText] = useState('');
+  const [prevSlug, setPrevSlug] = useState(slug);
+
+  if (prevSlug !== slug) {
+    setPrevSlug(slug);
+    setLoading(true);
+    setError(null);
+  }
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -113,24 +123,30 @@ export default function BlogDetailPage() {
 
   useEffect(() => {
     if (!slug) return;
-    setLoading(true);
+    let isMounted = true;
 
     Promise.all([
       client.fetch(POST_BY_SLUG_QUERY, { slug }),
       client.fetch(RECENT_POSTS_QUERY, { slug })
     ])
       .then(([postData, recentData]) => {
+        if (!isMounted) return;
         setBlog(postData || null);
         setRecentPosts(recentData || []);
         setLoading(false);
       })
       .catch((err) => {
+        if (!isMounted) return;
         console.error('Sanity fetch error:', err);
         setError('Failed to load blog post. Please try again later.');
         setBlog(null);
         setRecentPosts([]);
         setLoading(false);
       });
+
+    return () => {
+      isMounted = false;
+    };
   }, [slug]);
 
   useEffect(() => {
@@ -167,7 +183,7 @@ export default function BlogDetailPage() {
             <div className="col-span-1 lg:col-span-8">
               <div className="h-10 bg-gray-200 rounded w-3/4 mb-6" />
               <div className="h-5 bg-gray-100 rounded w-full mb-2" />
-              <div className="w-full aspect-[2/1] rounded-[2rem] bg-gray-200 my-10" />
+              <div className="w-full aspect-2/1 rounded-[2rem] bg-gray-200 my-10" />
             </div>
             <div className="col-span-1 lg:col-span-4">
               <div className="h-64 bg-gray-200 rounded-3xl mb-8" />
@@ -206,7 +222,7 @@ export default function BlogDetailPage() {
       />
       <Breadcrumb pageName="Details" />
 
-      <div className="pt-16 pb-24 px-6 md:px-12 lg:px-16 max-w-[1400px] mx-auto">
+      <div className="pt-16 pb-24 px-6 md:px-12 lg:px-16 max-w-350 mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
 
           {/* MAIN CONTENT AREA */}
@@ -241,11 +257,14 @@ export default function BlogDetailPage() {
               </div>
 
               {coverImageUrl && (
-                <div className="w-full aspect-[2/1] rounded-[2rem] overflow-hidden mb-12 bg-gray-100">
-                  <img
+                <div className="w-full aspect-2/1 rounded-[2rem] overflow-hidden mb-12 bg-gray-100 relative">
+                  <Image
                     src={coverImageUrl}
-                    alt={blog.coverImage?.alt || blog.title}
-                    className="w-full h-full object-cover"
+                    alt={blog.coverImage?.alt || blog.title || 'Blog post cover'}
+                    fill
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 800px"
+                    className="object-cover"
                   />
                 </div>
               )}
@@ -266,7 +285,7 @@ export default function BlogDetailPage() {
             {/* Search Widget */}
             <div className="bg-[#6a357b] rounded-3xl p-8 shadow-lg relative overflow-hidden">
               <h3 className="text-2xl font-bold text-white mb-4 font-syne relative z-10">Search</h3>
-              <div className="w-full h-[1px] bg-white/20 mb-8 relative z-10">
+              <div className="w-full h-px bg-white/20 mb-8 relative z-10">
               </div>
 
               <form onSubmit={handleSearch} className="relative z-10">
@@ -280,7 +299,7 @@ export default function BlogDetailPage() {
                   />
                   <button
                     type="submit"
-                    className="w-12 h-12 flex-shrink-0 bg-[#f37728] rounded-full flex items-center justify-center text-white hover:bg-orange-500 transition-colors shadow-md"
+                    className="w-12 h-12 shrink-0 bg-[#f37728] rounded-full flex items-center justify-center text-white hover:bg-orange-500 transition-colors shadow-md"
                   >
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                   </button>
@@ -291,7 +310,7 @@ export default function BlogDetailPage() {
             {/* Recent Posts Widget */}
             <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
               <h3 className="text-2xl font-bold text-[#f37728] mb-4 font-syne">Recent Posts</h3>
-              <div className="w-full h-[1px] bg-gray-200 mb-8">
+              <div className="w-full h-px bg-gray-200 mb-8">
               </div>
 
               <div className="space-y-6">
@@ -302,12 +321,14 @@ export default function BlogDetailPage() {
                       key={post._id}
                       className="flex items-center gap-4 group bg-[#fafbfc] p-3 rounded-2xl transition-all hover:shadow-md"
                     >
-                      <div className="w-20 h-20 flex-shrink-0 rounded-xl overflow-hidden bg-gray-200">
+                      <div className="w-20 h-20 shrink-0 rounded-xl overflow-hidden bg-gray-200 relative">
                         {post.coverImage ? (
-                          <img
+                          <Image
                             src={urlFor(post.coverImage).width(200).height(200).fit('crop').url()}
-                            alt={post.title}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            alt={post.title || 'Recent post thumbnail'}
+                            fill
+                            sizes="80px"
+                            className="object-cover group-hover:scale-110 transition-transform duration-500"
                           />
                         ) : (
                           <div className="w-full h-full bg-[#6a357b]/10" />
@@ -333,7 +354,7 @@ export default function BlogDetailPage() {
             {/* Leave a Quote Widget */}
             <div className="bg-[#f37728] rounded-3xl p-8 shadow-lg relative overflow-hidden">
               <h3 className="text-2xl font-bold text-white mb-4 font-syne relative z-10">Leave a Quote</h3>
-              <div className="w-full h-[1px] bg-white/20 mb-6 relative z-10"></div>
+              <div className="w-full h-px bg-white/20 mb-6 relative z-10"></div>
 
               <form onSubmit={handleQuoteSubmit} className="relative z-10">
                 <textarea

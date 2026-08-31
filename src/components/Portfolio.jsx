@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, FreeMode } from "swiper/modules";
@@ -198,7 +199,13 @@ function Tile({ cat }) {
         WebkitMaskImage: "-webkit-radial-gradient(white, black)",
       }}
     >
-      <img src={cat.img} alt={cat.label} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
+      <Image
+        src={cat.img}
+        alt={cat.label}
+        fill
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        style={{ objectFit: "cover" }}
+      />
 
       <div style={{ position: "absolute", inset: 0, transform: "scale(1.4)", pointerEvents: "none", overflow: "hidden" }}>
         <svg viewBox="0 0 2453 2273" fill="none" style={{ width: "100%", height: "100%" }}>
@@ -230,7 +237,15 @@ function Tile({ cat }) {
         {cat.icons && (
           <div style={{ display: "flex", gap: "12px", marginBottom: "14px" }}>
             {cat.icons.map((icon, idx) => (
-              <img key={idx} src={icon} alt="tech" style={{ width: "32px", height: "32px", objectFit: "contain" }} />
+              <Image
+                key={idx}
+                src={icon}
+                alt="tech"
+                width={32}
+                height={32}
+                unoptimized
+                style={{ objectFit: "contain" }}
+              />
             ))}
           </div>
         )}

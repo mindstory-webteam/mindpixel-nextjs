@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Link } from '@/lib/react-router-dom-compat';
 import Breadcrumb from '../components/BreadCrums';
 import { client, urlFor } from '../lib/sanityClient';
@@ -70,7 +71,7 @@ export default function BlogPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
             {[...Array(6)].map((_, i) => (
               <div key={i} className="flex flex-col animate-pulse">
-                <div className="rounded-xl mb-5 aspect-[1.5/1] bg-gray-200" />
+                <div className="rounded-xl mb-5 aspect-1.5/1 bg-gray-200" />
                 <div className="h-5 bg-gray-200 rounded mb-3 w-3/4" />
                 <div className="h-4 bg-gray-100 rounded mb-2 w-full" />
                 <div className="h-4 bg-gray-100 rounded mb-2 w-5/6" />
@@ -118,7 +119,7 @@ export default function BlogPage() {
         </h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
-          {currentBlogs.map((blog) => {
+          {currentBlogs.map((blog, index) => {
             const imageUrl = blog.coverImage?.asset?.url?.startsWith('http')
               ? blog.coverImage.asset.url
               : blog.coverImage?.asset
@@ -131,15 +132,18 @@ export default function BlogPage() {
                 key={blog._id}
                 className="flex flex-col group cursor-pointer"
               >
-                <div className="overflow-hidden rounded-xl mb-5 aspect-[1.5/1] bg-gray-100">
+                <div className="overflow-hidden rounded-xl mb-5 aspect-1.5/1 bg-gray-100 relative">
                   {imageUrl ? (
-                    <img
+                    <Image
                       src={imageUrl}
-                      alt={blog.coverImage?.alt || blog.title}
-                      className="w-full h-full object-cover transition-transform duration-300"
+                      alt={blog.coverImage?.alt || blog.title || 'Blog post image'}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="object-cover transition-transform duration-300 group-hover:scale-105"
+                      priority={currentPage === 1 && index < 3}
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                    <div className="w-full h-full bg-linear-to-br from-gray-200 to-gray-300 flex items-center justify-center">
                       <span className="text-gray-400 text-sm">No image</span>
                     </div>
                   )}
@@ -147,7 +151,7 @@ export default function BlogPage() {
                 <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2 font-mono-dm leading-tight transition-colors">
                   {blog.title}
                 </h3>
-                <p className="text-gray-600 mb-6 font-mono-dm text-sm leading-relaxed flex-grow">
+                <p className="text-gray-600 mb-6 font-mono-dm text-sm leading-relaxed grow">
                   {blog.excerpt}
                 </p>
                 <div className="flex items-center mt-auto">
@@ -180,8 +184,8 @@ export default function BlogPage() {
                   key={page}
                   onClick={() => handlePageChange(page)}
                   className={`w-10 h-10 flex items-center justify-center rounded-lg transition-colors text-sm font-medium ${currentPage === page
-                      ? 'bg-[#0f172a] text-white'
-                      : 'text-gray-700 hover:bg-gray-100'
+                    ? 'bg-[#0f172a] text-white'
+                    : 'text-gray-700 hover:bg-gray-100'
                     }`}
                 >
                   {page}

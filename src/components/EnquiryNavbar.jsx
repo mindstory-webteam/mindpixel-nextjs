@@ -1,5 +1,6 @@
 "use client";
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 import { img } from '../assets/assest'
 import { NavLink, useLocation } from '@/lib/react-router-dom-compat'
 import { usePageTransition } from './TransitionProvider'
@@ -131,7 +132,7 @@ const EnquiryNavbar = () => {
           {scrolled ? (
             <>
               <div className="shrink-0">
-                <img src={img.myndpixel} alt="Logo" className="w-28 cursor-pointer" />
+                <Image src={img.myndpixel} alt="MyndPixel Logo" width={112} height={32} priority className="w-28 h-auto cursor-pointer" />
               </div>
               <div className="absolute left-1/2 -translate-x-1/2">
                 <ul className="flex flex-row gap-6">
@@ -154,7 +155,7 @@ const EnquiryNavbar = () => {
           ) : (
             <>
               <div className="shrink-0">
-                <img src={img.myndpixel} alt="Logo" className="w-35 cursor-pointer" onClick={() => navigateTo('/')} />
+                <Image src={img.myndpixel} alt="MyndPixel Logo" width={140} height={40} priority className="w-35 h-auto cursor-pointer" onClick={() => navigateTo('/')} />
               </div>
               <div className="absolute left-1/2 -translate-x-1/2">
                 <ul className="flex flex-row gap-8">
@@ -190,9 +191,13 @@ const EnquiryNavbar = () => {
             borderBottom: '1px solid rgba(0,0,0,0.06)',
           }}
         >
-          <img
-            src={img.myndpixel} alt="Logo"
-            className="h-7 w-auto cursor-pointer relative z-[70]"
+          <Image
+            src={img.myndpixel}
+            alt="MyndPixel Logo"
+            width={100}
+            height={28}
+            priority
+            className="h-7 w-auto cursor-pointer relative z-70"
             onClick={() => {
               if (menuOpen) setMenuOpen(false);
               navigateTo('/')
@@ -205,7 +210,7 @@ const EnquiryNavbar = () => {
             onClick={() => setMenuOpen(true)}
             type="button"
             aria-label="Open menu"
-            className="relative z-[60] p-2 text-gray-800 bg-transparent border-none outline-none focus:outline-none cursor-pointer"
+            className="relative z-60 p-2 text-gray-800 bg-transparent border-none outline-none focus:outline-none cursor-pointer"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
@@ -215,13 +220,13 @@ const EnquiryNavbar = () => {
 
         {/* Sidebar Overlay */}
         <div 
-          className={`fixed inset-0 bg-black/40 z-[65] transition-opacity duration-300 ${menuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
+          className={`fixed inset-0 bg-black/40 z-65 transition-opacity duration-300 ${menuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
           onClick={() => setMenuOpen(false)}
         />
 
         {/* Sidebar Drawer (Right-to-Left) */}
         <aside
-          className={`fixed top-0 right-0 bottom-0 w-full bg-white z-[70] shadow-2xl transform transition-transform duration-300 ease-in-out ${
+          className={`fixed top-0 right-0 bottom-0 w-full bg-white z-70 shadow-2xl transform transition-transform duration-300 ease-in-out ${
             menuOpen ? 'translate-x-0' : 'translate-x-full'
           } flex flex-col px-6 pb-6 overflow-y-auto`}
         >

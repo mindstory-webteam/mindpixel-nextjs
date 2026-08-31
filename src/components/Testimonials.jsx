@@ -1,5 +1,5 @@
 import { img } from '@/assets/assest'
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState, useSyncExternalStore } from 'react'
 import Core from 'smooothy'
 
 const slidesData = [
@@ -57,7 +57,7 @@ function ReviewCardContent({ slide }) {
 
       <div className="tst-bottom">
         <p ref={textRef} className={`tst-desc ${isExpanded ? 'expanded' : 'collapsed'}`}>
-          "{slide.text}"
+          &ldquo;{slide.text}&rdquo;
         </p>
         {shouldShowReadMore && (
           <button
@@ -88,7 +88,7 @@ function ReviewCardContent({ slide }) {
 /* Mobile/Tablet card */
 const SlideCard = ({ slide, index }) => (
   <div
-    className="shrink-0 w-[82vw] sm:w-[50vw] md:w-[42vw] lg:w-[32vw] max-w-[420px] rounded-[24px] flex flex-col justify-between p-6 sm:p-7 snap-center relative overflow-hidden"
+    className="shrink-0 w-[82vw] sm:w-[50vw] md:w-[42vw] lg:w-[32vw] max-w-105 rounded-[24px] flex flex-col justify-between p-6 sm:p-7 snap-center relative overflow-hidden"
     style={{ backgroundColor: slide.color || '#fafafa', border: '1px solid rgba(0,0,0,0.06)', boxShadow: '0 6px 24px rgba(0,0,0,0.05)' }}
   >
     <ReviewCardContent slide={slide} />
@@ -333,16 +333,17 @@ const DesktopSlider = () => {
   )
 }
 
-const Testimonials = () => {
-  const [isDesktop, setIsDesktop] = useState(false)
+const subscribeDesktopQuery = (callback) => {
+  const mq = window.matchMedia('(min-width: 1367px)')
+  mq.addEventListener('change', callback)
+  return () => mq.removeEventListener('change', callback)
+}
 
-  useEffect(() => {
-    const mq = window.matchMedia('(min-width: 1367px)')
-    setIsDesktop(mq.matches)
-    const handler = (e) => setIsDesktop(e.matches)
-    mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
-  }, [])
+const getDesktopSnapshot = () => window.matchMedia('(min-width: 1367px)').matches
+const getServerSnapshot = () => false
+
+const Testimonials = () => {
+  const isDesktop = useSyncExternalStore(subscribeDesktopQuery, getDesktopSnapshot, getServerSnapshot)
 
   return (
     <>

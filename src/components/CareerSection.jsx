@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Image from "next/image";
 import { IoIosArrowForward } from "react-icons/io";
 import emailjs from "@emailjs/browser";
 import { img } from "../assets/assest";
@@ -135,7 +136,7 @@ export default function CareerSection() {
                     </div>
 
                     <div className="w-1/3 flex justify-center">
-                      <span className="text-orange-600  text-[13px] text-gray-400 font-normal">
+                      <span className="text-orange-600  text-[13px]  font-normal">
                         {job.location}
                         <span className="font-medium">{job.type}</span>
                       </span>
@@ -168,12 +169,14 @@ export default function CareerSection() {
           {/* Sidebar */}
           <div className="w-full md:w-72 flex flex-col gap-5 shrink-0">
             <div className="rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 h-44 flex items-center justify-center relative">
-              <img
+              <Image
                 src={img.questionmark}
                 alt="Careers illustration"
+                fill
+                sizes="(max-width: 768px) 100vw, 300px"
                 className="w-full h-full object-cover object-top"
               />
-              <div className="absolute inset-0 bg-linear-to-t from-white/30 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-white/30 to-transparent pointer-events-none" />
             </div>
 
             <div className="border border-gray-100 rounded-2xl p-5 bg-white shadow-sm">
@@ -229,18 +232,20 @@ export default function CareerSection() {
       </section>
 
       {/* ── APPLY FORM SECTION ── */}
-      <section id="apply-form" className="mx-8 md:mx-14 mb-16 rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
+      <section id="apply-form" className="mx-4 sm:mx-8 md:mx-14 mb-16 rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
         <div className="flex flex-col md:flex-row">
 
-          <div className="w-full md:w-72 shrink-0 min-h-64">
-            <img
+          <div className="w-full md:w-72 shrink-0 min-h-64 relative">
+            <Image
               src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=600&q=80"
               alt="Team"
-              className="w-full h-full object-cover"
+              fill
+              sizes="(max-width: 768px) 100vw, 300px"
+              className="object-cover"
             />
           </div>
 
-          <div className="flex-1 p-8">
+          <div className="flex-1 p-5 sm:p-8">
             <h2 className="text-xl md:text-2xl font-normal leading-snug mb-2">
               Our Team Will Respond To You Within 24 Hrs
             </h2>
@@ -250,7 +255,7 @@ export default function CareerSection() {
 
             {applyStatus === "success" && (
               <div className="mb-5 px-4 py-3 rounded-lg bg-green-50 border border-green-200 text-green-700 text-xs font-medium">
-                Application submitted successfully! We'll get back to you within 24 hours.
+                Application submitted successfully! We&apos;ll get back to you within 24 hours.
               </div>
             )}
             {applyStatus === "error" && (
@@ -309,9 +314,11 @@ export default function CareerSection() {
                 disabled={applyStatus === "submitting"}
               />
 
-              <div className="flex flex-col lg:flex-row items-center lg:justify-between gap-4 mb-5">
-                <div className="overflow-hidden flex justify-center w-full lg:w-auto">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-5 w-full">
+                <div className="w-full sm:w-auto flex justify-center sm:justify-start overflow-hidden">
                   <TurnstileWidget
+                    size="flexible"
+                    className="w-full max-w-75"
                     onVerify={(token) => setTurnstileToken(token)}
                     onExpire={() => setTurnstileToken(null)}
                     onError={() => setTurnstileToken(null)}
@@ -320,7 +327,7 @@ export default function CareerSection() {
                 <button
                   type="submit"
                   disabled={applyStatus === "submitting" || !turnstileToken}
-                  className="bg-orange-600 text-white text-xs font-semibold px-6 py-2.5 rounded hover:bg-orange-700 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed max-lg:w-full"
+                  className="bg-orange-600 text-white text-xs font-semibold px-6 py-3 rounded hover:bg-orange-700 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto shrink-0"
                 >
                   {applyStatus === "submitting" ? "Sending…" : "Submit Application"}
                 </button>

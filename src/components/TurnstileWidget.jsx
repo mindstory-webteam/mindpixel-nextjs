@@ -45,7 +45,7 @@ export default function TurnstileWidget({
   onExpire,
   onError,
   theme = "light",
-  size = "normal",
+  size = "flexible",
   className = ""
 }) {
   const containerRef = useRef(null);
@@ -113,5 +113,5 @@ export default function TurnstileWidget({
     };
   }, [siteKey, theme, size]);
 
-  return <div ref={containerRef} className={`flex justify-start ${className}`} />;
+  return <div ref={containerRef} className={`flex justify-start w-full max-w-full overflow-hidden ${className}`} />;
 }

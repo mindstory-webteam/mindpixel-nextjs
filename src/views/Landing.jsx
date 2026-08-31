@@ -53,7 +53,7 @@ const Landing = () => {
       <InteractivePopup />
 
       {/* Floating Action Buttons */}
-      <div className="fixed bottom-6 right-6 z-[100] flex flex-col gap-2">
+      <div className="fixed bottom-6 right-6 z-100 flex flex-col gap-2">
         <a
           href="tel:+918281610051"
           className="w-11 h-11 bg-orange-500 rounded-full flex items-center justify-center text-white shadow-[0_4px_16px_rgba(249,115,22,0.3)] hover:bg-orange-600 transition-all hover:-translate-y-1"
@@ -71,7 +71,7 @@ const Landing = () => {
           <FaWhatsapp size={22} />
         </a>
       </div>
-    </> 
+    </>
   );
 }
 
