@@ -1,19 +1,17 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from '@/lib/react-router-dom-compat';
+import { useSyncExternalStore } from "react";
 import { FaFacebookF, FaYoutube, FaInstagram } from "react-icons/fa6";
 import SharedLeadForm from "./SharedLeadForm";
 
-function useWindowWidth() {
-  const [width, setWidth] = useState(1200);
-  useEffect(() => {
-    setWidth(window.innerWidth);
-    const handler = () => setWidth(window.innerWidth);
-    window.addEventListener("resize", handler);
-    return () => window.removeEventListener("resize", handler);
-  }, []);
-  return width;
-}
+const subscribeWidth = (callback) => {
+  window.addEventListener("resize", callback);
+  return () => window.removeEventListener("resize", callback);
+};
+const getWidthSnapshot = () => window.innerWidth;
+const getServerWidthSnapshot = () => 1200;
 
+function useWindowWidth() {
+  return useSyncExternalStore(subscribeWidth, getWidthSnapshot, getServerWidthSnapshot);
+}
 
 // ─── Social links data ────────────────────────────────────────────────────────
 const socialLinks = [
@@ -24,7 +22,6 @@ const socialLinks = [
 
 // ─── Main Section ─────────────────────────────────────────────────────────────
 export default function EnquiryFormSection() {
-  const navigate = useNavigate();
   const width = useWindowWidth();
   const isMobile = width < 1024;
   const isTablet = false;
@@ -91,7 +88,7 @@ export default function EnquiryFormSection() {
               }}
             >
               Our team is dedicated to providing the best strategic support. Whether
-              you have a specific project in mind or just want to say hi — we're all ears.
+              you have a specific project in mind or just want to say hi — we&apos;re all ears.
             </p>
 
             {[
@@ -143,10 +140,10 @@ export default function EnquiryFormSection() {
                 margin: "0 0 36px", lineHeight: 1.6,
               }}
             >
-              Fill out the form below and we'll get back to you within 24 hours.
+              Fill out the form below and we&apos;ll get back to you within 24 hours.
             </p>
 
-            <SharedLeadForm theme="light" buttonColor={brandOrange} onSuccess={() => navigate("/thank-you")} />
+            <SharedLeadForm theme="light" buttonColor={brandOrange} />
           </div>
         </div>
       </div>

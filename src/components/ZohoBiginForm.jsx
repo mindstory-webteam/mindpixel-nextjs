@@ -60,20 +60,11 @@ const COUNTRIES = [
   { iso: "sc", name: "Seychelles", dial: "+248", flag: "🇸🇨" }
 ];
 
-const GOOGLE_SHEET_WEBAPP_URL = process.env.NEXT_PUBLIC_GOOGLE_APPS_SCRIPT_URL || process.env.VITE_GOOGLE_APPS_SCRIPT_URL;
-
-export default function SharedLeadForm({
-  theme = "light",
-  buttonColor = "#e07a1b",
-  buttonText = "Get Free Quote",
-  onSuccess
-}) {
+export default function ZohoBiginForm({ brandColor = "#e07a1b" }) {
   const formRef = useRef(null);
   const recaptchaRef = useRef(null);
 
-  const isDark = theme === "dark";
-
-  const [form, setForm] = useState({
+  const [formData, setFormData] = useState({
     name: "",
     company: "",
     phoneRaw: "",
@@ -93,12 +84,14 @@ export default function SharedLeadForm({
   const [errorMsg, setErrorMsg] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Hidden field refs for dynamic tracking values
-  const returnUrlRef = useRef(null);
-  const pageUrlRef = useRef(null);
-  const utmSourceRef = useRef(null);
-  const utmCampaignRef = useRef(null);
-  const utmContentRef = useRef(null);
+  // Tracking state populated from URL params on mount
+  const [tracking, setTracking] = useState({
+    returnUrl: "https://myndpixel.com/thank-you",
+    pageUrl: "",
+    utmSource: "",
+    utmCampaign: "",
+    utmContent: "",
+  });
 
   // Close country dropdown when clicked outside
   useEffect(() => {
@@ -111,15 +104,17 @@ export default function SharedLeadForm({
     return () => document.removeEventListener("mousedown", handleOutsideClick);
   }, []);
 
-  // Set tracking values on mount
+  // Populate tracking state from URL params once window is available
   useEffect(() => {
     if (typeof window !== "undefined") {
       const urlParams = new URLSearchParams(window.location.search);
-      if (returnUrlRef.current) returnUrlRef.current.value = window.location.origin + "/thank-you";
-      if (pageUrlRef.current) pageUrlRef.current.value = window.location.href;
-      if (utmSourceRef.current) utmSourceRef.current.value = urlParams.get("utm_source") || "";
-      if (utmCampaignRef.current) utmCampaignRef.current.value = urlParams.get("utm_campaign") || "";
-      if (utmContentRef.current) utmContentRef.current.value = urlParams.get("utm_content") || "";
+      setTracking({
+        returnUrl: window.location.origin + "/thank-you",
+        pageUrl: window.location.href,
+        utmSource: urlParams.get("utm_source") || "",
+        utmCampaign: urlParams.get("utm_campaign") || "",
+        utmContent: urlParams.get("utm_content") || "",
+      });
     }
   }, []);
 
@@ -127,12 +122,12 @@ export default function SharedLeadForm({
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    window.sharedRecaptchaCallback = () => {
+    window.zohoRecaptchaCallback = () => {
       setCaptchaVerified(true);
       setErrorMsg("");
     };
 
-    window.sharedRecaptchaExpiredCallback = () => {
+    window.zohoRecaptchaExpiredCallback = () => {
       setCaptchaVerified(false);
     };
 
@@ -141,9 +136,9 @@ export default function SharedLeadForm({
         try {
           window.grecaptcha.render(recaptchaRef.current, {
             sitekey: "6LdFqIQtAAAAAO8ZlutxG0RSjH__U8T2ycZiHjD5",
-            theme: isDark ? "dark" : "light",
-            callback: "sharedRecaptchaCallback",
-            "expired-callback": "sharedRecaptchaExpiredCallback",
+            theme: "light",
+            callback: "zohoRecaptchaCallback",
+            "expired-callback": "zohoRecaptchaExpiredCallback",
           });
         } catch (err) {
           // Already rendered or handled
@@ -169,18 +164,14 @@ export default function SharedLeadForm({
         };
         document.head.appendChild(script);
       } else {
-        if (window.grecaptcha && window.grecaptcha.ready) {
-          window.grecaptcha.ready(renderRecaptcha);
-        } else {
-          existingScript.addEventListener("load", renderRecaptcha);
-        }
+        existingScript.addEventListener("load", renderRecaptcha);
       }
     }
   }, []);
 
-
-  const handleChange = (field) => (e) => {
-    setForm((prev) => ({ ...prev, [field]: e.target.value }));
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
     setErrorMsg("");
   };
 
@@ -193,178 +184,149 @@ export default function SharedLeadForm({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!form.name.trim()) {
+    if (!formData.name.trim()) {
       setErrorMsg("Please enter your name.");
       return;
     }
-    if (!form.company.trim()) {
+    if (!formData.company.trim()) {
       setErrorMsg("Please enter your company name.");
       return;
     }
-    if (!form.phoneRaw.trim()) {
+    if (!formData.phoneRaw.trim()) {
       setErrorMsg("Please enter your mobile number.");
       return;
     }
-    if (!form.email.trim() || !form.email.match(/^([A-Za-z0-9-._%'+/]+@[A-Za-z0-9.-]+\.[a-zA-Z]{2,22})$/)) {
+    if (!formData.email.trim() || !formData.email.match(/^([A-Za-z0-9-._%'+/]+@[A-Za-z0-9.-]+\.[a-zA-Z]{2,22})$/)) {
       setErrorMsg("Please enter a valid email address.");
       return;
     }
-    if (form.service === "-None-") {
+    if (formData.service === "-None-") {
       setErrorMsg("Please select a service you are interested in.");
       return;
     }
-    if (form.startTimeline === "-None-") {
+    if (formData.startTimeline === "-None-") {
       setErrorMsg("Please select when you want to start.");
       return;
     }
-    if (!form.description.trim()) {
+    if (!formData.description.trim()) {
       setErrorMsg("Please tell us about your requirement.");
       return;
     }
 
     if (!captchaVerified) {
-      setErrorMsg("Please check the reCAPTCHA box before submitting.");
+      setErrorMsg("Please check the reCAPTCHA box before submitting the form.");
       return;
     }
 
     setIsSubmitting(true);
 
-    // Optional background sync to Google Sheets
-    if (GOOGLE_SHEET_WEBAPP_URL) {
-      try {
-        const formData = new URLSearchParams();
-        formData.append("name", form.name);
-        formData.append("company", form.company);
-        formData.append("phone", `${selectedCountry.dial}${form.phoneRaw.replace(/\D/g, "")}`);
-        formData.append("email", form.email);
-        formData.append("service", form.service);
-        formData.append("budget", form.budget);
-        formData.append("timeline", form.startTimeline);
-        formData.append("description", form.description);
-        fetch(GOOGLE_SHEET_WEBAPP_URL, { method: "POST", mode: "no-cors", body: formData }).catch(() => { });
-      } catch (err) {
-        // Continue
-      }
-    }
-
     if (formRef.current) {
-      // Set returnURL dynamically so Zoho redirects to the correct origin
-      // (localhost:3000 in dev, myndpixel.com in production)
-      if (returnUrlRef.current) {
-        returnUrlRef.current.value = window.location.origin + "/thank-you";
-      }
+      document.charset = "UTF-8";
       formRef.current.submit();
     }
   };
-
-  const inputStyles = `w-full px-3.5 py-2.5 text-sm rounded-lg outline-none transition-colors border shadow-xs ${isDark
-      ? "bg-white/5 border-white/20 text-white placeholder:text-gray-400 focus:border-orange-500"
-      : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-orange-500"
-    }`;
-
-  const labelStyles = `block text-xs font-semibold uppercase tracking-wider mb-1.5 ${isDark ? "text-gray-200" : "text-gray-700"
-    }`;
 
   return (
     <div className="w-full">
       <form
         ref={formRef}
+        id="BiginWebToRecordForm7522188000000623170"
+        name="BiginWebToRecordForm7522188000000623170"
         action="https://bigin.zoho.com/crm/WebForm"
         method="POST"
-        encType="multipart/form-data"
+        enctype="multipart/form-data"
         onSubmit={handleSubmit}
         acceptCharset="UTF-8"
-        className="flex flex-col gap-3.5 text-left font-sans"
+        className="flex flex-col gap-4 text-left font-sans"
       >
-        {/* ── Hidden Zoho CRM Web-to-Record Integration Fields ── */}
+        {/* ── Hidden CRM Integration Fields ── */}
         <input type="hidden" name="xnQsjsdp" value="98ea7a89a13df0f9f658580a9c875ee0d21ba946b68372ddf0da4593eef8fd0d" />
         <input type="hidden" name="zc_gad" id="zc_gad" value="" />
         <input type="hidden" name="xmIwtLD" value="81a6928171067053d2d0cf6ca3a3a766a669f320f445ceae5ed81fcabe8440f54d3dee36d6eeb852887b36e4cbe363b7" />
         <input type="hidden" name="actionType" value="UG90ZW50aWFscw==" />
-        <input type="hidden" name="returnURL" ref={returnUrlRef} defaultValue="https://myndpixel.com/thank-you" />
+        <input type="hidden" name="returnURL" value={tracking.returnUrl || "https://myndpixel.com/thank-you"} />
         <input type="hidden" name="Pipeline" value="Sales Pipeline Standard" />
         <input type="hidden" name="Stage" value="Qualification" />
         <input type="hidden" name="Lead Source" value="Official Website" />
 
-        {/* Formatted phone value */}
+        {/* Hidden concatenated phone field expected by Zoho */}
         <input
           type="hidden"
           name="Contacts.Mobile"
-          value={`${selectedCountry.dial}${form.phoneRaw.replace(/\D/g, "")}`}
+          value={`${selectedCountry.dial}${formData.phoneRaw.replace(/\D/g, "")}`}
         />
 
-        {/* Tracking inputs */}
-        <input type="hidden" name="POTENTIALCF4" ref={pageUrlRef} />
-        <input type="hidden" name="POTENTIALCF5" ref={utmSourceRef} />
-        <input type="hidden" name="POTENTIALCF7" ref={utmCampaignRef} />
-        <input type="hidden" name="POTENTIALCF6" ref={utmContentRef} />
+        {/* Tracking Fields */}
+        <input type="hidden" name="POTENTIALCF4" value={tracking.pageUrl} />
+        <input type="hidden" name="POTENTIALCF5" value={tracking.utmSource} />
+        <input type="hidden" name="POTENTIALCF7" value={tracking.utmCampaign} />
+        <input type="hidden" name="POTENTIALCF6" value={tracking.utmContent} />
 
         {/* ── Row 1: Name & Company Name ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className={labelStyles}>
+            <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
               Name <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               name="Potential Name"
               maxLength={120}
-              placeholder="Your full name"
-              value={form.name}
-              onChange={handleChange("name")}
+              placeholder="e.g. John Doe"
+              value={formData.name}
+              onChange={handleChange}
               disabled={isSubmitting}
-              className={inputStyles}
+              className="w-full px-3.5 py-2.5 text-sm bg-white border border-gray-200 rounded-lg outline-none transition-colors focus:border-orange-500 text-gray-900 placeholder:text-gray-400 shadow-xs"
             />
           </div>
 
           <div>
-            <label className={labelStyles}>
+            <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
               Company Name <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               name="Accounts.Account Name"
               maxLength={200}
-              placeholder="Brand / Company name"
-              value={form.company}
-              onChange={handleChange("company")}
+              placeholder="e.g. Acme Corp"
+              value={formData.company}
+              onChange={handleChange}
               disabled={isSubmitting}
-              className={inputStyles}
+              className="w-full px-3.5 py-2.5 text-sm bg-white border border-gray-200 rounded-lg outline-none transition-colors focus:border-orange-500 text-gray-900 placeholder:text-gray-400 shadow-xs"
             />
           </div>
         </div>
 
         {/* ── Row 2: Mobile with Country Selector & Email ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className={labelStyles}>
+            <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
               Mobile Number <span className="text-red-500">*</span>
             </label>
             <div className="relative flex items-center" ref={dropdownRef}>
-              {/* Country Code Trigger */}
+              {/* Country Trigger */}
               <button
                 type="button"
                 onClick={() => setDropdownOpen((prev) => !prev)}
-                className={`h-10 px-2.5 border border-r-0 rounded-l-lg flex items-center gap-1.5 text-xs font-medium shrink-0 transition-colors ${isDark ? "bg-white/10 border-white/20 text-white hover:bg-white/15" : "bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100"
-                  }`}
+                className="h-10.5 px-3 bg-gray-50 border border-r-0 border-gray-200 rounded-l-lg flex items-center gap-1.5 text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors shrink-0"
               >
                 <span>{selectedCountry.flag}</span>
-                <span>{selectedCountry.dial}</span>
-                <svg className="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <span className="text-xs">{selectedCountry.dial}</span>
+                <svg className="w-3.5 h-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
 
-              {/* Country Dropdown Panel */}
+              {/* Country Search & Selection Popup */}
               {dropdownOpen && (
-                <div className="absolute top-11 left-0 z-50 w-64 max-h-60 bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden flex flex-col">
+                <div className="absolute top-12 left-0 z-50 w-64 max-h-60 bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden flex flex-col">
                   <div className="p-2 border-b border-gray-100 bg-gray-50">
                     <input
                       type="text"
                       placeholder="Search country or code..."
                       value={countrySearch}
                       onChange={(e) => setCountrySearch(e.target.value)}
-                      className="w-full px-2.5 py-1.5 text-xs bg-white border border-gray-200 rounded outline-none focus:border-orange-500 text-gray-800"
+                      className="w-full px-2.5 py-1.5 text-xs bg-white border border-gray-200 rounded outline-none focus:border-orange-500"
                     />
                   </div>
                   <div className="overflow-y-auto flex-1">
@@ -378,8 +340,9 @@ export default function SharedLeadForm({
                             setDropdownOpen(false);
                             setCountrySearch("");
                           }}
-                          className={`w-full px-3 py-2 text-left text-xs flex items-center justify-between hover:bg-orange-50 transition-colors ${selectedCountry.iso === country.iso ? "bg-orange-50 font-semibold text-orange-600" : "text-gray-700"
-                            }`}
+                          className={`w-full px-3 py-2 text-left text-xs flex items-center justify-between hover:bg-orange-50 transition-colors ${
+                            selectedCountry.iso === country.iso ? "bg-orange-50 font-semibold text-orange-600" : "text-gray-700"
+                          }`}
                         >
                           <span className="flex items-center gap-2 truncate">
                             <span>{country.flag}</span>
@@ -401,46 +364,43 @@ export default function SharedLeadForm({
                 name="phone_display"
                 maxLength={20}
                 placeholder="Phone number"
-                value={form.phoneRaw}
-                onChange={(e) => setForm((prev) => ({ ...prev, phoneRaw: e.target.value }))}
+                value={formData.phoneRaw}
+                onChange={(e) => setFormData((prev) => ({ ...prev, phoneRaw: e.target.value }))}
                 disabled={isSubmitting}
-                className={`w-full h-10 px-3 py-2 text-sm rounded-r-lg outline-none transition-colors border shadow-xs ${isDark
-                    ? "bg-white/5 border-white/20 text-white placeholder:text-gray-400 focus:border-orange-500"
-                    : "bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-orange-500"
-                  }`}
+                className="w-full h-10.5 px-3.5 py-2 text-sm bg-white border border-gray-200 rounded-r-lg outline-none transition-colors focus:border-orange-500 text-gray-900 placeholder:text-gray-400 shadow-xs"
               />
             </div>
           </div>
 
           <div>
-            <label className={labelStyles}>
+            <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
               Email Address <span className="text-red-500">*</span>
             </label>
             <input
               type="email"
               name="Contacts.Email"
               maxLength={100}
-              placeholder="john@company.com"
-              value={form.email}
-              onChange={handleChange("email")}
+              placeholder="e.g. john@example.com"
+              value={formData.email}
+              onChange={handleChange}
               disabled={isSubmitting}
-              className={`h-10 ${inputStyles}`}
+              className="w-full h-10.5 px-3.5 py-2 text-sm bg-white border border-gray-200 rounded-lg outline-none transition-colors focus:border-orange-500 text-gray-900 placeholder:text-gray-400 shadow-xs"
             />
           </div>
         </div>
 
-        {/* ── Row 3: Service & Budget ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {/* ── Row 3: Service Interested In & Budget ── */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label className={labelStyles}>
+            <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
               Service Interested In? <span className="text-red-500">*</span>
             </label>
             <select
               name="POTENTIALCF1"
-              value={form.service}
-              onChange={handleChange("service")}
+              value={formData.service}
+              onChange={handleChange}
               disabled={isSubmitting}
-              className={`h-10 cursor-pointer ${inputStyles}`}
+              className="w-full h-10.5 px-3.5 py-2 text-sm bg-white border border-gray-200 rounded-lg outline-none transition-colors focus:border-orange-500 text-gray-900 shadow-xs cursor-pointer"
             >
               <option value="-None-">- Select a Service -</option>
               <option value="Digital Marketing">Digital Marketing</option>
@@ -453,15 +413,15 @@ export default function SharedLeadForm({
           </div>
 
           <div>
-            <label className={labelStyles}>
+            <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
               Monthly/Project Budget
             </label>
             <select
               name="POTENTIALCF3"
-              value={form.budget}
-              onChange={handleChange("budget")}
+              value={formData.budget}
+              onChange={handleChange}
               disabled={isSubmitting}
-              className={`h-10 cursor-pointer ${inputStyles}`}
+              className="w-full h-10.5 px-3.5 py-2 text-sm bg-white border border-gray-200 rounded-lg outline-none transition-colors focus:border-orange-500 text-gray-900 shadow-xs cursor-pointer"
             >
               <option value="-None-">- Select Budget Range -</option>
               <option value="Below ₹25K">Below ₹25K</option>
@@ -475,15 +435,15 @@ export default function SharedLeadForm({
 
         {/* ── Row 4: Start Timeline ── */}
         <div>
-          <label className={labelStyles}>
+          <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
             When do you want to start? <span className="text-red-500">*</span>
           </label>
           <select
             name="POTENTIALCF2"
-            value={form.startTimeline}
-            onChange={handleChange("startTimeline")}
+            value={formData.startTimeline}
+            onChange={handleChange}
             disabled={isSubmitting}
-            className={`h-10 cursor-pointer ${inputStyles}`}
+            className="w-full h-10.5 px-3.5 py-2 text-sm bg-white border border-gray-200 rounded-lg outline-none transition-colors focus:border-orange-500 text-gray-900 shadow-xs cursor-pointer"
           >
             <option value="-None-">- Select Timeline -</option>
             <option value="Immediately">Immediately</option>
@@ -495,26 +455,25 @@ export default function SharedLeadForm({
 
         {/* ── Row 5: Tell Us About Your Requirement ── */}
         <div>
-          <label className={labelStyles}>
+          <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
             Tell Us About Your Requirement <span className="text-red-500">*</span>
           </label>
           <textarea
             name="Description"
-            rows={2}
+            rows={3}
             maxLength={32000}
-            placeholder="Tell us more about your project and goals..."
-            value={form.description}
-            onChange={handleChange("description")}
+            placeholder="Describe your project, goals, or questions in detail..."
+            value={formData.description}
+            onChange={handleChange}
             disabled={isSubmitting}
-            className={`resize-y ${inputStyles}`}
-            style={{ minHeight: "56px" }}
+            className="w-full px-3.5 py-2.5 text-sm bg-white border border-gray-200 rounded-lg outline-none transition-colors focus:border-orange-500 text-gray-900 placeholder:text-gray-400 shadow-xs resize-y"
           />
         </div>
 
-        {/* ── Error Notification ── */}
+        {/* ── Error Banner ── */}
         {errorMsg && (
-          <div className="p-2.5 bg-red-500/10 border border-red-500/30 rounded-lg text-xs font-medium text-red-500 flex items-center gap-2">
-            <svg className="w-4 h-4 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+          <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-xs font-medium text-red-700 flex items-center gap-2">
+            <svg className="w-4 h-4 shrink-0 text-red-500" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
             </svg>
             <span>{errorMsg}</span>
@@ -525,19 +484,21 @@ export default function SharedLeadForm({
         <div className="w-full flex justify-start overflow-x-auto my-1">
           <div
             ref={recaptchaRef}
-            id="shared-recap-widget"
+            className="g-recaptcha"
+            id="recap7522188000000623170"
           />
         </div>
 
         {/* ── Submit Button ── */}
-        <div className="mt-1">
+        <div className="mt-2">
           <button
             type="submit"
+            id="formsubmit"
             disabled={isSubmitting}
-            style={{ backgroundColor: buttonColor }}
-            className="w-full px-7 py-3.5 text-white font-semibold text-sm rounded-lg hover:opacity-90 active:scale-98 transition-all shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{ backgroundColor: brandColor }}
+            className="w-full sm:w-auto px-8 py-3.5 text-white font-semibold text-sm rounded-lg hover:opacity-90 active:scale-98 transition-all shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isSubmitting ? "Submitting to CRM..." : buttonText}
+            {isSubmitting ? "Submitting to CRM..." : "Get Free Quote"}
           </button>
         </div>
       </form>

@@ -73,13 +73,14 @@ export default function InteractivePopup() {
           box-shadow: 0 25px 70px rgba(0, 0, 0, 0.4);
           max-width: 600px;
           width: 90%;
-          max-height: 90%;
+          max-height: 92vh;
           height: auto;
           position: relative;
           padding: 0;
           transform: scale(0.7);
           opacity: 0;
-          overflow: hidden;
+          overflow-y: auto;
+          overflow-x: hidden;
           transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
         }
 
@@ -89,10 +90,7 @@ export default function InteractivePopup() {
         }
 
         .popup-content {
-          max-height: calc(90vh - 180px);
-          overflow-y: auto;
-          overflow-x: hidden;
-          padding-right: 8px;
+          overflow: visible;
         }
 
         .popup-content::-webkit-scrollbar {

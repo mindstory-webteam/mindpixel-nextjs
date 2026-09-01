@@ -13,7 +13,6 @@ import EnquiryHero from '../components/EnquiryHero'
 import EnquiryFormSection from '@/components/EnquiryFormSection'
 import EnquiryWhyChooseUs from '../components/EnquiryWhyChooseUs'
 import EnquiryAbout from '../components/EnquiryAbout'
-import InteractivePopup from '../components/InteractivePopup'
 import SEO from '../components/SEO';
 import { FaWhatsapp, FaPhone } from 'react-icons/fa6';
 
@@ -50,7 +49,6 @@ const Landing = () => {
       </div>
 
 
-      <InteractivePopup />
 
       {/* Floating Action Buttons */}
       <div className="fixed bottom-6 right-6 z-100 flex flex-col gap-2">
