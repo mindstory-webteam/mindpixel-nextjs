@@ -261,8 +261,32 @@ export default function SharedLeadForm({
         }
         formRef.current.target = "shared_lead_hidden_iframe";
         formRef.current.submit();
-        setIsSubmitted(true);
-        setIsSubmitting(false);
+
+        // Clear all fields to empty
+        setForm({
+          name: "",
+          company: "",
+          phoneRaw: "",
+          email: "",
+          service: "-None-",
+          budget: "-None-",
+          startTimeline: "-None-",
+          description: "",
+        });
+        setErrorMsg("");
+
+        // Reset reCAPTCHA widget
+        if (typeof window !== "undefined" && window.grecaptcha && widgetIdRef.current !== null) {
+          try {
+            window.grecaptcha.reset(widgetIdRef.current);
+          } catch (err) {}
+        }
+
+        // Revert button back to normal after submission feedback
+        setTimeout(() => {
+          setIsSubmitting(false);
+        }, 1500);
+
         if (onSuccess) onSuccess();
         return;
       }
@@ -272,6 +296,7 @@ export default function SharedLeadForm({
         returnUrlRef.current.value = window.location.origin + "/thank-you";
       }
       formRef.current.submit();
+      if (onSuccess) onSuccess();
     }
   };
 
