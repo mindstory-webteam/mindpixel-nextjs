@@ -168,4 +168,27 @@ html {
     width: 0;
     height: 0;
   }
+
+  /* Country dropdown visible scrollbar */
+  .country-dropdown-list {
+    scrollbar-width: thin !important;
+    scrollbar-color: #e07a1b #f3f4f6 !important;
+    -ms-overflow-style: auto !important;
+  }
+
+  .country-dropdown-list::-webkit-scrollbar {
+    display: block !important;
+    width: 6px !important;
+    height: 6px !important;
+  }
+
+  .country-dropdown-list::-webkit-scrollbar-track {
+    background: #f3f4f6 !important;
+    border-radius: 4px !important;
+  }
+
+  .country-dropdown-list::-webkit-scrollbar-thumb {
+    background-color: #e07a1b !important;
+    border-radius: 4px !important;
+  }
 }

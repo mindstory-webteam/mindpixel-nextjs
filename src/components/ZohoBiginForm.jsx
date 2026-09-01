@@ -317,8 +317,13 @@ export default function ZohoBiginForm({ brandColor = "#e07a1b" }) {
 
               {/* Country Search & Selection Popup */}
               {dropdownOpen && (
-                <div className="absolute top-12 left-0 z-50 w-64 max-h-60 bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden flex flex-col">
-                  <div className="p-2 border-b border-gray-100 bg-gray-50">
+                <div
+                  className="absolute top-12 left-0 z-50 w-64 bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden"
+                  style={{ maxHeight: "240px", display: "flex", flexDirection: "column" }}
+                  data-lenis-prevent="true"
+                  data-lenis-prevent-touch="true"
+                >
+                  <div className="p-2 border-b border-gray-100 bg-gray-50" style={{ flexShrink: 0 }}>
                     <input
                       type="text"
                       placeholder="Search country or code..."
@@ -327,7 +332,17 @@ export default function ZohoBiginForm({ brandColor = "#e07a1b" }) {
                       className="w-full px-2.5 py-1.5 text-xs bg-white border border-gray-200 rounded outline-none focus:border-orange-500"
                     />
                   </div>
-                  <div className="overflow-y-auto flex-1">
+                  <div
+                    className="text-left country-dropdown-list"
+                    data-lenis-prevent="true"
+                    data-lenis-prevent-touch="true"
+                    style={{
+                      overflowY: "auto",
+                      maxHeight: "190px",
+                      flex: "1 1 auto",
+                      WebkitOverflowScrolling: "touch",
+                    }}
+                  >
                     {filteredCountries.length > 0 ? (
                       filteredCountries.map((country) => (
                         <button
@@ -343,7 +358,7 @@ export default function ZohoBiginForm({ brandColor = "#e07a1b" }) {
                           }`}
                         >
                           <span className="flex items-center gap-2 truncate">
-                            <span>{country.flag}</span>
+                            <span className="font-mono text-[10px] font-bold px-1 py-0.5 bg-orange-100 text-orange-700 rounded uppercase shrink-0">{country.iso}</span>
                             <span className="truncate">{country.name}</span>
                           </span>
                           <span className="text-gray-400 font-mono text-[11px] ml-2 shrink-0">{country.dial}</span>
@@ -496,7 +511,7 @@ export default function ZohoBiginForm({ brandColor = "#e07a1b" }) {
             style={{ backgroundColor: brandColor }}
             className="w-full sm:w-auto px-8 py-3.5 text-white font-semibold text-sm rounded-lg hover:opacity-90 active:scale-98 transition-all shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isSubmitting ? "Submitting" : "Get Free Quote"}
+            {isSubmitting ? "Submitted" : "Get Free Quote"}
           </button>
         </div>
       </form>
