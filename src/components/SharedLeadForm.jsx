@@ -66,6 +66,7 @@ export default function SharedLeadForm({
   theme = "light",
   buttonColor = "#e07a1b",
   buttonText = "Get Free Quote",
+  redirect = true,
   onSuccess
 }) {
   const formRef = useRef(null);
@@ -73,6 +74,8 @@ export default function SharedLeadForm({
   const widgetIdRef = useRef(null); // Stores this instance's reCAPTCHA widget ID
 
   const isDark = theme === "dark";
+
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -254,8 +257,19 @@ export default function SharedLeadForm({
     }
 
     if (formRef.current) {
-      // Set returnURL dynamically so Zoho redirects to the correct origin
-      // (localhost:3000 in dev, myndpixel.com in production)
+      if (!redirect) {
+        if (returnUrlRef.current) {
+          returnUrlRef.current.value = "about:blank";
+        }
+        formRef.current.target = "shared_lead_hidden_iframe";
+        formRef.current.submit();
+        setIsSubmitted(true);
+        setIsSubmitting(false);
+        if (onSuccess) onSuccess();
+        return;
+      }
+
+      // Set returnURL dynamically so Zoho redirects to /thank-you
       if (returnUrlRef.current) {
         returnUrlRef.current.value = window.location.origin + "/thank-you";
       }
@@ -270,6 +284,20 @@ export default function SharedLeadForm({
 
   const labelStyles = `block text-xs font-semibold uppercase tracking-wider mb-1.5 ${isDark ? "text-gray-200" : "text-gray-700"
     }`;
+
+  if (isSubmitted) {
+    return (
+      <div className="w-full p-6 text-center bg-emerald-500/10 border border-emerald-500/30 rounded-xl my-2">
+        <div className="text-3xl mb-2">🎉</div>
+        <h4 className="text-base font-semibold text-emerald-600 dark:text-emerald-400 mb-1">
+          Thank You!
+        </h4>
+        <p className="text-xs text-gray-600 dark:text-gray-300">
+          Your inquiry has been submitted successfully. Our team will get back to you within 24 hours.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full">
@@ -546,6 +574,8 @@ export default function SharedLeadForm({
             {isSubmitting ? "Submitting to CRM..." : buttonText}
           </button>
         </div>
+        {/* ── Hidden iframe for non-redirecting submit ── */}
+        <iframe name="shared_lead_hidden_iframe" id="shared_lead_hidden_iframe" style={{ display: "none" }} />
       </form>
     </div>
   );

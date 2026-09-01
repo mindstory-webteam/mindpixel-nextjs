@@ -496,7 +496,7 @@ export default function ZohoBiginForm({ brandColor = "#e07a1b" }) {
             style={{ backgroundColor: brandColor }}
             className="w-full sm:w-auto px-8 py-3.5 text-white font-semibold text-sm rounded-lg hover:opacity-90 active:scale-98 transition-all shadow-md cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isSubmitting ? "Submitting to CRM..." : "Get Free Quote"}
+            {isSubmitting ? "Submitting" : "Get Free Quote"}
           </button>
         </div>
       </form>

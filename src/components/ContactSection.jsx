@@ -312,17 +312,20 @@ const ContactSection = () => {
           border: 1px solid #e8e8e8;
         }
 
-        .maplibregl-popup { pointer-events: auto !important; }
+        .maplibregl-popup { z-index: 50; }
 
         .maplibregl-popup-content {
-          pointer-events: auto !important;
           padding: 0 !important;
-          border-radius: 16px !important;
-          box-shadow: 0 8px 32px rgba(0,0,0,0.12) !important;
-          overflow: hidden;
+          background: transparent !important;
+          box-shadow: none !important;
+          border: none !important;
         }
 
-        .maplibregl-popup-tip { display: none !important; }
+        .maplibregl-popup-anchor-bottom .maplibregl-popup-tip { border-top-color: #ffffff !important; }
+        .maplibregl-popup-anchor-top .maplibregl-popup-tip { border-bottom-color: #ffffff !important; }
+        .maplibregl-popup-anchor-left .maplibregl-popup-tip { border-right-color: #ffffff !important; }
+        .maplibregl-popup-anchor-right .maplibregl-popup-tip { border-left-color: #ffffff !important; }
+
         .maplibregl-ctrl-attrib { display: none !important; }
 
         @media (max-width: 1024px) {
@@ -372,7 +375,7 @@ const ContactSection = () => {
             <p className="wa-form-sub">
               Fill out the form and our team will get back to you within 24 hours.
             </p>
-            <SharedLeadForm theme="light" buttonColor="#e07a1b" />
+            <SharedLeadForm theme="light" buttonColor="#e07a1b" redirect={false} />
           </div>
 
           {/* RIGHT HALF: INTERACTIVE MAP */}
@@ -413,20 +416,25 @@ const ContactSection = () => {
               {locations.map((loc, i) => (
                 <MapMarker key={i} longitude={loc.coords[0]} latitude={loc.coords[1]}>
                   <MarkerContent />
-                  <MarkerTooltip closeOnClick={false}>
+                  <MarkerTooltip closeOnClick={false} className="bg-transparent border-none p-0 shadow-none">
                     <div style={{
                       fontFamily: "'Syne', sans-serif",
-                      width: '240px',
+                      width: '260px',
                       display: 'flex',
                       flexDirection: 'column',
                       gap: '8px',
-                      padding: '20px',
+                      padding: '16px 18px',
+                      background: '#ffffff',
+                      color: '#111111',
+                      borderRadius: '14px',
+                      border: '1px solid rgba(0,0,0,0.08)',
+                      boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
                     }}>
-                      <span style={{ fontSize: '10px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#95257b', fontWeight: 700 }}>
+                      <span style={{ fontSize: '11px', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#e07a1b', fontWeight: 700 }}>
                         {loc.place}
                       </span>
-                      <div style={{ height: '1px', background: '#eee', margin: '4px 0' }} />
-                      <p style={{ fontSize: '12px', color: '#666', lineHeight: 1.6, margin: 0 }}>
+                      <div style={{ height: '1px', background: '#f0f0f0', margin: '2px 0' }} />
+                      <p style={{ fontSize: '13px', color: '#222222', lineHeight: 1.5, margin: 0, fontWeight: 500 }}>
                         {loc.address}
                       </p>
                     </div>
