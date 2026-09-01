@@ -122,23 +122,19 @@ export default function ZohoBiginForm({ brandColor = "#e07a1b" }) {
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    window.zohoRecaptchaCallback = () => {
-      setCaptchaVerified(true);
-      setErrorMsg("");
-    };
-
-    window.zohoRecaptchaExpiredCallback = () => {
-      setCaptchaVerified(false);
-    };
-
     const renderRecaptcha = () => {
       if (window.grecaptcha && recaptchaRef.current && !recaptchaRef.current.hasChildNodes()) {
         try {
           window.grecaptcha.render(recaptchaRef.current, {
             sitekey: "6LdFqIQtAAAAAO8ZlutxG0RSjH__U8T2ycZiHjD5",
             theme: "light",
-            callback: "zohoRecaptchaCallback",
-            "expired-callback": "zohoRecaptchaExpiredCallback",
+            callback: () => {
+              setCaptchaVerified(true);
+              setErrorMsg("");
+            },
+            "expired-callback": () => {
+              setCaptchaVerified(false);
+            },
           });
         } catch (err) {
           // Already rendered or handled

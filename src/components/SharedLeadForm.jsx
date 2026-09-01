@@ -127,23 +127,19 @@ export default function SharedLeadForm({
   useEffect(() => {
     if (typeof window === "undefined") return;
 
-    window.sharedRecaptchaCallback = () => {
-      setCaptchaVerified(true);
-      setErrorMsg("");
-    };
-
-    window.sharedRecaptchaExpiredCallback = () => {
-      setCaptchaVerified(false);
-    };
-
     const renderRecaptcha = () => {
       if (window.grecaptcha && recaptchaRef.current && !recaptchaRef.current.hasChildNodes()) {
         try {
           window.grecaptcha.render(recaptchaRef.current, {
             sitekey: "6LdFqIQtAAAAAO8ZlutxG0RSjH__U8T2ycZiHjD5",
             theme: isDark ? "dark" : "light",
-            callback: "sharedRecaptchaCallback",
-            "expired-callback": "sharedRecaptchaExpiredCallback",
+            callback: () => {
+              setCaptchaVerified(true);
+              setErrorMsg("");
+            },
+            "expired-callback": () => {
+              setCaptchaVerified(false);
+            },
           });
         } catch (err) {
           // Already rendered or handled
