@@ -117,10 +117,10 @@ export default function EnquiryFormSection() {
 
           <div
             style={{
-              background: "#f9f9f9",
               border: "1px solid rgba(0,0,0,0.08)",
-              borderRadius: "24px",
-              padding: isMobile ? "28px 20px" : "44px 40px",
+              borderRadius: "16px",
+              padding: isMobile ? "24px 20px" : "32px 28px",
+              background: "#fff",
             }}
           >
             <h3

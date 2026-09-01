@@ -209,7 +209,11 @@ export default function ZohoBiginForm({ brandColor = "#e07a1b" }) {
       return;
     }
 
-    if (!captchaVerified) {
+    // Check reCAPTCHA directly from the widget — reliable regardless of React re-renders
+    const recaptchaResponse = typeof window !== "undefined" && window.grecaptcha
+      ? window.grecaptcha.getResponse()
+      : "";
+    if (!recaptchaResponse) {
       setErrorMsg("Please check the reCAPTCHA box before submitting the form.");
       return;
     }

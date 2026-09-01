@@ -63,18 +63,6 @@ export default function EnquiryFaq() {
         >
           {/* LEFT — Contact Form */}
           <div style={isMobile ? {} : { position: "sticky", top: "80px" }}>
-            <h2
-              style={{
-                fontFamily: "'Syne', sans-serif",
-                fontSize: isMobile ? "28px" : "38px",
-                fontWeight: 400,
-                color: "#fff",
-                margin: "0 0 32px",
-              }}
-            >
-              Send us a brief.
-            </h2>
-
             <div
               style={{
                 border: "1px solid rgba(0,0,0,0.08)",
@@ -84,30 +72,6 @@ export default function EnquiryFaq() {
               }}
             >
               <SharedLeadForm theme="light" buttonColor="#e07a1b" onSuccess={() => navigate('/thank-you')} />
-              
-              <div
-                style={{
-                  marginTop: "20px",
-                  padding: "16px 20px",
-                  background: "rgba(0,0,0,0.03)",
-                  borderRadius: "8px",
-                  border: "1px solid rgba(0,0,0,0.05)",
-                }}
-              >
-                <p
-                  style={{
-                    margin: 0,
-                    fontSize: "13px",
-                    fontFamily: "'Syne', sans-serif",
-                    color: "rgba(0,0,0,0.6)",
-                  }}
-                >
-                  Or reach us at{" "}
-                  <strong style={{ color: "#111", fontWeight: 500 }}>
-                    hello@mindstory.in
-                  </strong>
-                </p>
-              </div>
             </div>
           </div>
 

@@ -70,6 +70,7 @@ export default function SharedLeadForm({
 }) {
   const formRef = useRef(null);
   const recaptchaRef = useRef(null);
+  const widgetIdRef = useRef(null); // Stores this instance's reCAPTCHA widget ID
 
   const isDark = theme === "dark";
 
@@ -130,7 +131,7 @@ export default function SharedLeadForm({
     const renderRecaptcha = () => {
       if (window.grecaptcha && recaptchaRef.current && !recaptchaRef.current.hasChildNodes()) {
         try {
-          window.grecaptcha.render(recaptchaRef.current, {
+          widgetIdRef.current = window.grecaptcha.render(recaptchaRef.current, {
             sitekey: "6LdFqIQtAAAAAO8ZlutxG0RSjH__U8T2ycZiHjD5",
             theme: isDark ? "dark" : "light",
             callback: () => {
@@ -142,13 +143,23 @@ export default function SharedLeadForm({
             },
           });
         } catch (err) {
-          // Already rendered or handled
+          // Already rendered or widget already exists
         }
       }
     };
 
-    if (window.grecaptcha && window.grecaptcha.render) {
-      renderRecaptcha();
+    const initRecaptcha = () => {
+      // Always go through grecaptcha.ready() — safe for multiple instances
+      if (window.grecaptcha && window.grecaptcha.ready) {
+        window.grecaptcha.ready(renderRecaptcha);
+      } else {
+        renderRecaptcha();
+      }
+    };
+
+    if (window.grecaptcha) {
+      // Script already loaded by a previous instance — init immediately
+      initRecaptcha();
     } else {
       const existingScript = document.querySelector('script[src*="google.com/recaptcha/api.js"]');
       if (!existingScript) {
@@ -156,19 +167,14 @@ export default function SharedLeadForm({
         script.src = "https://www.google.com/recaptcha/api.js?render=explicit";
         script.async = true;
         script.defer = true;
-        script.onload = () => {
-          if (window.grecaptcha && window.grecaptcha.ready) {
-            window.grecaptcha.ready(renderRecaptcha);
-          } else {
-            renderRecaptcha();
-          }
-        };
+        script.onload = initRecaptcha;
         document.head.appendChild(script);
       } else {
-        if (window.grecaptcha && window.grecaptcha.ready) {
-          window.grecaptcha.ready(renderRecaptcha);
-        } else {
-          existingScript.addEventListener("load", renderRecaptcha);
+        // Script tag exists but may still be loading
+        existingScript.addEventListener("load", initRecaptcha);
+        // In case it already finished loading before we added the listener
+        if (existingScript.readyState === "complete" || window.grecaptcha) {
+          initRecaptcha();
         }
       }
     }
@@ -218,7 +224,11 @@ export default function SharedLeadForm({
       return;
     }
 
-    if (!captchaVerified) {
+    // Check reCAPTCHA using this instance's widget ID — handles multiple widgets on the same page
+    const recaptchaResponse = typeof window !== "undefined" && window.grecaptcha
+      ? window.grecaptcha.getResponse(widgetIdRef.current)
+      : "";
+    if (!recaptchaResponse) {
       setErrorMsg("Please check the reCAPTCHA box before submitting.");
       return;
     }
