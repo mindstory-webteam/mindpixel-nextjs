@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import bgImage from "../assets/EnquiryBanner.png";
 import bgImageSm from "../assets/enquiry-banner-sm-screen.png";
 import bgImageMobile from "../assets/enquiry-banner-for-mobile.png";
 
 function useWindowWidth() {
-  const [width, setWidth] = useState(1200);
+  const [width, setWidth] = useState(() => (typeof window !== "undefined" ? window.innerWidth : 1200));
   useEffect(() => {
-    setWidth(window.innerWidth);
     const handler = () => setWidth(window.innerWidth);
     window.addEventListener("resize", handler);
     return () => window.removeEventListener("resize", handler);
@@ -19,6 +19,8 @@ export default function EnquiryHero() {
   const isMobile = width < 768;
   const isTablet = width >= 768 && width < 1100;
 
+  const currentImage = isMobile ? bgImageMobile : isTablet ? bgImageSm : bgImage;
+
   return (
     <div
       style={{
@@ -30,14 +32,13 @@ export default function EnquiryHero() {
       }}
     >
       {/* Background Image */}
-      <img
-        src={isMobile ? (bgImageMobile?.src || bgImageMobile) : isTablet ? (bgImageSm?.src || bgImageSm) : (bgImage?.src || bgImage)}
+      <Image
+        src={currentImage}
         alt="Team Meeting"
+        fill
+        priority
+        sizes="100vw"
         style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
           objectFit: "cover",
           objectPosition: "center top",
         }}

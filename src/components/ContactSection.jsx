@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { FaFacebookF, FaYoutube, FaInstagram, FaWhatsapp } from 'react-icons/fa6';
-import emailjs from '@emailjs/browser';
-import AnimatedButton from './AnimatedButton';
+import React from 'react';
+import { FaFacebookF, FaYoutube, FaInstagram } from 'react-icons/fa6';
+import { Mail, Phone, PhoneCall, MapPin } from 'lucide-react';
+import SharedLeadForm from './SharedLeadForm';
 import { Map, MapControls, MapMarker, MarkerContent, MarkerTooltip } from "@/components/ui/map";
 
 const locations = [
@@ -37,35 +37,7 @@ const socialLinks = [
   { icon: <FaYoutube />, url: '#', label: 'YouTube' },
 ];
 
-const SERVICES = [
-  "Web Development & UI/UX",
-  "Growth Marketing & SEO",
-  "Brand Strategy & Identity",
-  "App & Software Solutions",
-  "Other Inquiry"
-];
-
 const ContactSection = () => {
-  const [waForm, setWaForm] = useState({ name: '', phone: '', service: '', message: '' });
-  const [waError, setWaError] = useState('');
-
-  const handleWhatsAppSend = (e) => {
-    e.preventDefault();
-    if (!waForm.name.trim() || !waForm.phone.trim() || !waForm.message.trim()) {
-      setWaError('Please fill in your name, phone number, and message.');
-      return;
-    }
-    setWaError('');
-
-    const text = `*New Contact Request from MindPixel Website*\n\n` +
-      ` *Name:* ${waForm.name.trim()}\n` +
-      ` *Phone:* ${waForm.phone.trim()}\n` +
-      ` *Service:* ${waForm.service || 'General Inquiry'}\n` +
-      ` *Message:* ${waForm.message.trim()}`;
-
-    const url = `https://wa.me/918281610051?text=${encodeURIComponent(text)}`;
-    window.open(url, '_blank');
-  };
 
   return (
     <section className="contact-container">
@@ -389,74 +361,19 @@ const ContactSection = () => {
       {/* MAP & WHATSAPP FORM SECTION (HALF & HALF) */}
       <div className="map-section">
         <div className="map-header">
-          <h2>Get in Touch & Our Locations</h2>
-          <p>Send us a direct WhatsApp message or explore our office locations on the map.</p>
+          <h2>Get in Touch &amp; Our Locations</h2>
+          <p>Fill out the form below or explore our office locations on the map.</p>
         </div>
 
         <div className="map-section-grid">
-          {/* LEFT HALF: WHATSAPP FORM */}
-          <form className="wa-form-card" onSubmit={handleWhatsAppSend}>
-            <div>
-              <h3 className="wa-form-title">Send a Direct Message</h3>
-              <p className="wa-form-sub">
-                Fill out the brief below and connect directly with our expert team on WhatsApp.
-              </p>
-
-              {waError && (
-                <div style={{ color: '#e11d48', fontSize: '13px', marginBottom: '14px', fontWeight: 600 }}>
-                  {waError}
-                </div>
-              )}
-
-              <input
-                type="text"
-                className="wa-form-input"
-                placeholder="Your Name *"
-                value={waForm.name}
-                onChange={(e) => setWaForm({ ...waForm, name: e.target.value })}
-              />
-
-              <input
-                type="tel"
-                className="wa-form-input"
-                placeholder="Phone Number *"
-                value={waForm.phone}
-                onChange={(e) => setWaForm({ ...waForm, phone: e.target.value })}
-              />
-
-              <select
-                className="wa-form-input wa-form-select"
-                value={waForm.service}
-                onChange={(e) => setWaForm({ ...waForm, service: e.target.value })}
-                style={{ color: waForm.service ? '#111' : 'rgba(0,0,0,0.45)' }}
-              >
-                <option value="" disabled>Select Service *</option>
-                {SERVICES.map((s) => (
-                  <option key={s} value={s} style={{ color: '#111' }}>{s}</option>
-                ))}
-              </select>
-
-              <textarea
-                className="wa-form-input"
-                rows={3}
-                placeholder="Your Message / Brief *"
-                value={waForm.message}
-                onChange={(e) => setWaForm({ ...waForm, message: e.target.value })}
-                style={{ resize: 'none' }}
-              />
-            </div>
-
-             <AnimatedButton
-              type="submit"
-              bgColor="#FF8709"
-              textColor="#0E100F"
-              hoverBgColor="#0E100F"
-              hoverTextColor="#ffffff"
-              style={{ width: "100%", padding: "14px 16px", marginTop: "12px" }}
-            >
-              Submit Inquiry
-            </AnimatedButton>
-          </form>
+          {/* LEFT HALF: BIGIN CRM FORM */}
+          <div className="wa-form-card">
+            <h3 className="wa-form-title">Send Us a Brief</h3>
+            <p className="wa-form-sub">
+              Fill out the form and our team will get back to you within 24 hours.
+            </p>
+            <SharedLeadForm theme="light" buttonColor="#e07a1b" />
+          </div>
 
           {/* RIGHT HALF: INTERACTIVE MAP */}
           <div className="map-wrap">
@@ -520,8 +437,8 @@ const ContactSection = () => {
             </Map>
           </div>
         </div>
-      </div>
 
+      </div>
     </section>
   );
 };

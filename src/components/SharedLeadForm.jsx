@@ -178,7 +178,7 @@ export default function SharedLeadForm({
         }
       }
     }
-  }, []);
+  }, [isDark]);
 
 
   const handleChange = (field) => (e) => {

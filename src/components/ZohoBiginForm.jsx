@@ -85,12 +85,24 @@ export default function ZohoBiginForm({ brandColor = "#e07a1b" }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Tracking state populated from URL params on mount
-  const [tracking, setTracking] = useState({
-    returnUrl: "https://myndpixel.com/thank-you",
-    pageUrl: "",
-    utmSource: "",
-    utmCampaign: "",
-    utmContent: "",
+  const [tracking] = useState(() => {
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      return {
+        returnUrl: window.location.origin + "/thank-you",
+        pageUrl: window.location.href,
+        utmSource: urlParams.get("utm_source") || "",
+        utmCampaign: urlParams.get("utm_campaign") || "",
+        utmContent: urlParams.get("utm_content") || "",
+      };
+    }
+    return {
+      returnUrl: "https://myndpixel.com/thank-you",
+      pageUrl: "",
+      utmSource: "",
+      utmCampaign: "",
+      utmContent: "",
+    };
   });
 
   // Close country dropdown when clicked outside
@@ -102,20 +114,6 @@ export default function ZohoBiginForm({ brandColor = "#e07a1b" }) {
     };
     document.addEventListener("mousedown", handleOutsideClick);
     return () => document.removeEventListener("mousedown", handleOutsideClick);
-  }, []);
-
-  // Populate tracking state from URL params once window is available
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const urlParams = new URLSearchParams(window.location.search);
-      setTracking({
-        returnUrl: window.location.origin + "/thank-you",
-        pageUrl: window.location.href,
-        utmSource: urlParams.get("utm_source") || "",
-        utmCampaign: urlParams.get("utm_campaign") || "",
-        utmContent: urlParams.get("utm_content") || "",
-      });
-    }
   }, []);
 
   // Load and initialize Google reCAPTCHA v2
