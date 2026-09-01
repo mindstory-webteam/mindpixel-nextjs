@@ -75,8 +75,6 @@ export default function SharedLeadForm({
 
   const isDark = theme === "dark";
 
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
   const [form, setForm] = useState({
     name: "",
     company: "",
@@ -284,20 +282,6 @@ export default function SharedLeadForm({
 
   const labelStyles = `block text-xs font-semibold uppercase tracking-wider mb-1.5 ${isDark ? "text-gray-200" : "text-gray-700"
     }`;
-
-  if (isSubmitted) {
-    return (
-      <div className="w-full p-6 text-center bg-emerald-500/10 border border-emerald-500/30 rounded-xl my-2">
-        <div className="text-3xl mb-2">🎉</div>
-        <h4 className="text-base font-semibold text-emerald-600 dark:text-emerald-400 mb-1">
-          Thank You!
-        </h4>
-        <p className="text-xs text-gray-600 dark:text-gray-300">
-          Your inquiry has been submitted successfully. Our team will get back to you within 24 hours.
-        </p>
-      </div>
-    );
-  }
 
   return (
     <div className="w-full">

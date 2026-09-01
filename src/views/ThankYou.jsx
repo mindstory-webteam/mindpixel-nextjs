@@ -1,8 +1,8 @@
 "use client";
 import React, { useEffect } from 'react';
+import Link from 'next/link';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import SEO from '../components/SEO';
-import AnimatedButton from '../components/AnimatedButton';
 
 export default function ThankYou() {
   useEffect(() => {
@@ -88,15 +88,25 @@ export default function ThankYou() {
         </p>
 
         <div className="fade-in-up delay-2" style={{ marginTop: "40px" }}>
-          <AnimatedButton
+          <Link
             href="/enquiry"
-            bgColor="#111111"
-            textColor="#ffffff"
-            hoverBgColor="#e07a1b"
-            hoverTextColor="#ffffff"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "#111111",
+              color: "#ffffff",
+              padding: "14px 32px",
+              borderRadius: "9999px",
+              fontWeight: 600,
+              fontSize: "0.95rem",
+              textDecoration: "none",
+              transition: "all 0.3s ease",
+            }}
+            className="hover:bg-[#e07a1b]"
           >
             Back to Home
-          </AnimatedButton>
+          </Link>
         </div>
       </div>
     </div>
