@@ -15,7 +15,16 @@ export default function SEO({ title, description, canonicalUrl }) {
       }
       metaDesc.content = description;
     }
-  }, [title, description]);
+    if (canonicalUrl) {
+      let link = document.querySelector('link[rel="canonical"]');
+      if (!link) {
+        link = document.createElement('link');
+        link.rel = 'canonical';
+        document.head.appendChild(link);
+      }
+      link.href = canonicalUrl;
+    }
+  }, [title, description, canonicalUrl]);
 
   return null;
 }
