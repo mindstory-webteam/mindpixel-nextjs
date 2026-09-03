@@ -94,9 +94,9 @@ const WhoWeAre = () => {
 
         <div className="flex flex-col gap-6 mb-10 lg:flex-row lg:justify-between lg:items-start lg:mb-16">
           <div>
-            <h1 ref={headingRef} className="syne text-4xl lg:text-6xl font-normal text-[#1a1a1a] leading-[1.1] max-w-full lg:max-w-85 mb-6 lg:mb-7">
+            <h2 ref={headingRef} className="syne text-4xl lg:text-6xl font-normal text-[#1a1a1a] leading-[1.1] max-w-full lg:max-w-85 mb-6 lg:mb-7">
               Who we are
-            </h1>
+            </h2>
             <div ref={buttonRef}>
               <AnimatedButton
                 bgColor="#1a1a1a"
@@ -109,7 +109,7 @@ const WhoWeAre = () => {
             </div>
           </div>
           <p ref={paraRef} className="syne max-w-full lg:max-w-95 text-base leading-[1.7] text-black font-light lg:pt-2">
-            MindPixel is the web and design division of MindStory in Thrissur, Kerala. We build websites, software, and digital experiences with clean design, fast performance, and user-friendly features that help businesses grow and succeed online.
+            MindPixel is the software & web development wing of MindStory in Thrissur, Kerala. We build websites, software, and digital experiences with clean design, fast performance, and user-friendly features that help businesses grow and succeed online.
           </p>
         </div>
 

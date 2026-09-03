@@ -219,7 +219,7 @@ export default function Hero2() {
             opacity: 0,
           }}
         >
-          <p
+          <h1
             style={{
               ...syne,
               fontSize: "clamp(0.7rem, 1.2vw, 1rem)",
@@ -228,9 +228,9 @@ export default function Hero2() {
               marginBottom: "1rem",
             }}
           >
-            WEB & SOFTWARE SOLUTIONS
-          </p>
-          <h1
+            WEB DEVELOPMENT COMPANY IN THRISSUR
+          </h1>
+          <h2
             style={{
               ...syne,
               fontSize: "clamp(2.5rem, 8vw, 8rem)",
@@ -240,7 +240,7 @@ export default function Hero2() {
             }}
           >
             We Build <br /> The Web.
-          </h1>
+          </h2>
           <p
             style={{
               ...syne,

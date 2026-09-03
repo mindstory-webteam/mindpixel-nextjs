@@ -285,9 +285,9 @@ export default function Portfolio() {
       {/* Desktop — lg and above only */}
       <div className="hidden lg:flex gap-10 max-w-7xl mx-auto w-full">
         <div style={{ minWidth: 280, maxWidth: 300 }}>
-          <h1 style={{ fontSize: "3.5rem", color: "#1a1a1a", fontFamily: "'Syne', sans-serif", margin: 0 }}>
+          <p style={{ fontSize: "3.5rem", color: "#1a1a1a", fontFamily: "'Syne', sans-serif", margin: 0 }}>
             Our Works
-          </h1>
+          </p>
           <p style={{ fontSize: 16, color: "#000", maxWidth: 220, marginBottom: 30 }}>
             Creating digital experiences with creativity, usability, and impact.
           </p>
@@ -340,9 +340,9 @@ export default function Portfolio() {
       {/* Mobile + Tablet — sm and md (below lg) */}
       <div className="flex flex-col gap-8 lg:hidden">
         <div>
-          <h1 style={{ fontSize: "2.4rem", color: "#1a1a1a", fontFamily: "'Syne', sans-serif", margin: "0 0 10px" }}>
+          <h2 style={{ fontSize: "2.4rem", color: "#1a1a1a", fontFamily: "'Syne', sans-serif", margin: "0 0 10px" }}>
             Our Works
-          </h1>
+          </h2>
           <p style={{ fontSize: 14, color: "#000", margin: 0 }}>
             Crafting impactful digital experiences that blend creativity.
           </p>

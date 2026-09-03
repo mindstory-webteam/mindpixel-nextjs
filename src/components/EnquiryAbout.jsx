@@ -107,9 +107,9 @@ const EnquiryAbout = () => {
 
         <div className="flex flex-col gap-6 mb-10 lg:flex-row lg:justify-between lg:items-start lg:mb-16">
           <div>
-            <h1 ref={headingRef} className="syne text-4xl lg:text-6xl font-normal text-[#1a1a1a] leading-[1.1] max-w-full lg:max-w-85 mb-6 lg:mb-7">
+            <h2 ref={headingRef} className="syne text-4xl lg:text-6xl font-normal text-[#1a1a1a] leading-[1.1] max-w-full lg:max-w-85 mb-6 lg:mb-7">
               Who we are
-            </h1>
+            </h2>
             <div ref={buttonRef} onClick={scrollToContact} className="cursor-pointer">
               <AnimatedButton
                 bgColor="#1a1a1a"
