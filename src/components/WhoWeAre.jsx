@@ -1,10 +1,28 @@
 import React, { useRef, useEffect } from 'react'
 import { img } from '../assets/assest'
 import { IoIosArrowForward } from "react-icons/io"
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Autoplay } from 'swiper/modules'
+import 'swiper/css'
 import AnimatedButton from './AnimatedButton'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { NavLink } from '@/lib/react-router-dom-compat'
+
+
+const logos = [
+  { image: img.IndelMoney_mind, name: 'IndelMoney' },
+  { image: img.Viral_cat, name: 'Viral Cat' },
+  { image: img.Inspire, name: 'Inspire' },
+  { image: img.Indel_Corporation, name: 'Indel Corporation' },
+  { image: img.Ayur_street, name: 'Ayur Street' },
+  { image: img.Kavalakkat, name: 'Kavalakkat' },
+  { image: img.Happynex, name: 'Happynex' },
+  { image: img.Koffynex, name: 'Koffynex' },
+  { image: img.fuze, name: "fuze" },
+  { image: img.chaipeedika, name: "chaipeedika" },
+  { image: img.distrikt9, name: "distrikt9" },
+]
 
 const WhoWeAre = () => {
   const sectionRef = useRef(null)
@@ -14,6 +32,7 @@ const WhoWeAre = () => {
   const card1Ref = useRef(null)
   const card2Ref = useRef(null)
   const card3Ref = useRef(null)
+  const marqueeRef = useRef(null)
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -27,7 +46,8 @@ const WhoWeAre = () => {
 
       gsap.set(
         [headingRef.current, buttonRef.current, paraRef.current,
-        card1Ref.current, card2Ref.current, card3Ref.current],
+        card1Ref.current, card2Ref.current, card3Ref.current,
+        marqueeRef.current],
         { opacity: 0, y: 48 }
       )
 
@@ -38,6 +58,7 @@ const WhoWeAre = () => {
         .to(card1Ref.current, { opacity: 1, y: 0, duration: 0.75, ease: 'power3.out' }, '-=0.4')
         .to(card2Ref.current, { opacity: 1, y: 0, duration: 0.75, ease: 'power3.out' }, '-=0.55')
         .to(card3Ref.current, { opacity: 1, y: 0, duration: 0.75, ease: 'power3.out' }, '-=0.55')
+        .to(marqueeRef.current, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.4')
     }, sectionRef)
 
     return () => ctx.revert()
@@ -211,6 +232,42 @@ const WhoWeAre = () => {
                 </NavLink>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/*  Marquee  */}
+        <div ref={marqueeRef} className="mt-12 lg:mt-16 flex items-center gap-6 lg:gap-10">
+          <span className="syne text-[0.72rem] font-medium tracking-[0.06em] uppercase text-[#999] whitespace-nowrap shrink-0">
+            Trusted by
+          </span>
+          <div className="marquee-container flex-1 overflow-hidden">
+            <Swiper
+              modules={[Autoplay]}
+              loop={true}
+              speed={3000}
+              allowTouchMove={false}
+              autoplay={{
+                delay: 0,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: false,
+              }}
+              slidesPerView="auto"
+              spaceBetween={26}
+              freeMode={true}
+              className="w-full"
+            >
+              {[...logos, ...logos, ...logos].map((logo, i) => (
+                <SwiperSlide key={i} style={{ width: 'auto' }}>
+                  <div className="flex items-center h-30 bg-[#f9f9f9] rounded-2xl p-5">
+                    <img
+                      src={logo.image}
+                      alt={logo.name}
+                      className="logo-img"
+                    />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
         </div>
 
