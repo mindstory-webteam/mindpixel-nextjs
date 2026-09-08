@@ -308,8 +308,31 @@ export default function SharedLeadForm({
   const labelStyles = `block text-xs font-semibold uppercase tracking-wider mb-1.5 ${isDark ? "text-gray-200" : "text-gray-700"
     }`;
 
+  const optionStyle = isDark
+    ? { backgroundColor: "#18181b", color: "#ffffff" }
+    : { backgroundColor: "#ffffff", color: "#111111" };
+
   return (
-    <div className="w-full">
+    <div className="w-full shared-lead-form">
+      <style>{`
+        ${isDark ? `
+          .shared-lead-form select {
+            color-scheme: dark !important;
+          }
+          .shared-lead-form select option {
+            background-color: #18181b !important;
+            color: #ffffff !important;
+          }
+        ` : `
+          .shared-lead-form select {
+            color-scheme: light !important;
+          }
+          .shared-lead-form select option {
+            background-color: #ffffff !important;
+            color: #111111 !important;
+          }
+        `}
+      `}</style>
       <form
         ref={formRef}
         action="https://bigin.zoho.com/crm/WebForm"
@@ -401,18 +424,24 @@ export default function SharedLeadForm({
               {/* Country Dropdown Panel */}
               {dropdownOpen && (
                 <div
-                  className="absolute top-11 left-0 z-50 w-64 bg-white border border-gray-200 rounded-lg shadow-xl overflow-hidden"
+                  className={`absolute top-11 left-0 z-50 w-64 border rounded-lg shadow-xl overflow-hidden ${
+                    isDark ? "bg-[#18181b] border-white/20 text-white" : "bg-white border-gray-200"
+                  }`}
                   style={{ maxHeight: "240px", display: "flex", flexDirection: "column" }}
                   data-lenis-prevent="true"
                   data-lenis-prevent-touch="true"
                 >
-                  <div className="p-2 border-b border-gray-100 bg-gray-50" style={{ flexShrink: 0 }}>
+                  <div className={`p-2 border-b ${isDark ? "border-white/10 bg-[#141414]" : "border-gray-100 bg-gray-50"}`} style={{ flexShrink: 0 }}>
                     <input
                       type="text"
                       placeholder="Search country or code..."
                       value={countrySearch}
                       onChange={(e) => setCountrySearch(e.target.value)}
-                      className="w-full px-2.5 py-1.5 text-xs bg-white border border-gray-200 rounded outline-none focus:border-orange-500 text-gray-800"
+                      className={`w-full px-2.5 py-1.5 text-xs rounded outline-none border ${
+                        isDark
+                          ? "bg-white/10 border-white/20 text-white placeholder:text-gray-400 focus:border-orange-500"
+                          : "bg-white border-gray-200 text-gray-800 focus:border-orange-500"
+                      }`}
                     />
                   </div>
                   <div
@@ -436,18 +465,27 @@ export default function SharedLeadForm({
                             setDropdownOpen(false);
                             setCountrySearch("");
                           }}
-                          className={`w-full px-3 py-2 text-left text-xs flex items-center justify-between hover:bg-orange-50 transition-colors ${selectedCountry.iso === country.iso ? "bg-orange-50 font-semibold text-orange-600" : "text-gray-700"
-                            }`}
+                          className={`w-full px-3 py-2 text-left text-xs flex items-center justify-between transition-colors ${
+                            selectedCountry.iso === country.iso
+                              ? (isDark ? "bg-orange-500/25 font-semibold text-orange-400" : "bg-orange-50 font-semibold text-orange-600")
+                              : (isDark ? "text-gray-200 hover:bg-white/10" : "text-gray-700 hover:bg-orange-50")
+                          }`}
                         >
                           <span className="flex items-center gap-2 truncate">
-                            <span className="font-mono text-[10px] font-bold px-1 py-0.5 bg-orange-100 text-orange-700 rounded uppercase shrink-0">{country.iso}</span>
+                            <span className={`font-mono text-[10px] font-bold px-1 py-0.5 rounded uppercase shrink-0 ${
+                              isDark ? "bg-orange-500/20 text-orange-400" : "bg-orange-100 text-orange-700"
+                            }`}>
+                              {country.iso}
+                            </span>
                             <span className="truncate">{country.name}</span>
                           </span>
-                          <span className="text-gray-400 font-mono text-[11px] ml-2 shrink-0">{country.dial}</span>
+                          <span className={`${isDark ? "text-gray-400" : "text-gray-400"} font-mono text-[11px] ml-2 shrink-0`}>
+                            {country.dial}
+                          </span>
                         </button>
                       ))
                     ) : (
-                      <div className="p-3 text-xs text-gray-400 text-center">No countries found</div>
+                      <div className={`p-3 text-xs text-center ${isDark ? "text-gray-400" : "text-gray-400"}`}>No countries found</div>
                     )}
                   </div>
                 </div>
@@ -499,14 +537,15 @@ export default function SharedLeadForm({
               onChange={handleChange("service")}
               disabled={isSubmitting}
               className={`h-10 cursor-pointer ${inputStyles}`}
+              style={{ colorScheme: isDark ? "dark" : "light" }}
             >
-              <option value="-None-">- Select a Service -</option>
-              <option value="Digital Marketing">Digital Marketing</option>
-              <option value="SEO">SEO</option>
-              <option value="Website Development">Website Development</option>
-              <option value="Video Production">Video Production</option>
-              <option value="Influencer Marketing">Influencer Marketing</option>
-              <option value="AI Videos">AI Videos</option>
+              <option value="-None-" style={optionStyle}>- Select a Service -</option>
+              <option value="Digital Marketing" style={optionStyle}>Digital Marketing</option>
+              <option value="SEO" style={optionStyle}>SEO</option>
+              <option value="Website Development" style={optionStyle}>Website Development</option>
+              <option value="Video Production" style={optionStyle}>Video Production</option>
+              <option value="Influencer Marketing" style={optionStyle}>Influencer Marketing</option>
+              <option value="AI Videos" style={optionStyle}>AI Videos</option>
             </select>
           </div>
 
@@ -520,13 +559,14 @@ export default function SharedLeadForm({
               onChange={handleChange("budget")}
               disabled={isSubmitting}
               className={`h-10 cursor-pointer ${inputStyles}`}
+              style={{ colorScheme: isDark ? "dark" : "light" }}
             >
-              <option value="-None-">- Select Budget Range -</option>
-              <option value="Below ₹25K">Below ₹25K</option>
-              <option value="₹25K–₹50K">₹25K–₹50K</option>
-              <option value="₹50K–₹1L">₹50K–₹1L</option>
-              <option value="₹1L–₹3L">₹1L–₹3L</option>
-              <option value="₹3L+">₹3L+</option>
+              <option value="-None-" style={optionStyle}>- Select Budget Range -</option>
+              <option value="Below ₹25K" style={optionStyle}>Below ₹25K</option>
+              <option value="₹25K–₹50K" style={optionStyle}>₹25K–₹50K</option>
+              <option value="₹50K–₹1L" style={optionStyle}>₹50K–₹1L</option>
+              <option value="₹1L–₹3L" style={optionStyle}>₹1L–₹3L</option>
+              <option value="₹3L+" style={optionStyle}>₹3L+</option>
             </select>
           </div>
         </div>
@@ -542,12 +582,13 @@ export default function SharedLeadForm({
             onChange={handleChange("startTimeline")}
             disabled={isSubmitting}
             className={`h-10 cursor-pointer ${inputStyles}`}
+            style={{ colorScheme: isDark ? "dark" : "light" }}
           >
-            <option value="-None-">- Select Timeline -</option>
-            <option value="Immediately">Immediately</option>
-            <option value="Within 30 days">Within 30 days</option>
-            <option value="1–3 months">1–3 months</option>
-            <option value="Just Exploring">Just Exploring</option>
+            <option value="-None-" style={optionStyle}>- Select Timeline -</option>
+            <option value="Immediately" style={optionStyle}>Immediately</option>
+            <option value="Within 30 days" style={optionStyle}>Within 30 days</option>
+            <option value="1–3 months" style={optionStyle}>1–3 months</option>
+            <option value="Just Exploring" style={optionStyle}>Just Exploring</option>
           </select>
         </div>
 
