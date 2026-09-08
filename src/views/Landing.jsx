@@ -41,7 +41,9 @@ const Landing = () => {
       </div>
 
       <div id="testimonials" style={{ scrollMarginTop: '85px' }}>
-        <EnquiryReview />
+        <div id="reviews" style={{ scrollMarginTop: '85px' }}>
+          <EnquiryReview />
+        </div>
       </div>
       <div id="faqs" style={{ scrollMarginTop: '85px' }}>
         <EnquiryFaq />

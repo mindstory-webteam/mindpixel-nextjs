@@ -9,12 +9,11 @@ import gsap from 'gsap'
 import { DotLottieReact } from '@lottiefiles/dotlottie-react'
 
 const activeNavLinks = [
+  { to: '/enquiry#services', label: 'Services' },
   { to: '/enquiry#why-choose-us', label: 'Why Choose Us' },
   { to: '/enquiry#about', label: 'About' },
-  { to: '/enquiry#services', label: 'Services' },
-  { to: '/enquiry#testimonials', label: 'Testimonials' },
-  { to: '/enquiry#faqs', label: 'FAQs' },
-  { to: '/enquiry#contact', label: 'Contact' },
+  { to: '/enquiry#testimonials', label: 'Reviews' },
+  { to: '/enquiry#faqs', label: 'Contact' },
 ]
 
 
@@ -123,59 +122,61 @@ const EnquiryNavbar = () => {
       `}</style>
 
       {/* ══ DESKTOP (xl+) ══ */}
-      <div className="navbar-syne hidden xl:flex fixed top-0 left-0 right-0 z-50 justify-center items-center w-full pointer-events-none px-4 md:px-10 lg:px-15">
-        <nav
-          ref={navRef}
-          className="pointer-events-auto relative flex flex-row items-center justify-between w-full"
-          style={{ paddingLeft: '0px', paddingRight: '0px', paddingTop: '20px', paddingBottom: '20px', backgroundColor: 'rgba(255,255,255,0)', borderRadius: '0px', willChange: 'padding, background-color, border-radius' }}
-        >
-          {scrolled ? (
-            <>
-              <div className="shrink-0">
-                <Image src={img.myndpixel} alt="MyndPixel Logo" width={112} height={32} priority className="w-28 h-auto cursor-pointer" />
-              </div>
-              <div className="absolute left-1/2 -translate-x-1/2">
-                <ul className="flex flex-row gap-6">
-                  {activeNavLinks.map(({ to, label }) => (
-                    <li key={to}>
-                      <NavLink to={to} onClick={(e) => handleNavClick(e, to)}
-                        className={({ isActive }) => isActive ? 'text-black text-sm' : 'text-gray-600 hover:text-black transition-colors text-sm'}
-                        style={syneBase}>{label}</NavLink>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div
-                className="rounded-full p-2 cursor-pointer opacity-0 pointer-events-none"
-                style={glassStyle}
-              >
-                <LottieIcon />
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="shrink-0">
-                <Image src={img.myndpixel} alt="MyndPixel Logo" width={140} height={40} priority className="w-35 h-auto cursor-pointer" onClick={() => navigateTo('/')} />
-              </div>
-              <div className="absolute left-1/2 -translate-x-1/2">
-                <ul className="flex flex-row gap-8">
-                  {activeNavLinks.map(({ to, label }) => (
-                    <li key={to}>
-                      <NavLink to={to} onClick={(e) => handleNavClick(e, to)}
-                        className={`${isHome ? 'text-white' : 'text-black'} transition-colors`} style={syneBase}>{label}</NavLink>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div
-                className="rounded-full p-2 cursor-pointer opacity-0 pointer-events-none"
-                style={glassStyle}
-              >
-                <LottieIcon />
-              </div>
-            </>
-          )}
-        </nav>
+      <div className="navbar-syne hidden xl:flex fixed top-0 left-0 right-0 z-50 justify-center items-center w-full pointer-events-none px-4 md:px-8">
+        <div className="w-full max-w-[1450px] mx-auto pointer-events-auto flex items-center justify-between">
+          <nav
+            ref={navRef}
+            className="relative flex flex-row items-center justify-between w-full"
+            style={{ paddingLeft: '0px', paddingRight: '0px', paddingTop: '20px', paddingBottom: '20px', backgroundColor: 'rgba(255,255,255,0)', borderRadius: '0px', willChange: 'padding, background-color, border-radius' }}
+          >
+            {scrolled ? (
+              <>
+                <div className="shrink-0">
+                  <Image src={img.myndpixel} alt="MyndPixel Logo" width={112} height={32} priority className="w-28 h-auto cursor-pointer" onClick={(e) => handleNavClick(e, '/enquiry#home')} />
+                </div>
+                <div className="absolute left-1/2 -translate-x-1/2">
+                  <ul className="flex flex-row gap-6">
+                    {activeNavLinks.map(({ to, label }) => (
+                      <li key={to}>
+                        <NavLink to={to} onClick={(e) => handleNavClick(e, to)}
+                          className={({ isActive }) => isActive ? 'text-black text-sm' : 'text-gray-600 hover:text-black transition-colors text-sm'}
+                          style={syneBase}>{label}</NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div
+                  className="rounded-full p-2 cursor-pointer opacity-0 pointer-events-none"
+                  style={glassStyle}
+                >
+                  <LottieIcon />
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="shrink-0">
+                  <Image src={img.myndpixel} alt="MyndPixel Logo" width={140} height={40} priority className="w-35 h-auto cursor-pointer" onClick={() => navigateTo('/')} />
+                </div>
+                <div className="absolute left-1/2 -translate-x-1/2">
+                  <ul className="flex flex-row gap-8">
+                    {activeNavLinks.map(({ to, label }) => (
+                      <li key={to}>
+                        <NavLink to={to} onClick={(e) => handleNavClick(e, to)}
+                          className={`${isHome ? 'text-white' : 'text-black'} transition-colors`} style={syneBase}>{label}</NavLink>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div
+                  className="rounded-full p-2 cursor-pointer opacity-0 pointer-events-none"
+                  style={glassStyle}
+                >
+                  <LottieIcon />
+                </div>
+              </>
+            )}
+          </nav>
+        </div>
       </div>
 
       {/*  MOBILE & TABLET (below xl)  */}
