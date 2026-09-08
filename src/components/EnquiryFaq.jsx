@@ -42,33 +42,23 @@ export default function EnquiryFaq() {
           }}
         >
           <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500&display=swap');
-        .faq-item { padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.15); cursor: pointer; transition: opacity 0.3s; }
-        .faq-item:hover { opacity: 1 !important; }
-        input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.4); }
-        `}</style>
+            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500&display=swap');
+            .faq-item { padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.15); cursor: pointer; transition: opacity 0.3s; }
+            .faq-item:hover { opacity: 1 !important; }
+            .enquiry-faq-form input::placeholder,
+            .enquiry-faq-form textarea::placeholder {
+              color: #888888 !important;
+              opacity: 1 !important;
+            }
+          `}</style>
 
           <div
-            style={{
-              maxWidth: "1300px",
-              margin: "0 auto",
-              padding: isMobile ? "60px 20px 50px 20px" : "60px 60px 60px",
-              paddingBottom: isMobile ? "50px" : "80px",
-              display: "grid",
-              gridTemplateColumns: isMobile ? "1fr" : "1fr 1.2fr",
-              gap: isMobile ? "56px" : "100px",
-              alignItems: "start",
-            }}
+            className="w-full max-w-[1300px] mx-auto px-4 py-8 sm:px-6 sm:py-12 md:p-12 lg:p-16 grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-8 sm:gap-12 lg:gap-20 items-start box-border"
           >
             {/* LEFT — Contact Form */}
-            <div style={isMobile ? {} : { position: "sticky", top: "80px" }}>
+            <div className="w-full lg:sticky lg:top-20">
               <div
-                style={{
-                  border: "1px solid rgba(0,0,0,0.08)",
-                  borderRadius: "16px",
-                  padding: isMobile ? "24px 20px" : "32px 28px",
-                  background: "#fff",
-                }}
+                className="enquiry-faq-form w-full border border-black/10 rounded-2xl p-4 sm:p-6 md:p-8 bg-white text-gray-900 shadow-xl box-border"
               >
                 <SharedLeadForm theme="light" buttonColor="#e07a1b" onSuccess={() => navigate('/thank-you')} />
               </div>

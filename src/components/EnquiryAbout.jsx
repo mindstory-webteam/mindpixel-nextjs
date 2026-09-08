@@ -1,6 +1,69 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+
+function AnimatedCounter({ target, suffix = "+", duration = 2000 }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    let animId = null;
+
+    const runAnimation = () => {
+      if (animId) cancelAnimationFrame(animId);
+      let startTime = null;
+
+      const step = (timestamp) => {
+        if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        const current = Math.round(ease * target);
+        setCount(current);
+
+        if (progress < 1) {
+          animId = requestAnimationFrame(step);
+        }
+      };
+
+      animId = requestAnimationFrame(step);
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            runAnimation();
+          } else {
+            setCount(0);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(element);
+
+    const timeout = setTimeout(() => {
+      runAnimation();
+    }, 100);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeout);
+      if (animId) cancelAnimationFrame(animId);
+    };
+  }, [target, duration]);
+
+  return (
+    <span ref={ref}>
+      {count}{suffix}
+    </span>
+  );
+}
 
 const pillars = [
   {
@@ -39,10 +102,10 @@ const pillars = [
 ];
 
 const metrics = [
-  { value: "150+", label: "Brands Elevated", detail: "Across Kerala, India & GCC" },
-  { value: "98%", label: "Client Satisfaction", detail: "Long-term agency partnerships" },
-  { value: "3–6 Wks", label: "Average Delivery", detail: "Agile, transparent sprints" },
-  { value: "100%", label: "Custom Architecture", detail: "Zero sluggish page builders" },
+  { number: 150, suffix: "+", label: "Brands Elevated", detail: "Across Kerala, India & GCC" },
+  { number: 98, suffix: "%", label: "Client Satisfaction", detail: "Long-term agency partnerships" },
+  { number: 10, suffix: "+", label: "Years Experience", detail: "Proven expertise in this field" },
+  { number: 100, suffix: "%", label: "Custom Architecture", detail: "Zero sluggish page builders" },
 ];
 
 export default function EnquiryAbout() {
@@ -203,7 +266,7 @@ export default function EnquiryAbout() {
                     marginBottom: "4px",
                   }}
                 >
-                  {m.value}
+                  <AnimatedCounter target={m.number} suffix={m.suffix} />
                 </div>
                 <div
                   style={{

@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import SharedLeadForm from "./SharedLeadForm";
 import Auralis from "./ui/auralis";
 
@@ -15,23 +15,65 @@ function useWindowWidth() {
 
 function AnimatedCounter({ target, suffix = "+", duration = 2000 }) {
   const [count, setCount] = useState(0);
+  const ref = useRef(null);
 
   useEffect(() => {
-    let start = null;
-    const step = (timestamp) => {
-      if (!start) start = timestamp;
-      const progress = Math.min((timestamp - start) / duration, 1);
-      const ease = 1 - Math.pow(1 - progress, 3);
-      setCount(Math.floor(ease * target));
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      }
+    const element = ref.current;
+    if (!element) return;
+
+    let animId = null;
+
+    const runAnimation = () => {
+      if (animId) cancelAnimationFrame(animId);
+      let startTime = null;
+
+      const step = (timestamp) => {
+        if (!startTime) startTime = timestamp;
+        const elapsed = timestamp - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        const current = Math.round(ease * target);
+        setCount(current);
+
+        if (progress < 1) {
+          animId = requestAnimationFrame(step);
+        }
+      };
+
+      animId = requestAnimationFrame(step);
     };
-    const animId = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(animId);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            runAnimation();
+          } else {
+            setCount(0);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(element);
+
+    const timeout = setTimeout(() => {
+      runAnimation();
+    }, 100);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(timeout);
+      if (animId) cancelAnimationFrame(animId);
+    };
   }, [target, duration]);
 
-  return <span>{count}{suffix}</span>;
+  return (
+    <span ref={ref}>
+      {count}{suffix}
+    </span>
+  );
 }
 
 export default function EnquiryHero() {

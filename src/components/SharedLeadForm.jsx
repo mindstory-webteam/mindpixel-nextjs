@@ -323,6 +323,11 @@ export default function SharedLeadForm({
             background-color: #18181b !important;
             color: #ffffff !important;
           }
+          .shared-lead-form input::placeholder,
+          .shared-lead-form textarea::placeholder {
+            color: rgba(255, 255, 255, 0.45) !important;
+            opacity: 1 !important;
+          }
         ` : `
           .shared-lead-form select {
             color-scheme: light !important;
@@ -331,7 +336,18 @@ export default function SharedLeadForm({
             background-color: #ffffff !important;
             color: #111111 !important;
           }
+          .shared-lead-form input::placeholder,
+          .shared-lead-form textarea::placeholder {
+            color: #888888 !important;
+            opacity: 1 !important;
+          }
         `}
+        @media (max-width: 380px) {
+          #shared-recap-widget {
+            transform: scale(0.85);
+            transform-origin: 0 0;
+          }
+        }
       `}</style>
       <form
         ref={formRef}
@@ -379,7 +395,7 @@ export default function SharedLeadForm({
               value={form.name}
               onChange={handleChange("name")}
               disabled={isSubmitting}
-              className={inputStyles}
+              className={`h-10 ${inputStyles}`}
             />
           </div>
 
@@ -395,7 +411,7 @@ export default function SharedLeadForm({
               value={form.company}
               onChange={handleChange("company")}
               disabled={isSubmitting}
-              className={inputStyles}
+              className={`h-10 ${inputStyles}`}
             />
           </div>
         </div>
@@ -537,7 +553,10 @@ export default function SharedLeadForm({
               onChange={handleChange("service")}
               disabled={isSubmitting}
               className={`h-10 cursor-pointer ${inputStyles}`}
-              style={{ colorScheme: isDark ? "dark" : "light" }}
+              style={{
+                colorScheme: isDark ? "dark" : "light",
+                color: form.service === "-None-" ? (isDark ? "rgba(255, 255, 255, 0.45)" : "#888888") : undefined,
+              }}
             >
               <option value="-None-" style={optionStyle}>- Select a Service -</option>
               <option value="Digital Marketing" style={optionStyle}>Digital Marketing</option>
@@ -559,7 +578,10 @@ export default function SharedLeadForm({
               onChange={handleChange("budget")}
               disabled={isSubmitting}
               className={`h-10 cursor-pointer ${inputStyles}`}
-              style={{ colorScheme: isDark ? "dark" : "light" }}
+              style={{
+                colorScheme: isDark ? "dark" : "light",
+                color: form.budget === "-None-" ? (isDark ? "rgba(255, 255, 255, 0.45)" : "#888888") : undefined,
+              }}
             >
               <option value="-None-" style={optionStyle}>- Select Budget Range -</option>
               <option value="Below ₹25K" style={optionStyle}>Below ₹25K</option>
@@ -582,7 +604,10 @@ export default function SharedLeadForm({
             onChange={handleChange("startTimeline")}
             disabled={isSubmitting}
             className={`h-10 cursor-pointer ${inputStyles}`}
-            style={{ colorScheme: isDark ? "dark" : "light" }}
+            style={{
+              colorScheme: isDark ? "dark" : "light",
+              color: form.startTimeline === "-None-" ? (isDark ? "rgba(255, 255, 255, 0.45)" : "#888888") : undefined,
+            }}
           >
             <option value="-None-" style={optionStyle}>- Select Timeline -</option>
             <option value="Immediately" style={optionStyle}>Immediately</option>
