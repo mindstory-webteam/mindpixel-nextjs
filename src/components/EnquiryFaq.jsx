@@ -28,105 +28,106 @@ export default function EnquiryFaq() {
   const isMobile = width < 1024;
 
   return (
-    <div className="w-full h-auto bg-white pt-5 ">
-
-      <section
-        style={{
-          width: isMobile ? "calc(100% - 32px)" : "calc(100% - 120px)",
-          margin: isMobile ? "15px 16px 70px 16px" : "30px 60px 80px 60px",
-          background: "#000",
-          color: "#fff",
-          overflow: "hidden",
-          position: "relative",
-          borderRadius: isMobile ? "16px" : "24px",
-        }}
-      >
-        <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&display=swap');
+    <div className="w-full h-auto bg-white pt-5 pb-16 md:pb-24">
+      <div className="w-full max-w-[1475px] mx-auto px-4 sm:px-6 md:px-8">
+        <section
+          style={{
+            width: "100%",
+            margin: "0 auto",
+            background: "#000",
+            color: "#fff",
+            overflow: "hidden",
+            position: "relative",
+            borderRadius: isMobile ? "16px" : "24px",
+          }}
+        >
+          <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500&display=swap');
         .faq-item { padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.15); cursor: pointer; transition: opacity 0.3s; }
         .faq-item:hover { opacity: 1 !important; }
         input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.4); }
         `}</style>
 
-        <div
-          style={{
-            maxWidth: "1300px",
-            margin: "0 auto",
-            padding: isMobile ? "60px 20px 50px 20px" : "60px 60px 60px",
-            paddingBottom: isMobile ? "50px" : "80px",
-            display: "grid",
-            gridTemplateColumns: isMobile ? "1fr" : "1fr 1.2fr",
-            gap: isMobile ? "56px" : "100px",
-            alignItems: "start",
-          }}
-        >
-          {/* LEFT — Contact Form */}
-          <div style={isMobile ? {} : { position: "sticky", top: "80px" }}>
-            <div
-              style={{
-                border: "1px solid rgba(0,0,0,0.08)",
-                borderRadius: "16px",
-                padding: isMobile ? "24px 20px" : "32px 28px",
-                background: "#fff",
-              }}
-            >
-              <SharedLeadForm theme="light" buttonColor="#e07a1b" onSuccess={() => navigate('/thank-you')} />
+          <div
+            style={{
+              maxWidth: "1300px",
+              margin: "0 auto",
+              padding: isMobile ? "60px 20px 50px 20px" : "60px 60px 60px",
+              paddingBottom: isMobile ? "50px" : "80px",
+              display: "grid",
+              gridTemplateColumns: isMobile ? "1fr" : "1fr 1.2fr",
+              gap: isMobile ? "56px" : "100px",
+              alignItems: "start",
+            }}
+          >
+            {/* LEFT — Contact Form */}
+            <div style={isMobile ? {} : { position: "sticky", top: "80px" }}>
+              <div
+                style={{
+                  border: "1px solid rgba(0,0,0,0.08)",
+                  borderRadius: "16px",
+                  padding: isMobile ? "24px 20px" : "32px 28px",
+                  background: "#fff",
+                }}
+              >
+                <SharedLeadForm theme="light" buttonColor="#e07a1b" onSuccess={() => navigate('/thank-you')} />
+              </div>
             </div>
-          </div>
 
-          {/* RIGHT — FAQs */}
-          <div>
-            <h2
-              style={{
-                fontFamily: "'Syne', sans-serif",
-                fontSize: isMobile ? "28px" : "38px",
-                fontWeight: 400,
-                color: "#fff",
-                margin: "0 0 32px",
-              }}
-            >
-              Common Questions
-            </h2>
-
+            {/* RIGHT — FAQs */}
             <div>
-              {FAQS.map((f, i) => (
-                <div
-                  key={i}
-                  className="faq-item"
-                  onClick={() => setActiveIndex(i)}
-                  onMouseEnter={() => !isMobile && setActiveIndex(i)}
-                  style={{ opacity: activeIndex === i ? 1 : 0.4 }}
-                >
-                  <h4
-                    style={{
-                      fontFamily: "'Syne', sans-serif",
-                      fontSize: isMobile ? "16px" : "19px",
-                      fontWeight: 400,
-                      margin: "0 0 10px",
-                      color: "#fff",
-                    }}
+              <h2
+                style={{
+                  fontFamily: "'Poppins', sans-serif",
+                  fontSize: isMobile ? "28px" : "38px",
+                  fontWeight: 500,
+                  color: "#fff",
+                  margin: "0 0 32px",
+                }}
+              >
+                Common Questions
+              </h2>
+
+              <div>
+                {FAQS.map((f, i) => (
+                  <div
+                    key={i}
+                    className="faq-item"
+                    onClick={() => setActiveIndex(i)}
+                    onMouseEnter={() => !isMobile && setActiveIndex(i)}
+                    style={{ opacity: activeIndex === i ? 1 : 0.4 }}
                   >
-                    {f.q}
-                  </h4>
-                  {activeIndex === i && (
-                    <p
+                    <h4
                       style={{
-                        fontFamily: "'Syne', sans-serif",
-                        fontSize: "18px",
-                        color: "rgba(255,255,255,0.65)",
-                        lineHeight: 1.7,
-                        margin: 0,
+                        fontFamily: "'Poppins', sans-serif",
+                        fontSize: isMobile ? "16px" : "19px",
+                        fontWeight: 500,
+                        margin: "0 0 10px",
+                        color: "#fff",
                       }}
                     >
-                      {f.a}
-                    </p>
-                  )}
-                </div>
-              ))}
+                      {f.q}
+                    </h4>
+                    {activeIndex === i && (
+                      <p
+                        style={{
+                          fontFamily: "'Inter', sans-serif",
+                          fontSize: "16px",
+                          color: "rgba(255,255,255,0.7)",
+                          lineHeight: 1.7,
+                          margin: 0,
+                        }}
+                      >
+                        {f.a}
+                      </p>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </div>
   );
 }

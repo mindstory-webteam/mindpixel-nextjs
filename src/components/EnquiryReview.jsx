@@ -72,7 +72,7 @@ function ReviewCard({ rev, index }) {
   return (
     <div className="rev-card" key={`${rev.id}-${index}`}>
       <div className="rev-quote-icon">“</div>
-      
+
       <div className="rev-bottom">
         <p
           ref={textRef}
@@ -145,27 +145,30 @@ export default function EnquiryReview() {
   return (
     <section className="rev-section">
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500&display=swap');
         .rev-section {
           background: #fff;
           padding: 0px 0 20px 0;
           overflow: hidden;
         }
         .rev-inner {
-          max-width: 1500px;
+          width: 100%;
+          max-width: 1475px;
           margin: 0 auto;
-          padding: 0 40px;
+          box-sizing: border-box;
         }
         .rev-header {
-          margin: 0 0 48px;
+          margin: 0 0 28px;
         }
         .rev-heading {
-          font-family: 'Syne', sans-serif;
-          font-size: 60px;
-          font-weight: 400;
-          color: #1a1a1a;
+          font-family: 'Poppins', sans-serif;
+          font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+          font-weight: 600;
+          letter-spacing: -0.02em;
+          color: #111111;
           margin: 0;
           text-transform: none;
-          line-height: 1.1;
+          line-height: 1.25;
         }
         .rev-track-outer {
           overflow: hidden;
@@ -215,9 +218,9 @@ export default function EnquiryReview() {
           padding-top: 32px;
         }
         .rev-name {
-          font-family: 'Syne', sans-serif;
+          font-family: 'Poppins', sans-serif;
           font-size: 15px;
-          font-weight: 700;
+          font-weight: 600;
           color: #111;
           letter-spacing: 0.02em;
         }
@@ -234,7 +237,7 @@ export default function EnquiryReview() {
           justify-content: center;
         }
         .rev-avatar-circle {
-          font-family: 'Syne', sans-serif;
+          font-family: 'Poppins', sans-serif;
           font-size: 14px;
           font-weight: 600;
           color: #fff;
@@ -249,7 +252,7 @@ export default function EnquiryReview() {
           z-index: 1;
         }
         .rev-desc {
-          font-family: 'Syne', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 15px;
           color: #555;
           line-height: 1.7;
@@ -281,24 +284,15 @@ export default function EnquiryReview() {
         .rev-readmore-btn:hover {
           text-decoration: underline;
         }
-        @media (max-width: 1200px) {
-          .rev-inner {
-            padding: 0 40px;
-          }
-        }
-        @media (max-width: 768px) {
-          .rev-heading { font-size: 36px; }
-        }
         @media (max-width: 600px) {
           .rev-section { padding: 0px 0 20px 0; }
-          .rev-inner { padding: 0 16px; }
           .rev-header { margin: 0 0 24px; }
           .rev-card { flex: 0 0 320px; padding: 24px; }
           .rev-top-row { margin-top: 24px; }
           .rev-track { gap: 16px; }
         }
       `}</style>
-      <div className="rev-inner">
+      <div className="rev-inner w-full max-w-[1475px] mx-auto px-4 sm:px-6 md:px-8">
         <div className="rev-header">
           <h2 className="rev-heading">Customer Reviews</h2>
         </div>

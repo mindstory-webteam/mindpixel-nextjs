@@ -73,9 +73,9 @@ export default function EnquiryFooter() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
-        .font-syne { font-family: 'Syne', sans-serif; }
-        .font-mono-dm { font-family: 'Syne', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+        .font-syne { font-family: 'Poppins', sans-serif; }
+        .font-mono-dm { font-family: 'Inter', sans-serif; }
         @media (max-width: 767px) {
           .mobile-footer-scroll { padding-bottom: 24px; }
         }
@@ -104,7 +104,7 @@ export default function EnquiryFooter() {
       `}</style>
 
       {/* DESKTOP FOOTER */}
-      <div className="hidden xl:block" style={{ padding: "0 50px" }}>
+      <div className="hidden xl:block w-full max-w-[1475px] mx-auto px-4 sm:px-6 md:px-8">
         <footer
           className="relative font-syne"
           style={{
@@ -112,7 +112,7 @@ export default function EnquiryFooter() {
             background: "#e6e7e8",
           }}
         >
-          <div className="relative z-10 max-w-375 mx-auto px-10 pt-16 pb-10">
+          <div className="relative z-10 w-full mx-auto px-10 pt-16 pb-10">
             <div className="grid grid-cols-1 md:grid-cols-[1.6fr_1fr_1fr_1fr] gap-12 pb-14 border-b border-black/[0.07]">
 
               <div>

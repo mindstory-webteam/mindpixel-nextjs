@@ -1,7 +1,7 @@
 "use client";
 import Portfolio from '../components/Portfolio'
 import EnquiryService from '../components/EnquiryService'
-import WhoWeAre from '../components/WhoWeAre'
+import EnquiryLogos from '../components/EnquiryLogos'
 import Testimonials from '../components/Testimonials'
 import FaqSection from '../components/FaqSection'
 import EnquiryFaq from '../components/EnquiryFaq'
@@ -10,7 +10,6 @@ import Hero2 from '../components/Hero2'
 import ChatbotWidget from '../components/ChatbotWidget'
 
 import EnquiryHero from '../components/EnquiryHero'
-import EnquiryFormSection from '@/components/EnquiryFormSection'
 import EnquiryWhyChooseUs from '../components/EnquiryWhyChooseUs'
 import EnquiryAbout from '../components/EnquiryAbout'
 import SEO from '../components/SEO';
@@ -26,19 +25,19 @@ const Landing = () => {
 
 
       <div id="home">
-        <EnquiryHero />
+        <div id="contact">
+          <EnquiryHero />
+        </div>
       </div>
-      <div id="contact" style={{ scrollMarginTop: '85px' }}>
-        <EnquiryFormSection />
+      <EnquiryLogos />
+      <div id="services" style={{ scrollMarginTop: '85px' }}>
+        <EnquiryService />
       </div>
       <div id="why-choose-us" style={{ scrollMarginTop: '85px' }}>
         <EnquiryWhyChooseUs />
       </div>
       <div id="about" style={{ scrollMarginTop: '85px' }}>
         <EnquiryAbout />
-      </div>
-      <div id="services" style={{ scrollMarginTop: '85px' }}>
-        <EnquiryService />
       </div>
 
       <div id="testimonials" style={{ scrollMarginTop: '85px' }}>

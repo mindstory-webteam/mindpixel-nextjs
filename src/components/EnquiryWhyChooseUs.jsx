@@ -31,55 +31,68 @@ export default function EnquiryWhyChooseUs() {
   return (
     <section className="wcu-section">
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500&display=swap');
         .wcu-section {
           background-color: #ffffff;
-          padding: 60px 40px;
+          padding: 24px 0 60px 0;
           color: #111;
-          font-family: 'Syne', sans-serif;
+          font-family: 'Inter', sans-serif;
           overflow: hidden;
         }
         .wcu-inner {
-          max-width: 1400px;
+          width: 100%;
+          max-width: 1475px;
           margin: 0 auto;
+          box-sizing: border-box;
         }
         .wcu-header {
-          text-align: center;
-          margin-bottom: 72px;
+          text-align: left;
+          margin-bottom: 28px;
         }
         .wcu-heading {
-          font-size: 56px;
-          font-weight: 400;
-          line-height: 1.1;
+          font-family: 'Poppins', sans-serif;
+          font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+          font-weight: 600;
+          letter-spacing: -0.02em;
+          line-height: 1.25;
           margin: 0;
-          color: #1a1a1a;
+          color: #111111;
         }
         .wcu-grid {
           display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 24px;
+          grid-template-columns: repeat(4, 1fr);
+          gap: 20px;
         }
         .wcu-card {
           background: #ffffff;
           border: 1px solid #f0f0f0;
-          border-radius: 24px;
-          padding: 48px;
+          border-radius: 20px;
+          padding: 36px 28px;
           position: relative;
           overflow: hidden;
           display: flex;
           flex-direction: column;
           box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .wcu-card:hover {
+          transform: translateY(-4px);
+          box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
         }
         .wcu-title {
-          font-size: 24px;
+          font-family: 'Poppins', sans-serif;
+          font-size: 21px;
           font-weight: 600;
-          margin: 0 0 16px 0;
+          margin: 0 0 14px 0;
           color: #111111;
+          line-height: 1.25;
           position: relative;
           z-index: 1;
         }
         .wcu-desc {
-          font-size: 16px;
-          line-height: 1.7;
+          font-family: 'Inter', sans-serif;
+          font-size: 14.5px;
+          line-height: 1.65;
           color: #555555;
           margin: 0;
           font-weight: 400;
@@ -90,12 +103,12 @@ export default function EnquiryWhyChooseUs() {
         .wcu-icon-bg {
           position: absolute;
           top: 50%;
-          right: -20px;
+          right: -15px;
           transform: translateY(-50%);
-          width: 250px;
-          height: 250px;
+          width: 180px;
+          height: 180px;
           object-fit: contain;
-          opacity: 0.2;
+          opacity: 0.15;
           z-index: 0;
           pointer-events: none;
           mix-blend-mode: multiply;
@@ -103,27 +116,32 @@ export default function EnquiryWhyChooseUs() {
           mask-image: radial-gradient(circle at center, black 40%, transparent 70%);
         }
 
-        @media (max-width: 1023px) {
+        @media (max-width: 1200px) {
+          .wcu-grid {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+        @media (max-width: 640px) {
           .wcu-grid {
             grid-template-columns: 1fr;
           }
           .wcu-section {
-            padding: 40px 20px;
+            padding: 16px 0 40px 0;
           }
           .wcu-heading {
-            font-size: 32px;
+            font-size: 24px;
           }
           .wcu-card {
-            padding: 32px;
-            border-radius: 20px;
+            padding: 28px 22px;
+            border-radius: 16px;
           }
           .wcu-title {
-            font-size: 20px;
+            font-size: 19px;
           }
         }
       `}</style>
 
-      <div className="wcu-inner">
+      <div className="wcu-inner w-full max-w-[1475px] mx-auto px-4 sm:px-6 md:px-8">
         <div className="wcu-header">
           <h2 className="wcu-heading">Why Businesses Choose Us</h2>
         </div>

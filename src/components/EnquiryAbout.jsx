@@ -1,280 +1,235 @@
-import React, { useRef, useEffect } from 'react'
-import { useLenis } from 'lenis/react'
-import { img } from '../assets/assest'
-import { IoIosArrowForward } from "react-icons/io"
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay } from 'swiper/modules'
-import 'swiper/css'
-import AnimatedButton from './AnimatedButton'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+"use client";
+import React from "react";
+import { motion } from "framer-motion";
 
+const pillars = [
+  {
+    id: "pillar-1",
+    title: "Conversion-First Architecture",
+    description:
+      "We design interfaces tailored to human psychology. Every headline, layout decision, and call-to-action is structured to guide visitors effortlessly into paying clients.",
+    highlights: [
+      "Custom UI/UX (Zero generic templates)",
+      "Mobile-first responsive hierarchy",
+      "Frictionless conversion journeys",
+    ],
+  },
+  {
+    id: "pillar-2",
+    title: "Sub-Second Performance",
+    description:
+      "Built with high-speed modern technologies for instant page loads, flawless mobile responsiveness, and clean code that search engines love to rank.",
+    highlights: [
+      "Next.js & React scalable architecture",
+      "95+ Google Core Web Vitals score",
+      "Clean, scalable, enterprise-ready code",
+    ],
+  },
+  {
+    id: "pillar-3",
+    title: "Data-Driven Marketing Synergy",
+    description:
+      "As the web arm of MindStory, our sites are engineered from day one to connect directly with high-intent SEO, paid ad campaigns, and qualified lead generation.",
+    highlights: [
+      "Built-in technical SEO foundations",
+      "Automated lead tracking & attribution",
+      "Direct integration with ad campaigns",
+    ],
+  },
+];
 
-const logos = [
-  { image: img.IndelMoney_mind, name: 'IndelMoney' },
-  { image: img.Viral_cat, name: 'Viral Cat' },
-  { image: img.Inspire, name: 'Inspire' },
-  { image: img.Indel_Corporation, name: 'Indel Corporation' },
-  { image: img.Ayur_street, name: 'Ayur Street' },
-  { image: img.Kavalakkat, name: 'Kavalakkat' },
-  { image: img.Happynex, name: 'Happynex' },
-  { image: img.Koffynex, name: 'Koffynex' },
-  { image: img.fuze, name: "fuze" },
-  { image: img.chaipeedika, name: "chaipeedika" },
-  { image: img.distrikt9, name: "distrikt9" },
-]
+const metrics = [
+  { value: "150+", label: "Brands Elevated", detail: "Across Kerala, India & GCC" },
+  { value: "98%", label: "Client Satisfaction", detail: "Long-term agency partnerships" },
+  { value: "3–6 Wks", label: "Average Delivery", detail: "Agile, transparent sprints" },
+  { value: "100%", label: "Custom Architecture", detail: "Zero sluggish page builders" },
+];
 
-const EnquiryAbout = () => {
-  const sectionRef = useRef(null)
-  const headingRef = useRef(null)
-  const buttonRef = useRef(null)
-  const paraRef = useRef(null)
-  const card1Ref = useRef(null)
-  const card2Ref = useRef(null)
-  const card3Ref = useRef(null)
-  const marqueeRef = useRef(null)
-
-  useEffect(() => {
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top 80%',
-          once: true,
-        },
-      })
-
-      gsap.set(
-        [headingRef.current, buttonRef.current, paraRef.current,
-        card1Ref.current, card2Ref.current, card3Ref.current,
-        marqueeRef.current],
-        { opacity: 0, y: 48 }
-      )
-
-      tl
-        .to(headingRef.current, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' })
-        .to(paraRef.current, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.5')
-        .to(buttonRef.current, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.55')
-        .to(card1Ref.current, { opacity: 1, y: 0, duration: 0.75, ease: 'power3.out' }, '-=0.4')
-        .to(card2Ref.current, { opacity: 1, y: 0, duration: 0.75, ease: 'power3.out' }, '-=0.55')
-        .to(card3Ref.current, { opacity: 1, y: 0, duration: 0.75, ease: 'power3.out' }, '-=0.55')
-        .to(marqueeRef.current, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, '-=0.4')
-    }, sectionRef)
-
-    return () => ctx.revert()
-  }, [])
-
-  const lenis = useLenis();
-
-  const scrollToContact = () => {
-    const el = document.getElementById('contact');
-    if (el) {
-      if (lenis) {
-        lenis.scrollTo(el);
-      } else {
-        el.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  }
-
+export default function EnquiryAbout() {
   return (
-    <>
+    <section className="bg-white pt-6 md:pt-8 pb-16 md:pb-24 overflow-hidden">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
-        .syne { font-family: 'Syne', sans-serif; }
-        .btn-hover:hover { background: #333 !important; transform: translateY(-1px); }
-        .arrow-hover:hover { background: rgba(255,255,255,0.1); }
-        .arrow-hover-dark:hover { background: rgba(0,0,0,0.06); }
-        .swiper-wrapper { transition-timing-function: linear !important; }
-        .marquee-container {
-          -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-          mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
-        }
-        .logo-img {
-          height: 70px;
-          width: auto;
-          max-width: 110px;
-          object-fit: contain;
-          opacity: 0.85;
-          transition: opacity 0.2s;
-        }
-        .logo-img:hover {
-          opacity: 1;
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+        .about-text-card {
+          background: #fafafa;
+          border: 1px solid #eaeaea;
+          border-radius: 18px;
+          padding: 36px 30px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          position: relative;
         }
       `}</style>
 
-      <section ref={sectionRef} className="syne px-5 pt-10 pb-10 lg:px-15 box-border">
+      <div className="w-full max-w-[1475px] mx-auto px-4 sm:px-6 md:px-8">
+        {/* Section Header */}
+        <div className="mb-8 md:mb-10 text-left">
+          <h2
+            style={{
+              fontFamily: "'Poppins', sans-serif",
+              fontSize: "clamp(1.35rem, 2.4vw, 1.85rem)",
+              fontWeight: 600,
+              color: "#111111",
+              lineHeight: 1.25,
+              letterSpacing: "-0.02em",
+              margin: "0 0 12px 0",
+              maxWidth: "840px",
+            }}
+          >
+            Where Technical Precision Meets Creative Business Growth.
+          </h2>
 
-        <div className="flex flex-col gap-6 mb-10 lg:flex-row lg:justify-between lg:items-start lg:mb-16">
-          <div>
-            <h2 ref={headingRef} className="syne text-4xl lg:text-6xl font-normal text-[#1a1a1a] leading-[1.1] max-w-full lg:max-w-85 mb-6 lg:mb-7">
-              Who we are
-            </h2>
-            <div ref={buttonRef} onClick={scrollToContact} className="cursor-pointer">
-              <AnimatedButton
-                bgColor="#1a1a1a"
-                textColor="#f5f0e8"
-                hoverBgColor="#ffb86a"
-                hoverTextColor="#1a1a1a"
-              >
-                Know More
-              </AnimatedButton>
-            </div>
-          </div>
-          <p ref={paraRef} className="syne max-w-full lg:max-w-95 text-base leading-[1.7] text-black font-light lg:pt-2">
-            MindPixel is the web & design arm of MindStory a full-service digital marketing agency based in Thrissur, Kerala. We craft pixel-perfect experiences that turn browsers into believers and brands into movements.
+          <p
+            style={{
+              fontFamily: "'Inter', sans-serif",
+              fontSize: "15px",
+              lineHeight: 1.65,
+              color: "#555555",
+              margin: 0,
+              maxWidth: "780px",
+            }}
+          >
+            MindPixel is the specialized web development & design arm of MindStory, based in Thrissur, Kerala. We engineer high-converting digital platforms, custom web applications, and growth infrastructure that turn visitors into loyal paying customers.
           </p>
         </div>
 
-        {/*  Cards  */}
-        <div className="grid grid-cols-1 gap-4 lg:grid lg:gap-4" style={{ gridTemplateColumns: 'repeat(1, 1fr)' }}>
-
-          {/* Mobile layout */}
-          <div className="flex flex-col gap-4 lg:hidden">
-            <div ref={card1Ref} className="relative overflow-hidden rounded-[20px] min-h-64 flex flex-col justify-between p-7">
-              <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0">
-                <source src={img.WhatWeDoVideo} type="video/webm" />
-              </video>
-              <div className="absolute inset-0 bg-black/40 rounded-[20px] z-1" />
-              <div className="relative z-10">
-                <span className="syne inline-block text-[0.7rem] font-medium tracking-widest uppercase py-1 mb-5 text-white/70">digital marketing · thrissur</span>
-                <h2 className="syne text-[1.4rem] font-normal leading-[1.2] text-white mb-3">Where strategy<br />meets story</h2>
-                <p className="syne text-[0.82rem] leading-[1.6] font-light text-white/65 m-0">From brand identity to performance campaigns we build digital presence that drives real results.</p>
-              </div>
-              <div className="relative z-10 flex justify-between items-end">
-                <div>
-                  <div className="syne text-[2.2rem] leading-none text-white/90">150+</div>
-                  <div className="syne text-[0.72rem] text-white/45 mt-1 font-light">brands elevated</div>
-                </div>
-                <button onClick={scrollToContact} className="arrow-hover w-9 h-9 rounded-full border border-white/20 bg-transparent flex items-center justify-center cursor-pointer text-white/70 text-base transition-colors duration-200">
-                  <IoIosArrowForward />
-                </button>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div ref={card2Ref} className="relative overflow-hidden rounded-[20px] bg-black flex flex-col justify-between min-h-56 p-5">
-                <div>
-                  <span className="syne inline-block text-[0.65rem] font-medium tracking-widest uppercase py-1 mb-4 text-white/70">Web Design & Develop</span>
-                  <h2 className="syne text-[1.1rem] font-normal leading-[1.2] text-white mb-2">Sites that sell,<br />not just shine</h2>
-                  <p className="syne text-[0.75rem] leading-[1.6] font-light text-white/65 m-0">Conversion-focused UI by MindPixel.</p>
-                </div>
-                <div className="flex justify-between items-end mt-4">
-                  <div className="syne text-[0.65rem] text-white/40 font-light">SEO · UX</div>
-                  <button onClick={scrollToContact} className="arrow-hover w-8 h-8 rounded-full border border-white/20 bg-transparent flex items-center justify-center text-white/70 transition-colors">
-                    <IoIosArrowForward />
-                  </button>
-                </div>
-              </div>
-
-              <div ref={card3Ref} className="relative overflow-hidden rounded-[20px] bg-[#fafafa] border border-[#ddd9ce] flex flex-col justify-between min-h-56 p-5">
-                <div>
-                  <span className="syne inline-block text-[0.65rem] font-medium tracking-widest uppercase py-1 mb-4 text-black">Growth Marketing</span>
-                  <h2 className="syne text-[1.1rem] font-normal leading-[1.2] text-[#1a1a1a] mb-2">Data-driven<br />growth</h2>
-                  <p className="syne text-[0.75rem] leading-[1.6] font-light text-[#6a6a6a] m-0">SEO, paid ads & social that convert.</p>
-                </div>
-                <div className="flex justify-between items-end mt-4">
-                  <div className="syne text-[0.65rem] text-[#999] font-light">ROI-focused</div>
-                  <button onClick={scrollToContact} className="arrow-hover-dark w-8 h-8 rounded-full border border-black/15 bg-transparent flex items-center justify-center text-[#1a1a1a] transition-colors">
-                    <IoIosArrowForward />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Desktop layout */}
-          <div className="hidden lg:grid gap-4" style={{ gridTemplateColumns: '1.8fr 1fr 1fr' }}>
-            <div ref={card1Ref} className="card-hover relative overflow-hidden rounded-[20px] min-h-65 flex flex-col justify-between p-9">
-              <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0">
-                <source src={img.WhatWeDoVideo} type="video/webm" />
-              </video>
-              <div className="absolute inset-0 bg-black/40 rounded-[20px] z-1" />
-              <div className="relative z-10">
-                <span className="syne inline-block text-[0.7rem] font-medium tracking-widest uppercase py-1 mb-5 text-white/70">digital marketing · thrissur</span>
-                <h2 className="syne text-[1.6rem] font-normal leading-[1.2] text-white mb-3">Where strategy<br />meets story</h2>
-                <p className="syne text-[1rem] leading-[1.6] font-light text-white/65 m-0">From brand identity to performance campaigns we build digital presence that drives real results.</p>
-              </div>
-              <div className="relative z-10 flex justify-between items-end">
-                <div>
-                  <div className="syne text-[2.6rem] leading-none text-white/90">150+</div>
-                  <div className="syne text-[0.72rem] text-white/45 mt-1 font-light">brands elevated</div>
-                </div>
-                <button onClick={scrollToContact} className="arrow-hover w-9 h-9 rounded-full border border-white/20 bg-transparent flex items-center justify-center cursor-pointer text-white/70 text-base transition-colors duration-200">
-                  <IoIosArrowForward />
-                </button>
-              </div>
-            </div>
-
-            <div ref={card2Ref} className="card-hover relative overflow-hidden rounded-[20px] bg-black flex flex-col justify-between min-h-65 p-9">
-              <div>
-                <span className="syne inline-block text-[0.7rem] font-medium tracking-widest uppercase py-1 mb-5 text-white/70">Web Design & Develop</span>
-                <h2 className="syne text-[1.6rem] font-normal leading-[1.2] text-white mb-3">Sites that sell,<br />not just shine</h2>
-                <p className="syne text-[1rem] leading-[1.6] font-light text-white/65 m-0">MindPixel crafts high-performance websites with obsessive attention to UX, speed, and conversion.</p>
-              </div>
-              <div className="flex justify-between items-end">
-                <div className="syne text-[0.75rem] text-white/40 font-light">SEO<br />UI/UX</div>
-                <button onClick={scrollToContact} className="arrow-hover w-9 h-9 rounded-full border border-white/20 bg-transparent flex items-center justify-center text-white/70 transition-colors">
-                  <IoIosArrowForward />
-                </button>
-              </div>
-            </div>
-
-            <div ref={card3Ref} className="card-hover relative overflow-hidden rounded-[20px] bg-[#fafafa] border border-[#ddd9ce] flex flex-col justify-between min-h-65 p-9">
-              <div>
-                <span className="syne inline-block text-[0.7rem] font-medium tracking-widest uppercase py-1 mb-5 text-[#5a5a5a]">Growth Marketing</span>
-                <h2 className="syne text-[1.6rem] font-normal leading-[1.2] text-black mb-3">Data-driven<br />growth</h2>
-                <p className="syne text-[1rem] leading-[1.6] font-light text-black m-0">SEO, paid media, and social strategies engineered to grow your audience and revenue not just your follower count.</p>
-              </div>
-              <div className="flex justify-between items-end">
-                <div className="syne text-[0.75rem] text-[#999] font-light">ROI-focused strategy,<br />measurable outcomes</div>
-                <button onClick={scrollToContact} className="arrow-hover-dark w-9 h-9 rounded-full border border-black/15 bg-transparent flex items-center justify-center text-[#1a1a1a] transition-colors">
-                  <IoIosArrowForward />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/*  Marquee  */}
-        <div ref={marqueeRef} className="mt-12 lg:mt-16 flex items-center gap-6 lg:gap-10">
-          <span className="syne text-[0.72rem] font-medium tracking-[0.06em] uppercase text-[#999] whitespace-nowrap shrink-0">
-            Trusted by
-          </span>
-          <div className="marquee-container flex-1 overflow-hidden">
-            <Swiper
-              modules={[Autoplay]}
-              loop={true}
-              speed={3000}
-              allowTouchMove={false}
-              autoplay={{
-                delay: 0,
-                disableOnInteraction: false,
-                pauseOnMouseEnter: false,
-              }}
-              slidesPerView="auto"
-              spaceBetween={26}
-              freeMode={true}
-              className="w-full"
+        {/* 3 Core Pillars — Pure Typography & Highlights, ZERO IMAGES */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6 mb-12">
+          {pillars.map((item, idx) => (
+            <motion.div
+              key={item.id}
+              className="about-text-card"
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.45, delay: idx * 0.1, ease: "easeOut" }}
             >
-              {[...logos, ...logos, ...logos].map((logo, i) => (
-                <SwiperSlide key={i} style={{ width: 'auto' }}>
-                  <div className="flex items-center h-30 bg-[#f9f9f9] rounded-2xl p-5">
-                    <img
-                      src={logo.image}
-                      alt={logo.name}
-                      className="logo-img"
-                    />
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
+              <div>
+                {/* Pillar Title */}
+                <h3
+                  style={{
+                    fontFamily: "'Poppins', sans-serif",
+                    fontSize: "21px",
+                    fontWeight: 600,
+                    color: "#111111",
+                    lineHeight: 1.3,
+                    margin: "0 0 12px 0",
+                  }}
+                >
+                  {item.title}
+                </h3>
+
+                {/* Description */}
+                <p
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: "14.5px",
+                    lineHeight: 1.65,
+                    color: "#555555",
+                    margin: "0 0 24px 0",
+                  }}
+                >
+                  {item.description}
+                </p>
+              </div>
+
+              {/* Highlights List */}
+              <div
+                style={{
+                  borderTop: "1px solid rgba(0, 0, 0, 0.07)",
+                  paddingTop: "20px",
+                }}
+              >
+                <ul className="flex flex-col gap-2.5 m-0 p-0 list-none">
+                  {item.highlights.map((point, pIdx) => (
+                    <li
+                      key={pIdx}
+                      className="flex items-center gap-2.5"
+                      style={{
+                        fontFamily: "'Inter', sans-serif",
+                        fontSize: "13.5px",
+                        color: "#333333",
+                        fontWeight: 500,
+                      }}
+                    >
+                      <span
+                        style={{
+                          width: "6px",
+                          height: "6px",
+                          borderRadius: "50%",
+                          backgroundColor: "#f97316",
+                          flexShrink: 0,
+                        }}
+                      />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+          ))}
         </div>
 
-      </section>
-    </>
-  )
+        {/* Milestone Strip — Clean Metrics Banner, ZERO IMAGES */}
+        <motion.div
+          style={{
+            background: "#111111",
+            borderRadius: "18px",
+            padding: "36px 32px",
+            border: "1px solid #242424",
+          }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+            {metrics.map((m, mIdx) => (
+              <div
+                key={mIdx}
+                className={`flex flex-col ${
+                  mIdx !== 0 ? "md:border-l md:border-white/10 md:pl-8" : ""
+                }`}
+              >
+                <div
+                  style={{
+                    fontFamily: "'Poppins', sans-serif",
+                    fontSize: "clamp(2rem, 3.2vw, 2.75rem)",
+                    fontWeight: 700,
+                    color: "#ffffff",
+                    lineHeight: 1.1,
+                    marginBottom: "4px",
+                  }}
+                >
+                  {m.value}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "'Poppins', sans-serif",
+                    fontSize: "14.5px",
+                    fontWeight: 600,
+                    color: "rgba(255, 255, 255, 0.95)",
+                    marginBottom: "2px",
+                  }}
+                >
+                  {m.label}
+                </div>
+                <div
+                  style={{
+                    fontFamily: "'Inter', sans-serif",
+                    fontSize: "12.5px",
+                    color: "rgba(255, 255, 255, 0.55)",
+                  }}
+                >
+                  {m.detail}
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
 }
-
-export default EnquiryAbout

@@ -20,7 +20,7 @@ const activeNavLinks = [
 
 const ACCENT = '#f97316'
 const LAYER_COLORS = ['#f97316', '#95257b']
-const syneBase = { fontFamily: "'Syne', sans-serif", fontWeight: 400 }
+const syneBase = { fontFamily: "'Poppins', sans-serif", fontWeight: 500 }
 
 const glassStyle = {
   background: 'rgba(255, 255, 255, 0.15)',
@@ -116,9 +116,9 @@ const EnquiryNavbar = () => {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
         .navbar-syne, .navbar-syne * {
-          font-family: 'Syne', sans-serif !important;
+          font-family: 'Poppins', sans-serif !important;
         }
       `}</style>
 
