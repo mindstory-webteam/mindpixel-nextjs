@@ -33,11 +33,27 @@ export async function POST(req) {
       })),
     ];
 
-    const completion = await openai.chat.completions.create({
-      messages: formattedMessages,
-      model: "llama-3.3-70b-versatile", // Lightning fast and completely free on Groq
-      temperature: 0.7,
-    });
+    const model = process.env.GROQ_MODEL || "openai/gpt-oss-120b";
+
+    let completion;
+    try {
+      completion = await openai.chat.completions.create({
+        messages: formattedMessages,
+        model: model,
+        temperature: 0.7,
+      });
+    } catch (apiError) {
+      if (model !== "openai/gpt-oss-20b") {
+        console.warn(`Primary Groq model (${model}) failed, falling back to openai/gpt-oss-20b:`, apiError.message);
+        completion = await openai.chat.completions.create({
+          messages: formattedMessages,
+          model: "openai/gpt-oss-20b",
+          temperature: 0.7,
+        });
+      } else {
+        throw apiError;
+      }
+    }
 
     return Response.json({
       message: completion.choices[0].message.content,
