@@ -1,9 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 import { img } from '../assets/assest'
 import { IoIosArrowForward } from "react-icons/io"
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Autoplay } from 'swiper/modules'
-import 'swiper/css'
+
 import AnimatedButton from './AnimatedButton'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -71,7 +69,20 @@ const WhoWeAre = () => {
         .btn-hover:hover { background: #333 !important; transform: translateY(-1px); }
         .arrow-hover:hover { background: rgba(255,255,255,0.1); }
         .arrow-hover-dark:hover { background: rgba(0,0,0,0.06); }
-        .swiper-wrapper { transition-timing-function: linear !important; }
+        @keyframes marquee-scroll {
+          0% { transform: translate3d(0, 0, 0); }
+          100% { transform: translate3d(-50%, 0, 0); }
+        }
+        .marquee-track {
+          display: flex;
+          gap: 26px;
+          width: max-content;
+          animation: marquee-scroll 32s linear infinite;
+          will-change: transform;
+        }
+        .marquee-track:hover {
+          animation-play-state: paused;
+        }
         .marquee-container {
           -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
           mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
@@ -252,36 +263,20 @@ const WhoWeAre = () => {
             Trusted by
           </span>
           <div className="marquee-container flex-1 overflow-hidden">
-            <Swiper
-              modules={[Autoplay]}
-              loop={true}
-              speed={3000}
-              allowTouchMove={false}
-              autoplay={{
-                delay: 0,
-                disableOnInteraction: false,
-                pauseOnMouseEnter: false,
-              }}
-              slidesPerView="auto"
-              spaceBetween={26}
-              freeMode={true}
-              className="w-full"
-            >
-              {[...logos, ...logos, ...logos].map((logo, i) => (
-                <SwiperSlide key={i} style={{ width: 'auto' }}>
-                  <div className="flex items-center h-30 bg-[#f9f9f9] rounded-2xl p-5">
-                    <img
-                      src={logo.image}
-                      alt={logo.name}
-                      width={110}
-                      height={40}
-                      loading="lazy"
-                      className="logo-img"
-                    />
-                  </div>
-                </SwiperSlide>
+            <div className="marquee-track">
+              {[...logos, ...logos].map((logo, i) => (
+                <div key={i} className="flex items-center h-30 bg-[#f9f9f9] rounded-2xl p-5 shrink-0">
+                  <img
+                    src={logo.image}
+                    alt={logo.name}
+                    width={110}
+                    height={40}
+                    loading="lazy"
+                    className="logo-img"
+                  />
+                </div>
               ))}
-            </Swiper>
+            </div>
           </div>
         </div>
 

@@ -120,17 +120,40 @@ const MobileSwiper = () => {
   }
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      if (!isInteracting.current) {
-        setCurrent((prev) => {
-          const next = (prev + 1) % slidesData.length
-          scrollToChild(next)
-          return next
-        })
-      }
-    }, 3200)
+    let isVisible = false
+    let timer = null
 
-    return () => clearInterval(timer)
+    const startTimer = () => {
+      if (timer) clearInterval(timer)
+      timer = setInterval(() => {
+        if (!isInteracting.current && isVisible) {
+          setCurrent((prev) => {
+            const next = (prev + 1) % slidesData.length
+            scrollToChild(next)
+            return next
+          })
+        }
+      }, 3200)
+    }
+
+    const track = trackRef.current
+    if (!track) return
+
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting
+      if (isVisible) {
+        startTimer()
+      } else {
+        if (timer) clearInterval(timer)
+      }
+    }, { threshold: 0.1 })
+
+    observer.observe(track)
+
+    return () => {
+      observer.disconnect()
+      if (timer) clearInterval(timer)
+    }
   }, [])
 
   const pauseAutoPlay = () => {
@@ -263,6 +286,7 @@ const DesktopSlider = () => {
     let resumeTimer = null
     let wasDragging = false
     let momentum = 0
+    let isVisible = false
     const MOMENTUM_MULTIPLIER = 10
     const MOMENTUM_DECAY = 0.96
 
@@ -273,6 +297,7 @@ const DesktopSlider = () => {
     }
 
     function animate() {
+      if (!isVisible) return
       slider.update()
 
       if (slider.isDragging) {
@@ -300,9 +325,18 @@ const DesktopSlider = () => {
       animId = requestAnimationFrame(animate)
     }
 
-    animate()
+    const observer = new IntersectionObserver(([entry]) => {
+      isVisible = entry.isIntersecting
+      if (isVisible) {
+        cancelAnimationFrame(animId)
+        animId = requestAnimationFrame(animate)
+      }
+    }, { threshold: 0.05 })
+
+    observer.observe(wrapper)
 
     return () => {
+      observer.disconnect()
       cancelAnimationFrame(animId)
       if (resumeTimer) clearTimeout(resumeTimer)
       wrapper.removeEventListener('selectstart', preventSelect)

@@ -47,14 +47,10 @@ const nextConfig = {
       },
     ];
   },
+  experimental: {
+    optimizePackageImports: ['lucide-react', 'react-icons', '@portabletext/react'],
+    ...(process.env.NODE_ENV === 'production' ? { forceSwcTransforms: true } : {}),
+  },
 };
-
-// Suppress native SWC binary warnings on old GLIBC environments (e.g. Hostinger shared hosting)
-// in production (where we build using webpack), while avoiding Turbopack warnings in local development.
-if (process.env.NODE_ENV === 'production') {
-  nextConfig.experimental = {
-    forceSwcTransforms: true,
-  };
-}
 
 export default nextConfig;

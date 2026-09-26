@@ -64,46 +64,57 @@ export default function TurnstileWidget({
 
   useEffect(() => {
     let isMounted = true;
+    const el = containerRef.current;
+    if (!el) return;
 
-    loadTurnstileScript()
-      .then(() => {
-        if (!isMounted || !containerRef.current || !window.turnstile) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        observer.disconnect();
 
-        // If already rendered, do not render duplicate
-        if (widgetIdRef.current !== null) {
-          return;
-        }
+        loadTurnstileScript()
+          .then(() => {
+            if (!isMounted || !containerRef.current || !window.turnstile) return;
 
-        // Clear any existing children before rendering
-        if (containerRef.current.hasChildNodes()) {
-          containerRef.current.innerHTML = "";
-        }
-
-        try {
-          widgetIdRef.current = window.turnstile.render(containerRef.current, {
-            sitekey: siteKey,
-            theme: theme,
-            size: size,
-            callback: (token) => {
-              if (isMounted && onVerifyRef.current) onVerifyRef.current(token);
-            },
-            "expired-callback": () => {
-              if (isMounted && onExpireRef.current) onExpireRef.current();
-            },
-            "error-callback": (code) => {
-              if (isMounted && onErrorRef.current) onErrorRef.current(code);
+            // If already rendered, do not render duplicate
+            if (widgetIdRef.current !== null) {
+              return;
             }
+
+            // Clear any existing children before rendering
+            if (containerRef.current.hasChildNodes()) {
+              containerRef.current.innerHTML = "";
+            }
+
+            try {
+              widgetIdRef.current = window.turnstile.render(containerRef.current, {
+                sitekey: siteKey,
+                theme: theme,
+                size: size,
+                callback: (token) => {
+                  if (isMounted && onVerifyRef.current) onVerifyRef.current(token);
+                },
+                "expired-callback": () => {
+                  if (isMounted && onExpireRef.current) onExpireRef.current();
+                },
+                "error-callback": (code) => {
+                  if (isMounted && onErrorRef.current) onErrorRef.current(code);
+                }
+              });
+            } catch (err) {
+              console.error("Turnstile rendering error:", err);
+            }
+          })
+          .catch((err) => {
+            console.error("Turnstile script load error:", err);
           });
-        } catch (err) {
-          console.error("Turnstile rendering error:", err);
-        }
-      })
-      .catch((err) => {
-        console.error("Turnstile script load error:", err);
-      });
+      }
+    }, { rootMargin: "250px" });
+
+    observer.observe(el);
 
     return () => {
       isMounted = false;
+      observer.disconnect();
       if (widgetIdRef.current !== null && window.turnstile) {
         try {
           window.turnstile.remove(widgetIdRef.current);

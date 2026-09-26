@@ -4,7 +4,6 @@ import gsap from "gsap";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, FreeMode } from "swiper/modules";
 import { img } from "../assets/assest";
-import { useInView, animate } from "framer-motion";
 import { useNavigate } from '@/lib/react-router-dom-compat';
 
 import "swiper/css";
@@ -136,17 +135,41 @@ const PATH_B = "M1661.28 2255.51C1661.28 2255.51 2311.09 1960.37 2111.78 1817.01
 function Counter({ endValue, suffix = "+" }) {
   const [displayValue, setDisplayValue] = useState(0);
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "0px 0px -50px 0px" });
 
   useEffect(() => {
-    if (!inView) return;
-    const controls = animate(0, endValue, {
-      duration: 2,
-      ease: [0.16, 1, 0.3, 1],
-      onUpdate: (v) => setDisplayValue(Math.floor(v)),
-    });
-    return () => controls.stop();
-  }, [inView, endValue]);
+    const el = ref.current;
+    if (!el) return;
+
+    let animId = null;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          observer.disconnect();
+          const duration = 2000;
+          let startTime = null;
+          const step = (timestamp) => {
+            if (!startTime) startTime = timestamp;
+            const progress = Math.min((timestamp - startTime) / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 3);
+            setDisplayValue(Math.floor(ease * endValue));
+            if (progress < 1) {
+              animId = requestAnimationFrame(step);
+            } else {
+              setDisplayValue(endValue);
+            }
+          };
+          animId = requestAnimationFrame(step);
+        }
+      },
+      { rootMargin: "0px 0px -50px 0px" }
+    );
+
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      if (animId) cancelAnimationFrame(animId);
+    };
+  }, [endValue]);
 
   return <span ref={ref}>{displayValue}{suffix}</span>;
 }

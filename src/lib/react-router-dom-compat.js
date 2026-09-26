@@ -5,10 +5,26 @@ import { useRouter, usePathname, useParams as useNextParams, useSearchParams } f
 import { usePageTransition } from '@/components/TransitionProvider';
 
 // Mock Link with page transition integration
-export const Link = forwardRef(({ to, href, onClick, children, ...props }, ref) => {
+export const Link = forwardRef(({ to, href, onClick, onMouseEnter, prefetch = false, children, ...props }, ref) => {
+  const router = useRouter();
   const pathname = usePathname();
   const destination = to || href || '#';
   const transition = usePageTransition();
+
+  const handleMouseEnter = (e) => {
+    if (onMouseEnter) onMouseEnter(e);
+    if (
+      destination &&
+      destination !== '#' &&
+      !destination.includes('#') &&
+      destination !== pathname &&
+      !destination.startsWith('http') &&
+      !destination.startsWith('mailto:') &&
+      !destination.startsWith('tel:')
+    ) {
+      router.prefetch(destination);
+    }
+  };
 
   const handleClick = (e) => {
     if (onClick) onClick(e);
@@ -33,7 +49,14 @@ export const Link = forwardRef(({ to, href, onClick, children, ...props }, ref) 
   };
 
   return (
-    <NextLink ref={ref} href={destination} onClick={handleClick} {...props}>
+    <NextLink
+      ref={ref}
+      href={destination}
+      onClick={handleClick}
+      onMouseEnter={handleMouseEnter}
+      prefetch={prefetch}
+      {...props}
+    >
       {children}
     </NextLink>
   );
@@ -41,11 +64,27 @@ export const Link = forwardRef(({ to, href, onClick, children, ...props }, ref) 
 Link.displayName = 'Link';
 
 // Mock NavLink with page transition integration
-export const NavLink = forwardRef(({ to, href, onClick, children, className, activeClassName, style, ...props }, ref) => {
+export const NavLink = forwardRef(({ to, href, onClick, onMouseEnter, prefetch = false, children, className, activeClassName, style, ...props }, ref) => {
+  const router = useRouter();
   const pathname = usePathname();
   const destination = to || href || '#';
   const isActive = pathname === destination;
   const transition = usePageTransition();
+
+  const handleMouseEnter = (e) => {
+    if (onMouseEnter) onMouseEnter(e);
+    if (
+      destination &&
+      destination !== '#' &&
+      !destination.includes('#') &&
+      destination !== pathname &&
+      !destination.startsWith('http') &&
+      !destination.startsWith('mailto:') &&
+      !destination.startsWith('tel:')
+    ) {
+      router.prefetch(destination);
+    }
+  };
 
   const handleClick = (e) => {
     if (onClick) onClick(e);
@@ -79,7 +118,15 @@ export const NavLink = forwardRef(({ to, href, onClick, children, className, act
   }
 
   return (
-    <NextLink ref={ref} href={destination} onClick={handleClick} className={resolvedClassName} {...props}>
+    <NextLink
+      ref={ref}
+      href={destination}
+      onClick={handleClick}
+      onMouseEnter={handleMouseEnter}
+      prefetch={prefetch}
+      className={resolvedClassName}
+      {...props}
+    >
       {children}
     </NextLink>
   );

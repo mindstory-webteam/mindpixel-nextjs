@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import { BarChart3, Code2, LayoutDashboard, Rocket, ShieldCheck, Globe } from "lucide-react";
-import { useInView, animate } from "framer-motion";
 import { img } from "../assets/assest";
 
 const cards = [
@@ -36,17 +35,41 @@ const metrics = [
 function Counter({ endValue, prefix = "", suffix = "+" }) {
   const [displayValue, setDisplayValue] = useState(0);
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "0px 0px -50px 0px" });
 
   useEffect(() => {
-    if (!inView) return;
-    const controls = animate(0, endValue, {
-      duration: 2,
-      ease: [0.16, 1, 0.3, 1],
-      onUpdate: (v) => setDisplayValue(Math.floor(v)),
-    });
-    return () => controls.stop();
-  }, [inView, endValue]);
+    const el = ref.current;
+    if (!el) return;
+
+    let animId = null;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          observer.disconnect();
+          const duration = 2000;
+          let startTime = null;
+          const step = (timestamp) => {
+            if (!startTime) startTime = timestamp;
+            const progress = Math.min((timestamp - startTime) / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 3);
+            setDisplayValue(Math.floor(ease * endValue));
+            if (progress < 1) {
+              animId = requestAnimationFrame(step);
+            } else {
+              setDisplayValue(endValue);
+            }
+          };
+          animId = requestAnimationFrame(step);
+        }
+      },
+      { rootMargin: "0px 0px -50px 0px" }
+    );
+
+    observer.observe(el);
+    return () => {
+      observer.disconnect();
+      if (animId) cancelAnimationFrame(animId);
+    };
+  }, [endValue]);
 
   return (
     <span ref={ref}>

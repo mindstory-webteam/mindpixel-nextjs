@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import emailjs from "@emailjs/browser";
 import AnimatedButton from "./AnimatedButton";
 import TurnstileWidget from "./TurnstileWidget";
 
@@ -97,19 +96,22 @@ export default function FaqSection() {
     const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || process.env.VITE_EMAILJS_TEMPLATE_ID;
     const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || process.env.VITE_EMAILJS_PUBLIC_KEY;
 
-    emailjs
-      .send(
-        serviceId,
-        templateId,
-        {
-          subject: form.subject,
-          from_name: form.name,
-          from_email: form.email,
-          message: form.message,
-          time: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
-        },
-        publicKey
-      )
+    import("@emailjs/browser")
+      .then((mod) => {
+        const emailjs = mod.default || mod;
+        return emailjs.send(
+          serviceId,
+          templateId,
+          {
+            subject: form.subject,
+            from_name: form.name,
+            from_email: form.email,
+            message: form.message,
+            time: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+          },
+          publicKey
+        );
+      })
       .then(() => {
         setSubmitted(true);
         setStatus("idle");

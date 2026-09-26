@@ -1,7 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, X, Loader2 } from 'lucide-react';
 import { FaRobot, FaWhatsapp } from "react-icons/fa6";
-import { DotLottieReact } from '@lottiefiles/dotlottie-react';
+import dynamic from 'next/dynamic';
+
+const DotLottieReact = dynamic(
+  () => import('@lottiefiles/dotlottie-react').then((m) => m.DotLottieReact),
+  { ssr: false }
+);
 
 export default function ChatbotWidget({
   apiEndpoint = '/api/chat',
@@ -10,6 +15,7 @@ export default function ChatbotWidget({
   companyName = 'Mindpixel',
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [lottieReady, setLottieReady] = useState(false);
   const [messages, setMessages] = useState([
     {
       id: '1',
@@ -31,6 +37,17 @@ export default function ChatbotWidget({
   useEffect(() => {
     if (isOpen && inputRef.current) inputRef.current.focus();
   }, [isOpen]);
+
+  useEffect(() => {
+    const trigger = () => setLottieReady(true);
+    const events = ['scroll', 'touchstart', 'pointermove', 'click'];
+    events.forEach((e) => window.addEventListener(e, trigger, { once: true, passive: true }));
+    const timer = setTimeout(trigger, 3000);
+    return () => {
+      events.forEach((e) => window.removeEventListener(e, trigger));
+      clearTimeout(timer);
+    };
+  }, []);
 
   const handleSendMessage = async () => {
     if (!inputValue.trim() || isLoading) return;
@@ -268,13 +285,17 @@ export default function ChatbotWidget({
           <div className="chat-fab-close">
             <X size={26} />
           </div>
-        ) : (
+        ) : lottieReady ? (
           <div className="chat-fab-lottie">
             <DotLottieReact
               src="https://lottie.host/da1d1670-8bcf-466a-8be7-9a6578b1d09b/iTq4TiWYJd.lottie"
               loop
               autoplay
             />
+          </div>
+        ) : (
+          <div className="chat-fab-close" style={{ background: '#1a1a1a' }}>
+            <FaRobot size={22} color="#ffffff" />
           </div>
         )}
       </div>

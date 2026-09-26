@@ -196,16 +196,35 @@ export default function RootLayout({ children }) {
             `,
           }}
         />
-        {/* Google Tag Manager - lazyOnload to prioritize LCP and interactive speed */}
+        {/* Google Tag Manager - interaction-aware deferred load to eliminate main thread blocking & unused JS */}
         <Script
           id="gtm-script"
-          strategy="lazyOnload"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-NCJP8LHF');`,
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){window.dataLayer.push(arguments);}
+              (function(){
+                var loaded = false;
+                var events = ['scroll', 'touchstart', 'pointermove', 'click', 'keydown'];
+                function loadGTM(){
+                  if (loaded) return;
+                  loaded = true;
+                  events.forEach(function(e){ window.removeEventListener(e, loadGTM, { passive: true }); });
+                  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                  })(window,document,'script','dataLayer','GTM-NCJP8LHF');
+                }
+                events.forEach(function(e){ window.addEventListener(e, loadGTM, { once: true, passive: true }); });
+                if ('requestIdleCallback' in window) {
+                  requestIdleCallback(function(){ setTimeout(loadGTM, 3500); });
+                } else {
+                  setTimeout(loadGTM, 3500);
+                }
+              })();
+            `,
           }}
         />
       </head>
