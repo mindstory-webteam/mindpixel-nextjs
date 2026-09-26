@@ -62,8 +62,7 @@ export default function OurWorksSwiper() {
   };
 
   return (
-    <section className="px-6 sm:px-12 pt-20" style={{ fontFamily: "'Syne', sans-serif" }}>
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');`}</style>
+    <section className="px-6 sm:px-12 pt-20" style={{ fontFamily: "var(--font-syne, 'Syne'), sans-serif" }}>
 
       <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-7 gap-4">
         <h1 className="font-normal tracking-tight text-3xl sm:text-5xl leading-[1.1]">

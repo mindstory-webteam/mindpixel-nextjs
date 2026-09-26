@@ -145,7 +145,6 @@ export default function EnquiryReview() {
   return (
     <section className="rev-section">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500&display=swap');
         .rev-section {
           background: #fff;
           padding: 0px 0 20px 0;

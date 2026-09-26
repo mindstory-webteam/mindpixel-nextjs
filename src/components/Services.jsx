@@ -287,8 +287,6 @@ export default function Services() {
 
       {/* ── STYLES ──────────────────────────────────────────────────────── */}
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
-
         /* ─ scroll track: N×100vh gives scroll distance for all N cards ─ */
         .svc-track {
           height: ${(N + 1.2) * 100}vh;

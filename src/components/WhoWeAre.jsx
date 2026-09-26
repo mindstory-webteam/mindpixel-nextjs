@@ -67,8 +67,7 @@ const WhoWeAre = () => {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
-        .syne { font-family: 'Syne', sans-serif; }
+        .syne { font-family: var(--font-syne, 'Syne'), sans-serif; }
         .btn-hover:hover { background: #333 !important; transform: translateY(-1px); }
         .arrow-hover:hover { background: rgba(255,255,255,0.1); }
         .arrow-hover-dark:hover { background: rgba(0,0,0,0.06); }
@@ -119,7 +118,7 @@ const WhoWeAre = () => {
           {/* Mobile & Tablet layout (iPad Mini, iPad Air, iPad Pro) */}
           <div className="flex flex-col gap-4 xl:hidden">
             <div ref={card1Ref} className="relative overflow-hidden rounded-[20px] min-h-64 sm:min-h-72 flex flex-col justify-between p-7 md:p-8">
-              <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0">
+              <video autoPlay loop muted playsInline preload="none" className="absolute inset-0 w-full h-full object-cover z-0">
                 <source src={img.WhatWeDoVideo} type="video/webm" />
               </video>
               <div className="absolute inset-0 bg-black/40 rounded-[20px] z-1" />
@@ -133,10 +132,12 @@ const WhoWeAre = () => {
                   <div className="syne text-[2.2rem] sm:text-[2.6rem] leading-none text-white/90">150+</div>
                   <div className="syne text-[0.72rem] text-white/45 mt-1 font-light">brands elevated</div>
                 </div>
-                <NavLink to="/contact">
-                  <button className="arrow-hover w-9 h-9 rounded-full border border-white/20 bg-transparent flex items-center justify-center cursor-pointer text-white/70 text-base transition-colors duration-200">
-                    <IoIosArrowForward />
-                  </button>
+                <NavLink
+                  to="/contact"
+                  aria-label="Contact us about digital marketing"
+                  className="arrow-hover w-9 h-9 rounded-full border border-white/20 bg-transparent flex items-center justify-center cursor-pointer text-white/70 text-base transition-colors duration-200"
+                >
+                  <IoIosArrowForward />
                 </NavLink>
               </div>
             </div>
@@ -150,10 +151,12 @@ const WhoWeAre = () => {
                 </div>
                 <div className="flex justify-between items-end mt-4">
                   <div className="syne text-[0.65rem] sm:text-[0.72rem] text-white/40 font-light">SEO · UX</div>
-                  <NavLink to="/contact">
-                    <button className="arrow-hover w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-white/20 bg-transparent flex items-center justify-center text-white/70 transition-colors">
-                      <IoIosArrowForward />
-                    </button>
+                  <NavLink
+                    to="/contact"
+                    aria-label="Contact us about Web Design and Development"
+                    className="arrow-hover w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-white/20 bg-transparent flex items-center justify-center text-white/70 transition-colors"
+                  >
+                    <IoIosArrowForward />
                   </NavLink>
                 </div>
               </div>
@@ -166,10 +169,12 @@ const WhoWeAre = () => {
                 </div>
                 <div className="flex justify-between items-end mt-4">
                   <div className="syne text-[0.65rem] sm:text-[0.72rem] text-[#999] font-light">ROI-focused</div>
-                  <NavLink to="/contact">
-                    <button className="arrow-hover-dark w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-black/15 bg-transparent flex items-center justify-center text-[#1a1a1a] transition-colors">
-                      <IoIosArrowForward />
-                    </button>
+                  <NavLink
+                    to="/contact"
+                    aria-label="Contact us about Growth Marketing"
+                    className="arrow-hover-dark w-8 h-8 sm:w-9 sm:h-9 rounded-full border border-black/15 bg-transparent flex items-center justify-center text-[#1a1a1a] transition-colors"
+                  >
+                    <IoIosArrowForward />
                   </NavLink>
                 </div>
               </div>
@@ -178,8 +183,8 @@ const WhoWeAre = () => {
 
           {/* Desktop layout (Large Desktop) */}
           <div className="hidden xl:grid gap-4" style={{ gridTemplateColumns: '1.8fr 1fr 1fr' }}>
-            <div ref={card1Ref} className="card-hover relative overflow-hidden rounded-[20px] min-h-65 flex flex-col justify-between p-9">
-              <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover z-0">
+            <div className="card-hover relative overflow-hidden rounded-[20px] min-h-65 flex flex-col justify-between p-9">
+              <video autoPlay loop muted playsInline preload="none" className="absolute inset-0 w-full h-full object-cover z-0">
                 <source src={img.WhatWeDoVideo} type="video/webm" />
               </video>
               <div className="absolute inset-0 bg-black/40 rounded-[20px] z-1" />
@@ -193,15 +198,17 @@ const WhoWeAre = () => {
                   <div className="syne text-[2.6rem] leading-none text-white/90">150+</div>
                   <div className="syne text-[0.72rem] text-white/45 mt-1 font-light">brands elevated</div>
                 </div>
-                <NavLink to="/contact">
-                  <button className="arrow-hover w-9 h-9 rounded-full border border-white/20 bg-transparent flex items-center justify-center cursor-pointer text-white/70 text-base transition-colors duration-200">
-                    <IoIosArrowForward />
-                  </button>
+                <NavLink
+                  to="/contact"
+                  aria-label="Contact us about digital marketing"
+                  className="arrow-hover w-9 h-9 rounded-full border border-white/20 bg-transparent flex items-center justify-center cursor-pointer text-white/70 text-base transition-colors duration-200"
+                >
+                  <IoIosArrowForward />
                 </NavLink>
               </div>
             </div>
 
-            <div ref={card2Ref} className="card-hover relative overflow-hidden rounded-[20px] bg-black flex flex-col justify-between min-h-65 p-9">
+            <div className="card-hover relative overflow-hidden rounded-[20px] bg-black flex flex-col justify-between min-h-65 p-9">
               <div>
                 <span className="syne inline-block text-[0.7rem] font-medium tracking-widest uppercase py-1 mb-5 text-white/70">Web Design & Develop</span>
                 <h2 className="syne text-[1.6rem] font-normal leading-[1.2] text-white mb-3">Sites that sell,<br />not just shine</h2>
@@ -209,15 +216,17 @@ const WhoWeAre = () => {
               </div>
               <div className="flex justify-between items-end">
                 <div className="syne text-[0.75rem] text-white/40 font-light">SEO<br />UI/UX</div>
-                <NavLink to="/contact">
-                  <button className="arrow-hover w-9 h-9 rounded-full border border-white/20 bg-transparent flex items-center justify-center text-white/70 transition-colors">
-                    <IoIosArrowForward />
-                  </button>
+                <NavLink
+                  to="/contact"
+                  aria-label="Contact us about Web Design and Development"
+                  className="arrow-hover w-9 h-9 rounded-full border border-white/20 bg-transparent flex items-center justify-center text-white/70 transition-colors"
+                >
+                  <IoIosArrowForward />
                 </NavLink>
               </div>
             </div>
 
-            <div ref={card3Ref} className="card-hover relative overflow-hidden rounded-[20px] bg-[#fafafa] border border-[#ddd9ce] flex flex-col justify-between min-h-65 p-9">
+            <div className="card-hover relative overflow-hidden rounded-[20px] bg-[#fafafa] border border-[#ddd9ce] flex flex-col justify-between min-h-65 p-9">
               <div>
                 <span className="syne inline-block text-[0.7rem] font-medium tracking-widest uppercase py-1 mb-5 text-[#5a5a5a]">Growth Marketing</span>
                 <h2 className="syne text-[1.6rem] font-normal leading-[1.2] text-black mb-3">Data-driven<br />growth</h2>
@@ -225,10 +234,12 @@ const WhoWeAre = () => {
               </div>
               <div className="flex justify-between items-end">
                 <div className="syne text-[0.75rem] text-[#999] font-light">ROI-focused strategy,<br />measurable outcomes</div>
-                <NavLink to="/contact">
-                  <button className="arrow-hover-dark w-9 h-9 rounded-full border border-black/15 bg-transparent flex items-center justify-center text-[#1a1a1a] transition-colors">
-                    <IoIosArrowForward />
-                  </button>
+                <NavLink
+                  to="/contact"
+                  aria-label="Contact us about Growth Marketing"
+                  className="arrow-hover-dark w-9 h-9 rounded-full border border-black/15 bg-transparent flex items-center justify-center text-[#1a1a1a] transition-colors"
+                >
+                  <IoIosArrowForward />
                 </NavLink>
               </div>
             </div>
@@ -262,6 +273,9 @@ const WhoWeAre = () => {
                     <img
                       src={logo.image}
                       alt={logo.name}
+                      width={110}
+                      height={40}
+                      loading="lazy"
                       className="logo-img"
                     />
                   </div>

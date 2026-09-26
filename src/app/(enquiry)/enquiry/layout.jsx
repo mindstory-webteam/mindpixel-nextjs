@@ -3,6 +3,21 @@ import EnquiryFooter from "@/components/EnquiryFooter";
 import SmoothScroll from "@/components/SmoothScorll";
 import TransitionProvider from "@/components/TransitionProvider";
 import { Suspense } from "react";
+import { Inter, Poppins } from "next/font/google";
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-poppins",
+  display: "swap",
+});
 
 export default function EnquiryLayout({ children }) {
   return (
@@ -10,18 +25,17 @@ export default function EnquiryLayout({ children }) {
       <TransitionProvider column={7}>
         <Suspense fallback={null}>
           <style>{`
-            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap');
             .enquiry-layout-root {
-              font-family: 'Inter', sans-serif;
+              font-family: var(--font-inter, 'Inter'), sans-serif;
             }
             .enquiry-layout-root h1,
             .enquiry-layout-root h2,
             .enquiry-layout-root h3,
             .enquiry-layout-root h4 {
-              font-family: 'Poppins', sans-serif;
+              font-family: var(--font-poppins, 'Poppins'), sans-serif;
             }
           `}</style>
-          <div className="enquiry-layout-root" style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+          <div className={`enquiry-layout-root ${inter.variable} ${poppins.variable}`} style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
             <EnquiryNavbar />
             <main style={{ flex: 1 }}>
               {children}

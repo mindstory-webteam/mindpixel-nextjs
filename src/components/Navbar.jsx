@@ -5,7 +5,12 @@ import { img } from '../assets/assest'
 import { NavLink, useLocation } from '@/lib/react-router-dom-compat'
 import { usePageTransition } from './TransitionProvider'
 import { useLenis } from 'lenis/react'
-import { DotLottieReact } from '@lottiefiles/dotlottie-react'
+import dynamic from 'next/dynamic'
+
+const DotLottieReact = dynamic(
+  () => import('@lottiefiles/dotlottie-react').then((mod) => mod.DotLottieReact),
+  { ssr: false, loading: () => <div style={{ width: 22, height: 22 }} /> }
+)
 
 const defaultNavLinks = [
   { to: '/', label: 'Home' },
@@ -85,9 +90,8 @@ const Navbar = () => {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
         .navbar-syne, .navbar-syne * {
-          font-family: 'Syne', sans-serif !important;
+          font-family: var(--font-syne, 'Syne'), sans-serif !important;
         }
       `}</style>
 
@@ -130,13 +134,15 @@ const Navbar = () => {
               ))}
             </ul>
           </div>
-          <div
-            className="shrink-0 rounded-full p-2 cursor-pointer transition-transform hover:scale-105"
+          <button
+            type="button"
+            aria-label="Contact us"
+            className="shrink-0 rounded-full p-2 cursor-pointer transition-transform hover:scale-105 border-0 bg-transparent"
             style={glassStyle}
             onClick={() => navigateTo('/contact')}
           >
             <LottieIcon />
-          </div>
+          </button>
         </nav>
       </div>
 

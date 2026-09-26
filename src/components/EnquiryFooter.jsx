@@ -73,9 +73,8 @@ export default function EnquiryFooter() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
-        .font-syne { font-family: 'Poppins', sans-serif; }
-        .font-mono-dm { font-family: 'Inter', sans-serif; }
+        .font-syne { font-family: var(--font-poppins, 'Poppins'), sans-serif; }
+        .font-mono-dm { font-family: var(--font-inter, 'Inter'), sans-serif; }
         @media (max-width: 767px) {
           .mobile-footer-scroll { padding-bottom: 24px; }
         }

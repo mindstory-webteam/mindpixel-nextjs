@@ -31,7 +31,6 @@ export default function EnquiryWhyChooseUs() {
   return (
     <section className="wcu-section">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500&display=swap');
         .wcu-section {
           background-color: #ffffff;
           padding: 24px 0 60px 0;

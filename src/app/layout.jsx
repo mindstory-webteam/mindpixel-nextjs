@@ -2,6 +2,14 @@ import { Suspense } from "react";
 import "./globals.css";
 import Script from "next/script";
 import FaviconBlinker from "@/components/FaviconBlinker";
+import { Syne } from "next/font/google";
+
+const syne = Syne({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-syne",
+  display: "swap",
+});
 
 export const metadata = {
   metadataBase: new URL("https://mpxcode.com"),
@@ -147,8 +155,12 @@ const breadcrumbSchema = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="h-full antialiased">
+    <html lang="en" className={`h-full antialiased ${syne.variable}`}>
       <head>
+        {/* Preconnect for key dynamic resources */}
+        <link rel="preconnect" href="https://lottie.host" crossOrigin="anonymous" />
+        <link rel="dns-prefetch" href="https://lottie.host" />
+
         {/* JSON-LD Structured Data Schemas */}
         <script
           type="application/ld+json"
@@ -184,10 +196,10 @@ export default function RootLayout({ children }) {
             `,
           }}
         />
-        {/* Google Tag Manager */}
+        {/* Google Tag Manager - lazyOnload to prioritize LCP and interactive speed */}
         <Script
           id="gtm-script"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
             new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],

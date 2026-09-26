@@ -75,9 +75,8 @@ export default function Footer() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
-        .font-syne { font-family: 'Syne', sans-serif; }
-        .font-mono-dm { font-family: 'Syne', sans-serif; }
+        .font-syne { font-family: var(--font-syne, 'Syne'), sans-serif; }
+        .font-mono-dm { font-family: var(--font-syne, 'Syne'), sans-serif; }
         @media (max-width: 767px) {
           .mobile-footer-scroll { padding-bottom: 24px; }
         }
@@ -143,11 +142,11 @@ export default function Footer() {
               {/* NAV COLUMNS */}
               {activeNavColumns.map(({ heading, links }) => (
                 <div key={heading}>
-                  <h4 className="font-mono-dm text-[0.66rem] tracking-[0.16em] uppercase text-orange-400 mb-5" style={{ fontWeight: 400 }}>{heading}</h4>
+                  <h4 className="font-mono-dm text-[0.66rem] tracking-[0.16em] uppercase text-orange-700 mb-5 font-semibold">{heading}</h4>
                   <ul className="flex flex-col gap-3">
                     {links.map((link) => (
                       <li key={link.name}>
-                        <NavLink to={link.path} onClick={(e) => handleNavClick(e, link.path)} className="text-[0.87rem] transition-colors duration-200 hover:text-orange-400" style={{ fontWeight: 400 }}>
+                        <NavLink to={link.path} onClick={(e) => handleNavClick(e, link.path)} className="text-[0.87rem] transition-colors duration-200 hover:text-orange-700" style={{ fontWeight: 400 }}>
                           {link.name}
                         </NavLink>
                       </li>
@@ -158,7 +157,7 @@ export default function Footer() {
 
               {/* BRAND IMAGES — DESKTOP */}
               <div>
-                <h4 className="font-mono-dm text-[0.66rem] tracking-[0.16em] uppercase text-orange-400 mb-5 pl-4" style={{ fontWeight: 400 }}>Our Brands</h4>
+                <h4 className="font-mono-dm text-[0.66rem] tracking-[0.16em] uppercase text-orange-700 mb-5 pl-4 font-semibold">Our Brands</h4>
                 <div className="brand-img-wrap pl-4 pr-2">
 
                   <div className="brand-img-item items-center flex rounded-2xl">
@@ -240,7 +239,7 @@ export default function Footer() {
 
             {/* REACH US */}
             <div className="md:col-span-1">
-              <h4 className="font-mono-dm text-[0.66rem] tracking-[0.16em] uppercase text-orange-400 mb-3" style={{ fontWeight: 400 }}>Reach Us</h4>
+              <h4 className="font-mono-dm text-[0.66rem] tracking-[0.16em] uppercase text-orange-700 mb-3 font-semibold">Reach Us</h4>
               <ul className="flex flex-col gap-2.5">
                 {activeNavColumns[1].links.map((link) => (
                   <li key={link.name}>
@@ -256,7 +255,7 @@ export default function Footer() {
 
             {/* OUR BRANDS */}
             <div className="md:col-span-1">
-              <h4 className="font-mono-dm text-[0.66rem] tracking-[0.16em] uppercase text-orange-400 mb-3" style={{ fontWeight: 400 }}>Our Brands</h4>
+              <h4 className="font-mono-dm text-[0.66rem] tracking-[0.16em] uppercase text-orange-700 mb-3 font-semibold">Our Brands</h4>
               <div className="grid grid-cols-2 gap-3">
                 <div className="brand-img-item">
                   <a href="https://mindstory.in/" target="_blank" rel="noreferrer">
@@ -284,8 +283,8 @@ export default function Footer() {
 
           {/* BOTTOM BAR */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 pb-4">
-            <p className="font-mono-dm text-[0.74rem] text-black/50 text-center sm:text-left" style={{ fontWeight: 400 }}>
-              © 2026 <span className="text-orange-400" style={{ fontWeight: 400 }}>MindPixel</span>. All rights reserved.
+            <p className="font-mono-dm text-[0.74rem] text-black/70 text-center sm:text-left" style={{ fontWeight: 400 }}>
+              © 2026 <span className="text-orange-700 font-semibold">MindPixel</span>. All rights reserved.
             </p>
             {location.pathname !== '/enquiry' && (
               <div className="flex gap-5">

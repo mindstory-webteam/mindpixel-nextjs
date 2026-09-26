@@ -355,7 +355,6 @@ const OurWork = () => {
   return (
     <section className="pt-20 md:pt-15" style={{ background: '#fff', paddingBottom: '60px', paddingLeft: '24px', paddingRight: '24px', fontFamily: "'DM Sans', sans-serif", color: '#0f0f14', overflow: 'hidden' }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@400;500&display=swap');
         @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes dropIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
         .work-grid { display: grid; gap: 24px; grid-template-columns: 1fr; }

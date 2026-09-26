@@ -32,8 +32,6 @@ export default function ThankYou() {
       />
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&display=swap');
-        
         .fade-in-up {
           animation: fadeInUp 0.8s ease-out forwards;
           opacity: 0;

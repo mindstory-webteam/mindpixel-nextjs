@@ -241,8 +241,7 @@ export default function IntegratedWorkPage() {
       />
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&display=swap'); 
-        .font-syne { font-family: 'Syne', sans-serif; }
+        .font-syne { font-family: var(--font-syne, 'Syne'), sans-serif; }
       `}</style>
       <HeroPanels panels={data.panels} />
       <div className="relative z-10">

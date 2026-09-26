@@ -1,12 +1,16 @@
 "use client";
+import dynamic from 'next/dynamic';
 import Portfolio from '../components/Portfolio'
 import Services from '../components/Services'
 import WhoWeAre from '../components/WhoWeAre'
 import Testimonials from '../components/Testimonials'
 import FaqSection from '../components/FaqSection'
 import Hero2 from '../components/Hero2'
-import ChatbotWidget from '../components/ChatbotWidget'
 import SEO from '../components/SEO';
+
+const ChatbotWidget = dynamic(() => import('../components/ChatbotWidget'), {
+  ssr: false,
+});
 
 const Home = () => {
   return (

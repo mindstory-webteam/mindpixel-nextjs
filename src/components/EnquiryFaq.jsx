@@ -42,7 +42,6 @@ export default function EnquiryFaq() {
           }}
         >
           <style>{`
-            @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500&display=swap');
             .faq-item { padding: 20px 0; border-top: 1px solid rgba(255,255,255,0.15); cursor: pointer; transition: opacity 0.3s; }
             .faq-item:hover { opacity: 1 !important; }
             .enquiry-faq-form input::placeholder,

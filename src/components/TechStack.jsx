@@ -166,7 +166,6 @@ export default function TechStack() {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
         .mobile-tabs-scroll::-webkit-scrollbar { display: none; }
         .mobile-tabs-scroll { -ms-overflow-style: none; scrollbar-width: none; }
 

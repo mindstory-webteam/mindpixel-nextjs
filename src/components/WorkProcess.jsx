@@ -60,8 +60,7 @@ const WorkProcess = () => {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
-        .font-syne { font-family: 'Syne', sans-serif; }
+        .font-syne { font-family: var(--font-syne, 'Syne'), sans-serif; }
       `}</style>
 
       <section className="font-syne w-full relative px-4 sm:px-6 py-12 sm:py-16 lg:py-32 box-border bg-white">

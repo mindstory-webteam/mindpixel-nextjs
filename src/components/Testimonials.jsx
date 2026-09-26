@@ -162,7 +162,6 @@ const MobileSwiper = () => {
       className="w-full flex flex-col items-center gap-5 py-6 bg-white overflow-hidden"
       onMouseEnter={pauseAutoPlay}
     >
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');`}</style>
 
       <div
         ref={trackRef}
@@ -178,24 +177,27 @@ const MobileSwiper = () => {
       </div>
 
       {/* Dots */}
-      <div className="flex gap-2 mt-1">
+      <div className="flex gap-1 mt-1 items-center">
         {slidesData.map((_, i) => (
           <button
             key={i}
+            type="button"
+            aria-label={`Go to testimonial slide ${i + 1}`}
             onClick={() => {
               pauseAutoPlay()
               goTo(i)
             }}
-            className="transition-all duration-300 rounded-full"
-            style={{
-              width: i === current ? 20 : 8,
-              height: 8,
-              background: i === current ? '#111' : '#d1d1d1',
-              border: 'none',
-              cursor: 'pointer',
-              padding: 0,
-            }}
-          />
+            className="p-2 border-0 bg-transparent cursor-pointer flex items-center justify-center outline-none"
+          >
+            <span
+              className="block rounded-full transition-all duration-300"
+              style={{
+                width: i === current ? 22 : 8,
+                height: 8,
+                background: i === current ? '#111' : '#d1d1d1',
+              }}
+            />
+          </button>
         ))}
       </div>
     </div>
@@ -310,7 +312,6 @@ const DesktopSlider = () => {
 
   return (
     <div className="w-full h-[34vw] min-h-100 flex items-center bg-white relative overflow-hidden">
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');`}</style>
 
       <div className="absolute left-0 top-0 h-full w-15 bg-white z-20" />
 

@@ -279,8 +279,7 @@ function Tile({ cat }) {
 
 export default function Portfolio() {
   return (
-    <div style={{ fontFamily: "'Syne', sans-serif" }} className="px-5 pb-10 lg:pt-5 lg:pb-5 md:px-16">
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');`}</style>
+    <div style={{ fontFamily: "var(--font-syne, 'Syne'), sans-serif" }} className="px-5 pb-10 lg:pt-5 lg:pb-5 md:px-16">
 
       {/* Desktop — lg and above only */}
       <div className="hidden lg:flex gap-10 max-w-7xl mx-auto w-full">

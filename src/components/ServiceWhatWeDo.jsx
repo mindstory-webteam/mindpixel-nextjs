@@ -58,9 +58,8 @@ export default function ServiceWhatWeDo() {
     <section
       ref={sectionRef}
       className="bg-white overflow-hidden pt-20 md:pt-0"
-      style={{ fontFamily: "'Syne', sans-serif"  }}
+      style={{ fontFamily: "var(--font-syne, 'Syne'), sans-serif" }}
     >
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');`}</style>
 
       <div
         className="grid grid-cols-1 md:grid-cols-2 items-center py-5 px-6 md:px-15"

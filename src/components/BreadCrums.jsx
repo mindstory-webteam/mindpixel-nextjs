@@ -18,10 +18,9 @@ const Breadcrumb = ({
         paddingTop: '80px',
         boxSizing: 'border-box',
         width: '100%',
-        fontFamily: "'Syne', sans-serif",
+        fontFamily: "var(--font-syne, 'Syne'), sans-serif",
       }}
     >
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');`}</style>
 
       <svg
         viewBox="0 0 1366 420"

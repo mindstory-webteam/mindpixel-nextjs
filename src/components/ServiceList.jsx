@@ -195,8 +195,6 @@ export default function ServicesSticky() {
   return (
     <div style={{ overflowX: "hidden", width: "100%", maxWidth: "100%" }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap');
-
         :root {
           --ink:     #0f0e0c;
           --muted:   #7a7469;

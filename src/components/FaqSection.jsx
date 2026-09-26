@@ -127,8 +127,6 @@ export default function FaqSection() {
     <div className="w-full h-auto bg-white pt-5">
       <section className="faq-section-wrapper">
         <style>{`
-          @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&display=swap');
-
           .faq-section-wrapper {
             width: calc(100% - 24px);
             margin: 15px auto 50px auto;
@@ -434,7 +432,7 @@ export default function FaqSection() {
                       alignItems: "center",
                       justifyContent: "space-between",
                       userSelect: "none",
-                      color: form.subject ? "#0E100F" : "rgba(0, 0, 0, 0.45)",
+                      color: form.subject ? "#0E100F" : "rgba(0, 0, 0, 0.7)",
                       marginBottom: 0,
                     }}
                   >
@@ -613,9 +611,9 @@ export default function FaqSection() {
                       setActiveIndex(i);
                     }
                   }}
-                  style={{ opacity: activeIndex === i ? 1 : 0.4 }}
+                  style={{ opacity: activeIndex === i ? 1 : 0.7 }}
                 >
-                  <h4 className="faq-q-title">{f.q}</h4>
+                  <h3 className="faq-q-title">{f.q}</h3>
                   {activeIndex === i && <p className="faq-a-text">{f.a}</p>}
                 </div>
               ))}

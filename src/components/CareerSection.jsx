@@ -93,9 +93,8 @@ export default function CareerSection() {
   };
 
   return (
-    <div style={{ fontFamily: "'Syne', sans-serif" }} className="bg-white text-gray-900">
+    <div style={{ fontFamily: "var(--font-syne, 'Syne'), sans-serif" }} className="bg-white text-gray-900">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
         .job-desc { display:grid; grid-template-rows:0fr; transition:grid-template-rows 0.32s ease; }
         .job-desc.open { grid-template-rows:1fr; }
         .job-desc-inner { overflow:hidden; }

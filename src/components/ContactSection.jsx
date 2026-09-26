@@ -42,12 +42,10 @@ const ContactSection = () => {
   return (
     <section className="contact-container">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
-
         .contact-container {
           padding: 80px 40px 60px 40px;
           box-sizing: border-box;
-          font-family: 'Syne', sans-serif;
+          font-family: var(--font-syne, 'Syne'), sans-serif;
           max-width: 1300px;
           margin: 0 auto;
         }

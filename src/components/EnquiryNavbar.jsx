@@ -115,9 +115,8 @@ const EnquiryNavbar = () => {
   return (
     <>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
         .navbar-syne, .navbar-syne * {
-          font-family: 'Poppins', sans-serif !important;
+          font-family: var(--font-poppins, 'Poppins'), sans-serif !important;
         }
       `}</style>
 

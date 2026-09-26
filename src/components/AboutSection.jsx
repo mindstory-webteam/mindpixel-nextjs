@@ -66,8 +66,7 @@ export default function AboutSection() {
   }, []);
 
   return (
-    <div style={{ fontFamily: "'Syne', sans-serif" }} className="bg-white text-gray-900">
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');`}</style>
+    <div style={{ fontFamily: "var(--font-syne, 'Syne'), sans-serif" }} className="bg-white text-gray-900">
 
       <section className="px-6 lg:px-16 pt-25 lg:pt-20">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 lg:h-72">

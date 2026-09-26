@@ -23,7 +23,6 @@ export default function EnquiryLogos() {
   return (
     <section className="pt-14 md:pt-20 pb-6 md:pb-8 overflow-hidden">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap');
         .enquiry-marquee-wrapper .swiper-wrapper {
           transition-timing-function: linear !important;
         }

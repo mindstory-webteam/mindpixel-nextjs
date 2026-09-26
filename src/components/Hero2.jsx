@@ -106,13 +106,9 @@ export default function Hero2() {
             poster={img.skyimg}
             className="w-full h-full object-cover"
             aria-hidden="true"
+            preload="metadata"
           >
             <source src={img.skyvideo} type="video/mp4" />
-            <img
-              src={img.skyimg}
-              alt="sky"
-              className="w-full h-full object-cover"
-            />
           </video>
         </div>
 
@@ -124,11 +120,17 @@ export default function Hero2() {
           <img
             src={img.computerimg}
             alt="window"
+            width={1920}
+            height={1080}
+            fetchPriority="high"
             className="hidden sm:block w-full h-full object-cover"
           />
           <img
             src={img.mobileimg}
             alt="mobile window"
+            width={800}
+            height={1433}
+            loading="lazy"
             className="block sm:hidden w-full h-full object-cover"
           />
           <div

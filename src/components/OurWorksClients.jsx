@@ -23,11 +23,9 @@ export default function OurWorkClients() {
   return (
     <section
       className="px-6 md:px-12 py-16 md:py-20 bg-white overflow-hidden"
-      style={{ fontFamily: "'Syne', sans-serif" }}
+      style={{ fontFamily: "var(--font-syne, 'Syne'), sans-serif" }}
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');
-        
         .gallery-swiper {
           overflow: visible !important;
           cursor: grab;

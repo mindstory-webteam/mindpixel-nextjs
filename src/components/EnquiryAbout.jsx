@@ -112,8 +112,6 @@ export default function EnquiryAbout() {
   return (
     <section className="bg-white pt-6 md:pt-8 pb-16 md:pb-24 overflow-hidden">
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap');
-
         .about-text-card {
           background: #fafafa;
           border: 1px solid #eaeaea;
