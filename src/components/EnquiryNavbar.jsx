@@ -29,12 +29,30 @@ const glassStyle = {
   boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)',
 }
 
-const LottieIcon = () => (
-  <DotLottieReact
-    src="/lottie/nav-icon.lottie"
-    autoplay loop style={{ width: 22, height: 22 }}
-  />
-)
+const LottieIcon = () => {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'requestIdleCallback' in window) {
+      const id = window.requestIdleCallback(() => setMounted(true), { timeout: 2000 });
+      return () => window.cancelIdleCallback(id);
+    } else {
+      const id = setTimeout(() => setMounted(true), 1200);
+      return () => clearTimeout(id);
+    }
+  }, []);
+
+  if (!mounted) return <div style={{ width: 22, height: 22 }} />;
+
+  return (
+    <DotLottieReact
+      src="/lottie/nav-icon.lottie"
+      autoplay
+      loop
+      style={{ width: 22, height: 22 }}
+    />
+  );
+};
 
 
 const EnquiryNavbar = () => {

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -13,6 +13,19 @@ export default function Hero2() {
   const windowContainerRef = useRef(null);
   const heroHeaderRef = useRef(null);
   const taglineRef = useRef(null);
+  const [loadVideo, setLoadVideo] = useState(false);
+
+  useEffect(() => {
+    const onInteract = () => setLoadVideo(true);
+    const events = ["scroll", "touchstart", "mousemove", "wheel", "keydown"];
+    events.forEach((e) => window.addEventListener(e, onInteract, { once: true, passive: true }));
+    const timer = setTimeout(() => setLoadVideo(true), 2500);
+
+    return () => {
+      events.forEach((e) => window.removeEventListener(e, onInteract));
+      clearTimeout(timer);
+    };
+  }, []);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -108,12 +121,12 @@ export default function Hero2() {
             muted
             loop
             playsInline
-            poster={img.skyimg}
+            poster={img.skyimg?.src || img.skyimg}
             className="w-full h-full object-cover"
             aria-hidden="true"
-            preload="metadata"
+            preload="none"
           >
-            <source src={img.skyvideo} type="video/mp4" />
+            {loadVideo && <source src={img.skyvideo} type="video/mp4" />}
           </video>
         </div>
 

@@ -3,8 +3,8 @@ import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import Hero2 from '../components/Hero2';
 import WhoWeAre from '../components/WhoWeAre';
-import Portfolio from '../components/Portfolio';
 
+const Portfolio = dynamic(() => import('../components/Portfolio'));
 const Services = dynamic(() => import('../components/Services'));
 const Testimonials = dynamic(() => import('../components/Testimonials'));
 const FaqSection = dynamic(() => import('../components/FaqSection'));
