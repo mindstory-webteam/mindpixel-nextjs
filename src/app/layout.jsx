@@ -1,7 +1,7 @@
 import { Suspense } from "react";
+import Script from "next/script";
 import "./globals.css";
 import FaviconBlinker from "@/components/FaviconBlinker";
-import { GoogleTagManager } from "@next/third-parties/google";
 import { Syne, Geist } from "next/font/google";
 
 const syne = Syne({
@@ -192,7 +192,21 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body className="min-h-full flex flex-col">
-        <GoogleTagManager gtmId="GTM-NCJP8LHF" />
+        <Script
+          id="gtm-script"
+          strategy="lazyOnload"
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-NCJP8LHF');`,
+          }}
+        />
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-NCJP8LHF"
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+        </noscript>
         <FaviconBlinker />
         {children}
       </body>

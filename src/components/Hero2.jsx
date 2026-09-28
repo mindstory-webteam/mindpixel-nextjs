@@ -136,7 +136,7 @@ export default function Hero2() {
             alt="mobile window"
             width={800}
             height={1433}
-            loading="lazy"
+            priority
             sizes="100vw"
             className="block sm:hidden w-full h-full object-cover"
           />
