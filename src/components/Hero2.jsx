@@ -25,10 +25,13 @@ export default function Hero2() {
 
     if (!skyContainer) return;
 
-    const getHeights = () => {
-      const h = skyContainer.offsetHeight || window.innerHeight * 3.5;
-      return { skyH: h, moveDistance: h - window.innerHeight };
+    let moveDistance = (skyContainer.offsetHeight || window.innerHeight * 3.5) - window.innerHeight;
+    const updateHeights = () => {
+      if (skyContainer) {
+        moveDistance = (skyContainer.offsetHeight || window.innerHeight * 3.5) - window.innerHeight;
+      }
     };
+    window.addEventListener("resize", updateHeights, { passive: true });
 
     gsap.set(heroCopy, { yPercent: 100, opacity: 1 });
     gsap.set(tagline, { opacity: 1, yPercent: 0 });
@@ -43,9 +46,9 @@ export default function Hero2() {
         scrub: true,
         anticipatePin: 1,
         invalidateOnRefresh: true,
+        onRefresh: updateHeights,
         onUpdate: (self) => {
           const progress = self.progress;
-          const { moveDistance } = getHeights();
 
           let windowScale;
           if (progress <= 0.5) {
@@ -76,11 +79,12 @@ export default function Hero2() {
     }, containerRef);
 
     return () => {
+      window.removeEventListener("resize", updateHeights);
       ctx.revert();
     };
   }, []);
 
-  const syne = { fontFamily: "'Syne', sans-serif" };
+  const syne = { fontFamily: "var(--font-syne), 'Syne', sans-serif" };
 
   return (
     <div ref={containerRef} style={{ position: "relative", backgroundColor: "#000" }}>

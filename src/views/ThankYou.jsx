@@ -59,7 +59,7 @@ export default function ThankYou() {
           justifyContent: "center" 
         }}>
           <DotLottieReact
-            src="https://lottie.host/cd8ac992-02a5-4cec-9e1d-891ee3737d97/5ubvWKi8MU.lottie"
+            src="/lottie/thankyou.lottie"
             autoplay
           />
         </div>

@@ -2,12 +2,18 @@ import { Suspense } from "react";
 import "./globals.css";
 import Script from "next/script";
 import FaviconBlinker from "@/components/FaviconBlinker";
-import { Syne } from "next/font/google";
+import { Syne, Geist } from "next/font/google";
 
 const syne = Syne({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
   variable: "--font-syne",
+  display: "swap",
+});
+
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-geist-sans",
   display: "swap",
 });
 
@@ -155,12 +161,8 @@ const breadcrumbSchema = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`h-full antialiased ${syne.variable}`}>
+    <html lang="en" className={`h-full antialiased ${syne.variable} ${geist.variable}`}>
       <head>
-        {/* Preconnect for key dynamic resources */}
-        <link rel="preconnect" href="https://lottie.host" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://lottie.host" />
-
         {/* JSON-LD Structured Data Schemas */}
         <script
           type="application/ld+json"

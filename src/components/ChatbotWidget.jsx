@@ -288,7 +288,7 @@ export default function ChatbotWidget({
         ) : lottieReady ? (
           <div className="chat-fab-lottie">
             <DotLottieReact
-              src="https://lottie.host/da1d1670-8bcf-466a-8be7-9a6578b1d09b/iTq4TiWYJd.lottie"
+              src="/lottie/chatbot.lottie"
               loop
               autoplay
             />

@@ -36,7 +36,7 @@ const glassStyle = {
 
 const LottieIcon = () => (
   <DotLottieReact
-    src="https://lottie.host/07a833a1-1561-4f7d-bc79-f00a20c8d107/pMA6xxWSo5.lottie"
+    src="/lottie/nav-icon.lottie"
     autoplay loop style={{ width: 22, height: 22 }}
   />
 )
