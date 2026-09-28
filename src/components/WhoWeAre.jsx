@@ -141,7 +141,7 @@ const WhoWeAre = () => {
               <div className="relative z-10 flex justify-between items-end">
                 <div>
                   <div className="syne text-[2.2rem] sm:text-[2.6rem] leading-none text-white/90">150+</div>
-                  <div className="syne text-[0.72rem] text-white/45 mt-1 font-light">brands elevated</div>
+                  <div className="syne text-[0.72rem] text-white/80 mt-1 font-normal">brands elevated</div>
                 </div>
                 <NavLink
                   to="/contact"
@@ -161,7 +161,7 @@ const WhoWeAre = () => {
                   <p className="syne text-[0.78rem] sm:text-[0.88rem] leading-[1.6] font-light text-white/65 m-0">Conversion-focused UI by MindPixel.</p>
                 </div>
                 <div className="flex justify-between items-end mt-4">
-                  <div className="syne text-[0.65rem] sm:text-[0.72rem] text-white/40 font-light">SEO · UX</div>
+                  <div className="syne text-[0.65rem] sm:text-[0.72rem] text-white/80 font-normal">SEO · UX</div>
                   <NavLink
                     to="/contact"
                     aria-label="Contact us about Web Design and Development"
@@ -179,7 +179,7 @@ const WhoWeAre = () => {
                   <p className="syne text-[0.78rem] sm:text-[0.88rem] leading-[1.6] font-light text-[#6a6a6a] m-0">SEO, paid ads & social that convert.</p>
                 </div>
                 <div className="flex justify-between items-end mt-4">
-                  <div className="syne text-[0.65rem] sm:text-[0.72rem] text-[#999] font-light">ROI-focused</div>
+                  <div className="syne text-[0.65rem] sm:text-[0.72rem] text-[#4b5563] font-normal">ROI-focused</div>
                   <NavLink
                     to="/contact"
                     aria-label="Contact us about Growth Marketing"
@@ -207,7 +207,7 @@ const WhoWeAre = () => {
               <div className="relative z-10 flex justify-between items-end">
                 <div>
                   <div className="syne text-[2.6rem] leading-none text-white/90">150+</div>
-                  <div className="syne text-[0.72rem] text-white/45 mt-1 font-light">brands elevated</div>
+                  <div className="syne text-[0.72rem] text-white/80 mt-1 font-normal">brands elevated</div>
                 </div>
                 <NavLink
                   to="/contact"
@@ -226,7 +226,7 @@ const WhoWeAre = () => {
                 <p className="syne text-[1rem] leading-[1.6] font-light text-white/65 m-0">MindPixel crafts high-performance websites with obsessive attention to UX, speed, and conversion.</p>
               </div>
               <div className="flex justify-between items-end">
-                <div className="syne text-[0.75rem] text-white/40 font-light">SEO<br />UI/UX</div>
+                <div className="syne text-[0.75rem] text-white/80 font-normal">SEO<br />UI/UX</div>
                 <NavLink
                   to="/contact"
                   aria-label="Contact us about Web Design and Development"
@@ -244,7 +244,7 @@ const WhoWeAre = () => {
                 <p className="syne text-[1rem] leading-[1.6] font-light text-black m-0">SEO, paid media, and social strategies engineered to grow your audience and revenue not just your follower count.</p>
               </div>
               <div className="flex justify-between items-end">
-                <div className="syne text-[0.75rem] text-[#999] font-light">ROI-focused strategy,<br />measurable outcomes</div>
+                <div className="syne text-[0.75rem] text-[#4b5563] font-normal">ROI-focused strategy,<br />measurable outcomes</div>
                 <NavLink
                   to="/contact"
                   aria-label="Contact us about Growth Marketing"
@@ -259,7 +259,7 @@ const WhoWeAre = () => {
 
         {/*  Marquee  */}
         <div ref={marqueeRef} className="mt-12 lg:mt-16 flex items-center gap-6 lg:gap-10">
-          <span className="syne text-[0.72rem] font-medium tracking-[0.06em] uppercase text-[#999] whitespace-nowrap shrink-0">
+          <span className="syne text-[0.72rem] font-medium tracking-[0.06em] uppercase text-[#4b5563] whitespace-nowrap shrink-0">
             Trusted by
           </span>
           <div className="marquee-container flex-1 overflow-hidden">

@@ -142,11 +142,11 @@ export default function Footer() {
               {/* NAV COLUMNS */}
               {activeNavColumns.map(({ heading, links }) => (
                 <div key={heading}>
-                  <h4 className="font-mono-dm text-[0.66rem] tracking-[0.16em] uppercase text-orange-700 mb-5 font-semibold">{heading}</h4>
+                  <h4 className="font-mono-dm text-[0.66rem] tracking-[0.16em] uppercase text-orange-800 mb-5 font-semibold">{heading}</h4>
                   <ul className="flex flex-col gap-3">
                     {links.map((link) => (
                       <li key={link.name}>
-                        <NavLink to={link.path} onClick={(e) => handleNavClick(e, link.path)} className="text-[0.87rem] transition-colors duration-200 hover:text-orange-700" style={{ fontWeight: 400 }}>
+                        <NavLink to={link.path} onClick={(e) => handleNavClick(e, link.path)} className="text-[0.87rem] transition-colors duration-200 hover:text-orange-800" style={{ fontWeight: 400 }}>
                           {link.name}
                         </NavLink>
                       </li>
@@ -157,7 +157,7 @@ export default function Footer() {
 
               {/* BRAND IMAGES — DESKTOP */}
               <div>
-                <h4 className="font-mono-dm text-[0.66rem] tracking-[0.16em] uppercase text-orange-700 mb-5 pl-4 font-semibold">Our Brands</h4>
+                <h4 className="font-mono-dm text-[0.66rem] tracking-[0.16em] uppercase text-orange-800 mb-5 pl-4 font-semibold">Our Brands</h4>
                 <div className="brand-img-wrap pl-4 pr-2">
 
                   <div className="brand-img-item items-center flex rounded-2xl">
@@ -191,11 +191,11 @@ export default function Footer() {
 
             {/* BOTTOM BAR */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-7 flex-wrap">
-              <p className="font-mono-dm text-[0.74rem]" style={{ fontWeight: 400 }}>© 2026 <span className="text-orange-400" style={{ fontWeight: 400 }}>MindPixel</span>. All rights reserved.</p>
+              <p className="font-mono-dm text-[0.74rem]" style={{ fontWeight: 400 }}>© 2026 <span className="text-orange-800 font-semibold" style={{ fontWeight: 600 }}>MindPixel</span>. All rights reserved.</p>
               {location.pathname !== '/enquiry' && (
                 <div className="flex gap-6">
-                  <NavLink to="/privacy-policy" className="font-mono-dm text-[0.74rem] transition-colors duration-200 hover:text-orange-400" style={{ fontWeight: 400 }}>Privacy Policy</NavLink>
-                  <NavLink to="/terms" className="font-mono-dm text-[0.74rem] transition-colors duration-200 hover:text-orange-400" style={{ fontWeight: 400 }}>Terms & Condition</NavLink>
+                  <NavLink to="/privacy-policy" className="font-mono-dm text-[0.74rem] transition-colors duration-200 hover:text-orange-800" style={{ fontWeight: 400 }}>Privacy Policy</NavLink>
+                  <NavLink to="/terms" className="font-mono-dm text-[0.74rem] transition-colors duration-200 hover:text-orange-800" style={{ fontWeight: 400 }}>Terms & Condition</NavLink>
                 </div>
               )}
             </div>
@@ -227,7 +227,7 @@ export default function Footer() {
 
             {/* MAIN MENU */}
             <div className="md:col-span-1">
-              <h4 className="font-mono-dm text-[0.66rem] tracking-[0.16em] uppercase text-orange-400 mb-3" style={{ fontWeight: 400 }}>Main Menu</h4>
+              <h4 className="font-mono-dm text-[0.66rem] tracking-[0.16em] uppercase text-orange-800 mb-3 font-semibold">Main Menu</h4>
               <ul className="flex flex-col gap-2.5">
                 {activeNavColumns[0].links.map((link) => (
                   <li key={link.name}>
@@ -239,7 +239,7 @@ export default function Footer() {
 
             {/* REACH US */}
             <div className="md:col-span-1">
-              <h4 className="font-mono-dm text-[0.66rem] tracking-[0.16em] uppercase text-orange-700 mb-3 font-semibold">Reach Us</h4>
+              <h4 className="font-mono-dm text-[0.66rem] tracking-[0.16em] uppercase text-orange-800 mb-3 font-semibold">Reach Us</h4>
               <ul className="flex flex-col gap-2.5">
                 {activeNavColumns[1].links.map((link) => (
                   <li key={link.name}>
@@ -255,7 +255,7 @@ export default function Footer() {
 
             {/* OUR BRANDS */}
             <div className="md:col-span-1">
-              <h4 className="font-mono-dm text-[0.66rem] tracking-[0.16em] uppercase text-orange-700 mb-3 font-semibold">Our Brands</h4>
+              <h4 className="font-mono-dm text-[0.66rem] tracking-[0.16em] uppercase text-orange-800 mb-3 font-semibold">Our Brands</h4>
               <div className="grid grid-cols-2 gap-3">
                 <div className="brand-img-item">
                   <a href="https://mindstory.in/" target="_blank" rel="noreferrer">
@@ -284,12 +284,12 @@ export default function Footer() {
           {/* BOTTOM BAR */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2 pb-4">
             <p className="font-mono-dm text-[0.74rem] text-black/70 text-center sm:text-left" style={{ fontWeight: 400 }}>
-              © 2026 <span className="text-orange-700 font-semibold">MindPixel</span>. All rights reserved.
+              © 2026 <span className="text-orange-800 font-semibold">MindPixel</span>. All rights reserved.
             </p>
             {location.pathname !== '/enquiry' && (
               <div className="flex gap-5">
-                <NavLink to="/privacy-policy" className="font-mono-dm text-[0.74rem] text-black/40" style={{ fontWeight: 400 }}>Privacy Policy</NavLink>
-                <NavLink to="/terms" className="font-mono-dm text-[0.74rem] text-black/40" style={{ fontWeight: 400 }}>Terms & Condition</NavLink>
+                <NavLink to="/privacy-policy" className="font-mono-dm text-[0.74rem] text-black/70 hover:text-black transition-colors" style={{ fontWeight: 400 }}>Privacy Policy</NavLink>
+                <NavLink to="/terms" className="font-mono-dm text-[0.74rem] text-black/70 hover:text-black transition-colors" style={{ fontWeight: 400 }}>Terms & Condition</NavLink>
               </div>
             )}
           </div>
