@@ -1,4 +1,5 @@
 import { useRef, useEffect } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { img } from "../assets/assest";
@@ -66,10 +67,12 @@ export default function ServiceWhatWeDo() {
       >
         <div ref={imgRef} className="w-full">
           <div className="relative aspect-video md:aspect-4/3 overflow-hidden">
-            <img
+            <Image
               src={whatWeDo.image}
               alt="What we do"
-              className="w-full h-full object-cover block rounded-3xl "
+              fill
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover block rounded-3xl"
             />
           </div>
         </div>

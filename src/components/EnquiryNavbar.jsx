@@ -219,16 +219,15 @@ const EnquiryNavbar = () => {
         </div>
 
         {/* Sidebar Overlay */}
-        <div 
+        <div
           className={`fixed inset-0 bg-black/40 z-65 transition-opacity duration-300 ${menuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
           onClick={() => setMenuOpen(false)}
         />
 
         {/* Sidebar Drawer (Right-to-Left) */}
         <aside
-          className={`fixed top-0 right-0 bottom-0 w-full bg-white z-70 shadow-2xl transform transition-transform duration-300 ease-in-out ${
-            menuOpen ? 'translate-x-0' : 'translate-x-full'
-          } flex flex-col px-6 pb-6 overflow-y-auto`}
+          className={`fixed top-0 right-0 bottom-0 w-full bg-white z-70 shadow-2xl transform transition-transform duration-300 ease-in-out ${menuOpen ? 'translate-x-0' : 'translate-x-full'
+            } flex flex-col px-6 pb-6 overflow-y-auto`}
         >
           {/* Close button inside sidebar */}
           <div className="flex justify-end pt-5 pb-4">

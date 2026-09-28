@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import Image from "next/image";
 import { BarChart3, Code2, LayoutDashboard, Rocket, ShieldCheck, Globe } from "lucide-react";
 import { img } from "../assets/assest";
 
@@ -94,11 +95,13 @@ export default function AboutSection() {
       <section className="px-6 lg:px-16 pt-25 lg:pt-20">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-3 lg:h-72">
 
-          <div className="lg:col-span-1 h-56 lg:h-auto rounded-2xl overflow-hidden bg-slate-200">
-            <img
+          <div className="relative lg:col-span-1 h-56 lg:h-auto rounded-2xl overflow-hidden bg-slate-200">
+            <Image
               src={img.ourvision}
               alt="Clean Code"
-              className="w-full h-full object-cover"
+              fill
+              sizes="(max-width: 1024px) 100vw, 25vw"
+              className="object-cover"
             />
           </div>
 
@@ -122,11 +125,13 @@ export default function AboutSection() {
             </div>
           </div>
 
-          <div className="lg:col-span-1 h-56 lg:h-auto rounded-2xl overflow-hidden bg-slate-200">
-            <img
+          <div className="relative lg:col-span-1 h-56 lg:h-auto rounded-2xl overflow-hidden bg-slate-200">
+            <Image
               src={img.ourmission}
               alt="Data and Analytics"
-              className="w-full h-full object-cover"
+              fill
+              sizes="(max-width: 1024px) 100vw, 25vw"
+              className="object-cover"
             />
           </div>
 

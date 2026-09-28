@@ -250,9 +250,8 @@ export default function EnquiryAbout() {
             {metrics.map((m, mIdx) => (
               <div
                 key={mIdx}
-                className={`flex flex-col ${
-                  mIdx !== 0 ? "md:border-l md:border-white/10 md:pl-8" : ""
-                }`}
+                className={`flex flex-col ${mIdx !== 0 ? "md:border-l md:border-white/10 md:pl-8" : ""
+                  }`}
               >
                 <div
                   style={{

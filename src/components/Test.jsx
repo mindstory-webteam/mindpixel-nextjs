@@ -1,5 +1,5 @@
-// WorkVideoAnimation.jsx
 import React, { useEffect, useRef } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { img } from "../assets/assest";
@@ -91,14 +91,12 @@ function DeviceFrame({ frameImg, videoSrc, width, height, innerRef }) {
       )}
 
       {/* Frame PNG — screen area is transparent, video shows through */}
-      <img
+      <Image
         src={frameImg}
         alt=""
+        fill
+        sizes="300px"
         style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
           objectFit: "contain",
           zIndex: 2,
           pointerEvents: "none",

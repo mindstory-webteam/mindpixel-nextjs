@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { img } from "../assets/assest";
@@ -121,20 +122,22 @@ export default function Hero2() {
           className="absolute top-0 left-0 w-full"
           style={{ height: "100vh", willChange: "transform", zIndex: 1 }}
         >
-          <img
+          <Image
             src={img.computerimg}
             alt="window"
             width={1920}
             height={1080}
-            fetchPriority="high"
+            priority
+            sizes="100vw"
             className="hidden sm:block w-full h-full object-cover"
           />
-          <img
+          <Image
             src={img.mobileimg}
             alt="mobile window"
             width={800}
             height={1433}
             loading="lazy"
+            sizes="100vw"
             className="block sm:hidden w-full h-full object-cover"
           />
           <div

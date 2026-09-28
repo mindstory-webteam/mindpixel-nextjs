@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, FreeMode } from "swiper/modules";
 import "swiper/css";
@@ -97,7 +98,7 @@ export default function OurWorkClients() {
         >
           {[...galleryImages, ...galleryImages].map((item, index) => (
             <SwiperSlide key={index} className="gallery-slide">
-              <img src={item.src} alt={item.alt} />
+              <Image src={item.src} alt={item.alt} width={160} height={70} style={{ width: '80%', height: '80%', objectFit: 'contain' }} />
             </SwiperSlide>
           ))}
         </Swiper>

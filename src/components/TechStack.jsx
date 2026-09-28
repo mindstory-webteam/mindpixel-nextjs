@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 
 const categories = [
   { id: "uiux", label: "UI/UX" },
@@ -182,7 +183,7 @@ export default function TechStack() {
         }
       `}</style>
 
-      <div className="ts-page-wrapper">
+      <div className="ts-page-wrapper offscreen-section">
         <section
           className="relative w-full flex flex-col items-center justify-center overflow-hidden mb-5"
           style={{
@@ -270,15 +271,17 @@ function TechCard({ tech, isMobile }) {
         e.currentTarget.style.transform = "translateY(0)";
       }}
     >
-      <img
+      <Image
         src={tech.icon}
         alt={tech.name}
+        width={isMobile ? 30 : 42}
+        height={isMobile ? 30 : 42}
+        unoptimized
         style={{
           width: isMobile ? "30px" : "42px",
           height: isMobile ? "30px" : "42px",
           objectFit: "contain",
         }}
-        onError={(e) => { e.target.style.display = "none"; }}
       />
       <span
         style={{

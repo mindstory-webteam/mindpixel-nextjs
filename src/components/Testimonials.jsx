@@ -1,6 +1,7 @@
 import { img } from '@/assets/assest'
 import React, { useRef, useEffect, useState, useSyncExternalStore } from 'react'
 import Core from 'smooothy'
+import fastdom from 'fastdom'
 
 const slidesData = [
   { id: 1, text: "MindPixel delivered exactly what we needed for our business website. Their team was professional, responsive, and completed the project on time with excellent design quality.", username: "Rahul, Kochi", color: '#fafafa', stars: 4.5 },
@@ -44,8 +45,12 @@ function ReviewCardContent({ slide }) {
   useEffect(() => {
     const el = textRef.current;
     if (!el) return;
-    const isOverflowing = el.scrollHeight > el.clientHeight;
-    setShouldShowReadMore(isOverflowing);
+    fastdom.measure(() => {
+      const isOverflowing = el.scrollHeight > el.clientHeight;
+      fastdom.mutate(() => {
+        setShouldShowReadMore(isOverflowing);
+      });
+    });
   }, [slide.text]);
 
   const namePart = slide.username.split(',')[0].trim();
@@ -182,7 +187,7 @@ const MobileSwiper = () => {
 
   return (
     <div
-      className="w-full flex flex-col items-center gap-5 py-6 bg-white overflow-hidden"
+      className="w-full flex flex-col items-center gap-5 py-6 bg-white overflow-hidden offscreen-section"
       onMouseEnter={pauseAutoPlay}
     >
 
@@ -240,10 +245,13 @@ const DesktopSlider = () => {
     let wrapperWidth = wrapper.offsetWidth || window.innerWidth
 
     const measureLayout = () => {
-      slideWidth = slides[0]?.offsetWidth || (window.innerWidth * 0.24)
-      slideOffsets = slides.map((s) => s.offsetLeft)
-      wrapperWidth = wrapper.offsetWidth || window.innerWidth
-    }
+      fastdom.measure(() => {
+        if (!wrapperRef.current) return;
+        slideWidth = slides[0]?.offsetWidth || (window.innerWidth * 0.24);
+        slideOffsets = slides.map((s) => s.offsetLeft);
+        wrapperWidth = wrapper.offsetWidth || window.innerWidth;
+      });
+    };
     window.addEventListener('resize', measureLayout, { passive: true })
 
     const preventSelect = (e) => e.preventDefault()
@@ -346,7 +354,7 @@ const DesktopSlider = () => {
   }, [])
 
   return (
-    <div className="w-full h-[34vw] min-h-100 flex items-center bg-white relative overflow-hidden">
+    <div className="w-full h-[34vw] min-h-100 flex items-center bg-white relative overflow-hidden offscreen-section">
 
       <div className="absolute left-0 top-0 h-full w-15 bg-white z-20" />
 

@@ -1,3 +1,9 @@
+import withBundleAnalyzer from '@next/bundle-analyzer';
+
+const bundleAnalyzer = withBundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   env: {
@@ -23,12 +29,38 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'images.unsplash.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'cdn.simpleicons.org',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.jsdelivr.net',
+      },
     ],
   },
   async headers() {
     return [
       {
-        source: '/:all*(svg|jpg|jpeg|png|webp|avif|ico|woff2|woff|lottie)',
+        source: '/:all*(svg|jpg|png|webp|avif|ico|woff2)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/:file*.(svg|jpg|jpeg|png|webp|avif|ico|woff2|woff|lottie)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/(images|fonts|icons)/:path*',
         headers: [
           {
             key: 'Cache-Control',
@@ -63,6 +95,15 @@ const nextConfig = {
           },
         ],
       },
+      {
+        source: '/faviconstroke.png',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
     ];
   },
   experimental: {
@@ -71,4 +112,4 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+export default bundleAnalyzer(nextConfig);

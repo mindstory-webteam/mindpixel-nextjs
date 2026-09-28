@@ -1,6 +1,7 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { Link } from '@/lib/react-router-dom-compat';
 import { gsap } from 'gsap';
+import fastdom from 'fastdom';
 
 const AnimatedButton = ({
   children,
@@ -29,42 +30,48 @@ const AnimatedButton = ({
     const circle = circleRef.current;
     if (!pill || !circle) return;
 
-    const w = pill.offsetWidth;
-    const h = pill.offsetHeight;
-    if (w === 0 || h === 0) return;
+    fastdom.measure(() => {
+      if (!pillRef.current || !circleRef.current) return;
+      const w = pill.offsetWidth;
+      const h = pill.offsetHeight;
+      if (w === 0 || h === 0) return;
 
-    const R      = ((w * w) / 4 + h * h) / (2 * h);
-    const D      = Math.ceil(2 * R) + 2;
-    const delta  = Math.ceil(R - Math.sqrt(Math.max(0, R * R - (w * w) / 4))) + 1;
-    const originY = D - delta;
+      const R      = ((w * w) / 4 + h * h) / (2 * h);
+      const D      = Math.ceil(2 * R) + 2;
+      const delta  = Math.ceil(R - Math.sqrt(Math.max(0, R * R - (w * w) / 4))) + 1;
+      const originY = D - delta;
 
-    circle.style.width  = `${D}px`;
-    circle.style.height = `${D}px`;
-    circle.style.bottom = `-${delta}px`;
+      fastdom.mutate(() => {
+        if (!circleRef.current) return;
+        circle.style.width  = `${D}px`;
+        circle.style.height = `${D}px`;
+        circle.style.bottom = `-${delta}px`;
 
-    gsap.set(circle, {
-      xPercent: -50,
-      scale: 0,
-      transformOrigin: `50% ${originY}px`,
+        gsap.set(circle, {
+          xPercent: -50,
+          scale: 0,
+          transformOrigin: `50% ${originY}px`,
+        });
+
+        const label = labelRef.current;
+        const hover = hoverRef.current;
+
+        if (label) gsap.set(label, { y: 0 });
+        if (hover) gsap.set(hover, { y: h + 12, opacity: 0 });
+
+        tlRef.current?.kill();
+        const tl = gsap.timeline({ paused: true });
+
+        tl.to(circle, { scale: 1.2, xPercent: -50, duration: 2, ease, overwrite: 'auto' }, 0);
+        if (label) tl.to(label, { y: -(h + 8), duration: 2, ease, overwrite: 'auto' }, 0);
+        if (hover) {
+          gsap.set(hover, { y: Math.ceil(h + 100), opacity: 0 });
+          tl.to(hover, { y: 0, opacity: 1, duration: 2, ease, overwrite: 'auto' }, 0);
+        }
+
+        tlRef.current = tl;
+      });
     });
-
-    const label = labelRef.current;
-    const hover = hoverRef.current;
-
-    if (label) gsap.set(label, { y: 0 });
-    if (hover) gsap.set(hover, { y: h + 12, opacity: 0 });
-
-    tlRef.current?.kill();
-    const tl = gsap.timeline({ paused: true });
-
-    tl.to(circle, { scale: 1.2, xPercent: -50, duration: 2, ease, overwrite: 'auto' }, 0);
-    if (label) tl.to(label, { y: -(h + 8), duration: 2, ease, overwrite: 'auto' }, 0);
-    if (hover) {
-      gsap.set(hover, { y: Math.ceil(h + 100), opacity: 0 });
-      tl.to(hover, { y: 0, opacity: 1, duration: 2, ease, overwrite: 'auto' }, 0);
-    }
-
-    tlRef.current = tl;
   }, [ease]);
 
   useEffect(() => {

@@ -302,7 +302,7 @@ function Tile({ cat }) {
 
 export default function Portfolio() {
   return (
-    <div style={{ fontFamily: "var(--font-syne, 'Syne'), sans-serif" }} className="px-5 pb-10 lg:pt-5 lg:pb-5 md:px-16">
+    <div style={{ fontFamily: "var(--font-syne, 'Syne'), sans-serif" }} className="px-5 pb-10 lg:pt-5 lg:pb-5 md:px-16 offscreen-section">
 
       {/* Desktop — lg and above only */}
       <div className="hidden lg:flex gap-10 max-w-7xl mx-auto w-full">

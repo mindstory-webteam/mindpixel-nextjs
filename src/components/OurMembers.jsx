@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { FaLinkedinIn } from "react-icons/fa6"; 
 import { img } from "../assets/assest";
 
@@ -15,7 +16,7 @@ const teamMembers = [
 
 const OurMembers = () => {
   return (
-    <section className="px-6 lg:px-16 pb-16 lg:pb-24 bg-white" style={{ fontFamily: "'Syne', sans-serif" }}>
+    <section className="px-6 lg:px-16 pb-16 lg:pb-24 bg-white offscreen-section" style={{ fontFamily: "'Syne', sans-serif" }}>
       {/* Updated Header Section */}
       <div className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
@@ -37,10 +38,12 @@ const OurMembers = () => {
             className="rounded-xl overflow-hidden border border-gray-100 bg-white relative group"
             style={{ aspectRatio: "2/3" }}
           >
-            <img
+            <Image
               src={member.img}
               alt={member.name}
-              className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
             />
 
             <div className="absolute bottom-2 left-2 right-2 bg-white rounded-lg px-3 py-2 flex items-center justify-between shadow-sm">

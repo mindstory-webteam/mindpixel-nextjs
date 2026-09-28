@@ -195,4 +195,10 @@ html {
     background-color: #e07a1b !important;
     border-radius: 4px !important;
   }
+
+  /* Offscreen optimization to reduce initial DOM rendering and reflow work */
+  .offscreen-section {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 500px;
+  }
 }

@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import "./globals.css";
-import Script from "next/script";
 import FaviconBlinker from "@/components/FaviconBlinker";
+import { GoogleTagManager } from "@next/third-parties/google";
 import { Syne, Geist } from "next/font/google";
 
 const syne = Syne({
@@ -9,12 +9,14 @@ const syne = Syne({
   weight: ["400", "500", "600", "700", "800"],
   variable: "--font-syne",
   display: "swap",
+  preload: true,
 });
 
 const geist = Geist({
   subsets: ["latin"],
   variable: "--font-geist-sans",
   display: "swap",
+  preload: true,
 });
 
 export const metadata = {
@@ -181,65 +183,16 @@ export default function RootLayout({ children }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
         />
 
-        {/* Global ChunkLoadError Auto-Recovery Script */}
-        <Script
+        {/* Global ChunkLoadError Auto-Recovery Script (inline to prevent render-blocking request) */}
+        <script
           id="chunk-error-handler"
-          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
-            __html: `
-              window.addEventListener('error', function(e) {
-                var message = e.message || '';
-                var isChunkError = /Loading chunk/i.test(message) || /ChunkLoadError/i.test(e.name || '') || /CSS_CHUNK_LOAD_FAILED/i.test(message);
-                if (isChunkError) {
-                  console.warn('Chunk load failed. Force reloading page...');
-                  window.location.reload(true);
-                }
-              }, true);
-            `,
-          }}
-        />
-        {/* Google Tag Manager - interaction-aware deferred load to eliminate main thread blocking & unused JS */}
-        <Script
-          id="gtm-script"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){window.dataLayer.push(arguments);}
-              (function(){
-                var loaded = false;
-                var events = ['scroll', 'touchstart', 'pointermove', 'click', 'keydown'];
-                function loadGTM(){
-                  if (loaded) return;
-                  loaded = true;
-                  events.forEach(function(e){ window.removeEventListener(e, loadGTM, { passive: true }); });
-                  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-                  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-                  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-                  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-                  })(window,document,'script','dataLayer','GTM-NCJP8LHF');
-                }
-                events.forEach(function(e){ window.addEventListener(e, loadGTM, { once: true, passive: true }); });
-                if ('requestIdleCallback' in window) {
-                  requestIdleCallback(function(){ setTimeout(loadGTM, 3500); });
-                } else {
-                  setTimeout(loadGTM, 3500);
-                }
-              })();
-            `,
+            __html: `window.addEventListener('error',function(e){var m=e.message||'';if(/Loading chunk|ChunkLoadError|CSS_CHUNK_LOAD_FAILED/i.test(m||e.name||'')){window.location.reload(true);}},true);`,
           }}
         />
       </head>
       <body className="min-h-full flex flex-col">
-        {/* Google Tag Manager (noscript) */}
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-NCJP8LHF"
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          ></iframe>
-        </noscript>
+        <GoogleTagManager gtmId="GTM-NCJP8LHF" />
         <FaviconBlinker />
         {children}
       </body>

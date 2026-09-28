@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { motion } from "framer-motion";
+import Image from "next/image";
 import { useLenis } from "lenis/react";
 import { img } from "../assets/assest";
 
@@ -135,19 +135,15 @@ export default function EnquiryService() {
                   position: "relative",
                 }}
               >
-                <img
+                <Image
                   src={svc.image}
                   alt={svc.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover object-center group-hover:scale-105"
                   style={{
-                    width: "100%",
-                    height: "100%",
-                    objectFit: "cover",
-                    objectPosition: "center",
                     transition: "transform 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
-                    borderRadius: "0px",
                   }}
-                  className="group-hover:scale-105"
-                  loading="lazy"
                 />
               </div>
 

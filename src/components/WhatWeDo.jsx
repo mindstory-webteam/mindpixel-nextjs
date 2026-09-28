@@ -1,3 +1,4 @@
+import Image from "next/image";
 import AnimatedButton from "./AnimatedButton";
 
 const features = [
@@ -69,10 +70,13 @@ export default function WhatWeDo() {
 
 
         <div className="flex flex-col gap-4">
-          <div className="img-zoom" style={{ aspectRatio: "4/5" }}>
-            <img
+          <div className="relative img-zoom overflow-hidden" style={{ aspectRatio: "4/5" }}>
+            <Image
               src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80"
               alt="Scenic landscape"
+              fill
+              sizes="(max-width: 768px) 100vw, 33vw"
+              className="object-cover"
             />
           </div>
 
@@ -138,10 +142,13 @@ export default function WhatWeDo() {
           </div>
         </div>
 
-        <div className="img-zoom hidden md:block" style={{ marginTop: 170, maxHeight: 500 }}>
-          <img
+        <div className="relative img-zoom hidden md:block overflow-hidden" style={{ marginTop: 170, minHeight: 450, maxHeight: 500 }}>
+          <Image
             src="https://images.unsplash.com/photo-1555993539-1732b0258235?w=600&q=80"
             alt="Ancient columns"
+            fill
+            sizes="33vw"
+            className="object-cover"
           />
         </div>
 

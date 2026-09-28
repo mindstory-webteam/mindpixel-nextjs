@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { useParams } from '@/lib/react-router-dom-compat';
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -259,9 +260,12 @@ function HeroPanels({ panels }) {
   return (
     <div className="sticky top-0 h-svh w-full z-0">
       <main className="relative w-full h-full overflow-hidden bg-black font-syne">
-        <img
+        <Image
           src={panel.img}
-          className="absolute inset-0 w-full h-full object-cover"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
           alt=""
         />
         <div className="absolute inset-0 bg-linear-to-b from-black/20 via-transparent to-black/80" />
@@ -331,10 +335,12 @@ function StickySection({ sticky, liveUrl }) {
         </h2>
 
         {/* Image */}
-        <div className="w-full h-52 sm:h-64 mb-5 rounded-xl overflow-hidden">
-          <img
+        <div className="relative w-full h-52 sm:h-64 mb-5 rounded-xl overflow-hidden">
+          <Image
             src={sticky.img}
-            className="w-full h-full object-cover"
+            fill
+            sizes="(max-width: 640px) 100vw, 50vw"
+            className="object-cover"
             alt=""
           />
         </div>
@@ -410,9 +416,11 @@ function StickySection({ sticky, liveUrl }) {
               zIndex: 5,
             }}
           >
-            <img
+            <Image
               src={sticky.img}
-              className="w-full h-full object-cover"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover"
               style={{ borderRadius: `${br}px`, filter: "brightness(0.8)" }}
               alt=""
             />
@@ -487,11 +495,13 @@ function MoreDetails({ details }) {
 
           {/* Image */}
           {image && (
-            <div className="w-full overflow-hidden rounded-2xl shadow-sm">
-              <img
+            <div className="relative w-full h-52 sm:h-64 md:h-80 overflow-hidden rounded-2xl shadow-sm">
+              <Image
                 src={image}
                 alt="Project visual"
-                className="w-full h-52 sm:h-64 md:h-80 object-cover"
+                fill
+                sizes="(max-width: 768px) 100vw, 40vw"
+                className="object-cover"
               />
             </div>
           )}

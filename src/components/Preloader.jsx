@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import { gsap } from 'gsap';
 
 const Preloader = ({ isLoading, onComplete }) => {
@@ -78,9 +79,12 @@ const Preloader = ({ isLoading, onComplete }) => {
           alignItems: 'center',
         }}
       >
-        <img 
+        <Image 
           src={frames[frameIndex]} 
           alt="Loading..." 
+          width={75}
+          height={75}
+          priority
           style={{
             width: '100%',
             height: '100%',

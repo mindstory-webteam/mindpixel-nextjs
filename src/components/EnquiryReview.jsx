@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import fastdom from 'fastdom';
 
 const mockReviews = [
   {
@@ -62,8 +63,12 @@ function ReviewCard({ rev, index }) {
     const el = textRef.current;
     if (!el) return;
 
-    const isOverflowing = el.scrollHeight > el.clientHeight;
-    setShouldShowReadMore(isOverflowing);
+    fastdom.measure(() => {
+      const isOverflowing = el.scrollHeight > el.clientHeight;
+      fastdom.mutate(() => {
+        setShouldShowReadMore(isOverflowing);
+      });
+    });
   }, [rev.description]);
 
   const namePart = rev.name.split(',')[0].trim();

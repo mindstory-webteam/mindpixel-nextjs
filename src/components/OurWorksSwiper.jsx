@@ -1,4 +1,5 @@
 import React, { useRef, useState } from "react";
+import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useNavigate } from '@/lib/react-router-dom-compat';
 import "swiper/css";
@@ -22,10 +23,12 @@ function Card({ id, title, img }) {
 
   return (
     <div className="relative rounded-2xl overflow-hidden h-80 cursor-pointer group" onClick={handleClick}>
-      <img
+      <Image
         src={img}
         alt={title}
-        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        fill
+        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+        className="object-cover transition-transform duration-500 group-hover:scale-105"
       />
       <div className="absolute inset-0 bg-linear-to-t from-black/99 via-black/20 to-transparent" />
       <div className="absolute bottom-4 left-4 text-white">

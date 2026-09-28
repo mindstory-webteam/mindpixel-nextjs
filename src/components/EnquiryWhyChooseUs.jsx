@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import localMarketImg from '../assets/local_market.png';
 import communicationImg from '../assets/communication.png';
 import expertsImg from '../assets/experts_icon.png';
@@ -148,7 +149,7 @@ export default function EnquiryWhyChooseUs() {
         <div className="wcu-grid">
           {reasons.map((item, i) => (
             <div className="wcu-card" key={i}>
-              <img src={item.image} alt={item.title} className="wcu-icon-bg" />
+              <Image src={item.image} alt={item.title} width={180} height={180} className="wcu-icon-bg" />
               <h3 className="wcu-title">{item.title}</h3>
               <p className="wcu-desc">{item.desc}</p>
             </div>

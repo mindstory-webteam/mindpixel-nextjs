@@ -1,4 +1,5 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
+import Image from 'next/image'
 import { img } from '../assets/assest'
 import { IoIosArrowForward } from "react-icons/io"
 
@@ -31,6 +32,23 @@ const WhoWeAre = () => {
   const card2Ref = useRef(null)
   const card3Ref = useRef(null)
   const marqueeRef = useRef(null)
+  const [videoInView, setVideoInView] = useState(false)
+
+  useEffect(() => {
+    const el = sectionRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVideoInView(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '300px' }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -130,7 +148,7 @@ const WhoWeAre = () => {
           <div className="flex flex-col gap-4 xl:hidden">
             <div ref={card1Ref} className="relative overflow-hidden rounded-[20px] min-h-64 sm:min-h-72 flex flex-col justify-between p-7 md:p-8">
               <video autoPlay loop muted playsInline preload="none" className="absolute inset-0 w-full h-full object-cover z-0">
-                <source src={img.WhatWeDoVideo} type="video/webm" />
+                {videoInView && <source src={img.WhatWeDoVideo} type="video/webm" />}
               </video>
               <div className="absolute inset-0 bg-black/40 rounded-[20px] z-1" />
               <div className="relative z-10">
@@ -196,7 +214,7 @@ const WhoWeAre = () => {
           <div className="hidden xl:grid gap-4" style={{ gridTemplateColumns: '1.8fr 1fr 1fr' }}>
             <div className="card-hover relative overflow-hidden rounded-[20px] min-h-65 flex flex-col justify-between p-9">
               <video autoPlay loop muted playsInline preload="none" className="absolute inset-0 w-full h-full object-cover z-0">
-                <source src={img.WhatWeDoVideo} type="video/webm" />
+                {videoInView && <source src={img.WhatWeDoVideo} type="video/webm" />}
               </video>
               <div className="absolute inset-0 bg-black/40 rounded-[20px] z-1" />
               <div className="relative z-10">
@@ -266,12 +284,11 @@ const WhoWeAre = () => {
             <div className="marquee-track">
               {[...logos, ...logos].map((logo, i) => (
                 <div key={i} className="flex items-center h-30 bg-[#f9f9f9] rounded-2xl p-5 shrink-0">
-                  <img
+                  <Image
                     src={logo.image}
                     alt={logo.name}
                     width={110}
                     height={40}
-                    loading="lazy"
                     className="logo-img"
                   />
                 </div>

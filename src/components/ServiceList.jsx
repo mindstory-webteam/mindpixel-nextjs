@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import AnimatedButton from "./AnimatedButton";
@@ -96,7 +97,7 @@ function MobileServiceCard({ service }) {
   return (
     <div className="mob-card">
       <div className="mob-img">
-        <img src={service.image} alt={service.title} />
+        <Image src={service.image} alt={service.title} fill sizes="100vw" className="object-cover" />
         <div className="mob-img-overlay" />
         <div className="mob-img-caption">
           <p className="img-caption-eyebrow">Featured Service</p>
@@ -489,7 +490,7 @@ export default function ServicesSticky() {
           <div className="half hl p0-img">
             <div className="p-inner"><div className="p-card">
               <div className="img-base">
-                <img src={services[0].image} alt={services[0].title} />
+                <Image src={services[0].image} alt={services[0].title} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
               </div>
               <div className="img-caption">
                 <p className="img-caption-eyebrow">Featured Service</p>
@@ -511,11 +512,11 @@ export default function ServicesSticky() {
             <div className="p-inner"><div className="p-card">
               {/* Base image: SaaS */}
               <div className="img-base">
-                <img src={services[1].image} alt={services[1].title} />
+                <Image src={services[1].image} alt={services[1].title} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
               </div>
               {/* Clip image: Custom Software — animates in over base */}
               <div className="img-clip p1-clip">
-                <img src={services[2].image} alt={services[2].title} />
+                <Image src={services[2].image} alt={services[2].title} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
               </div>
               {/* Base caption: SaaS — fades out when clip reveals */}
               <div className="img-caption p1-base-caption">
@@ -547,11 +548,11 @@ export default function ServicesSticky() {
             <div className="p-inner"><div className="p-card">
               {/* Base image: Enterprise */}
               <div className="img-base">
-                <img src={services[3].image} alt={services[3].title} />
+                <Image src={services[3].image} alt={services[3].title} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
               </div>
               {/* Clip image: UI/UX — animates in over base */}
               <div className="img-clip p2-clip">
-                <img src={services[4].image} alt={services[4].title} />
+                <Image src={services[4].image} alt={services[4].title} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
               </div>
               {/* Base caption: Enterprise — fades out when clip reveals */}
               <div className="img-caption p2-base-caption">
@@ -582,7 +583,7 @@ export default function ServicesSticky() {
           <div className="half hr p3-img">
             <div className="p-inner"><div className="p-card">
               <div className="img-base">
-                <img src={services[5].image} alt={services[5].title} />
+                <Image src={services[5].image} alt={services[5].title} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
               </div>
               <div className="img-caption">
                 <p className="img-caption-eyebrow">Featured Service</p>

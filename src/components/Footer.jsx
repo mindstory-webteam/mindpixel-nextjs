@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 import { NavLink, useLocation } from '@/lib/react-router-dom-compat';
 import { img } from "../assets/assest";
 import { useLenis } from 'lenis/react';
@@ -107,7 +108,7 @@ export default function Footer() {
       {/* DESKTOP FOOTER */}
       <div className="hidden lg:block" style={{ padding: "0 50px" }}>
         <footer
-          className="relative font-syne"
+          className="relative font-syne offscreen-section"
           style={{
             borderRadius: "44px 44px 0 0",
             background: "#e6e7e8",
@@ -118,7 +119,7 @@ export default function Footer() {
 
               <div>
                 <div className="flex items-center gap-3 mb-5">
-                  <img src={img.myndpixel} alt="Mynd Pixel Logo" className="h-8 w-auto object-contain" />
+                  <Image src={img.myndpixel} alt="Mynd Pixel Logo" width={160} height={32} className="h-8 w-auto object-contain" />
                 </div>
                 <p className="font-mono-dm text-[0.78rem] leading-relaxed max-w-62.5 mb-7" style={{ fontWeight: 400 }}>
                   We craft digital experiences at the intersection of bold ideas and pixel-perfect execution.
@@ -162,25 +163,25 @@ export default function Footer() {
 
                   <div className="brand-img-item items-center flex rounded-2xl">
                     <a href="https://mindstory.in/" target="_blank" rel="noreferrer">
-                      <img src={img.mindstory} alt="MindStory" style={{ width: "120px", height: "40px" }} />
+                      <Image src={img.mindstory} alt="MindStory" width={120} height={40} style={{ width: "120px", height: "40px" }} />
                     </a>
                   </div>
 
                   <div className="brand-img-item items-center flex rounded-2xl">
                     <a href="https://seorankbird.com/" target="_blank" rel="noreferrer">
-                      <img src={img.rankbird} alt="Rankbird" style={{ width: "85px", height: "30px" }} />
+                      <Image src={img.rankbird} alt="Rankbird" width={85} height={30} style={{ width: "85px", height: "30px" }} />
                     </a>
                   </div>
 
                   <div className="brand-img-item items-center flex rounded-2xl">
                     <a href="https://viralcatmeow.com/" target="_blank" rel="noreferrer">
-                      <img src={img.vc} alt="VC" style={{ width: "75px", height: "35px", paddingRight: "10px" }} />
+                      <Image src={img.vc} alt="VC" width={75} height={35} style={{ width: "75px", height: "35px", paddingRight: "10px" }} />
                     </a>
                   </div>
 
                   <div className="brand-img-item items-center flex rounded-2xl">
                     <a href="https://21fiftyone.com/" target="_blank" rel="noreferrer">
-                      <img src={img.twentyonefiftyone} alt="twentyonefiftyone" style={{ width: "60px", height: "35px", paddingLeft: "4px" }} />
+                      <Image src={img.twentyonefiftyone} alt="twentyonefiftyone" width={60} height={35} style={{ width: "60px", height: "35px", paddingLeft: "4px" }} />
                     </a>
                   </div>
 
@@ -205,13 +206,13 @@ export default function Footer() {
 
       {/* MOBILE & TABLET FOOTER (iPad Mini, iPad Air, iPad Pro & Mobile) */}
       <div className="lg:hidden">
-        <div className="mobile-footer-scroll font-syne" style={{ background: "#e6e7e8", borderRadius: "0", padding: "32px 24px 20px" }}>
-          
+        <div className="mobile-footer-scroll font-syne offscreen-section" style={{ background: "#e6e7e8", borderRadius: "0", padding: "32px 24px 20px" }}>
+
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-8 border-b border-black/[0.07] mb-8">
             {/* BRAND HEADER & SOCIALS */}
             <div className="md:col-span-1">
               <div className="flex items-center gap-3 mb-4">
-                <img src={img.myndpixel} alt="Mynd Pixel Logo" className="h-10 w-auto object-contain" />
+                <Image src={img.myndpixel} alt="Mynd Pixel Logo" width={160} height={40} className="h-10 w-auto object-contain" />
               </div>
               <p className="font-mono-dm text-[0.78rem] leading-relaxed text-black/60 mb-5" style={{ fontWeight: 400 }}>
                 We craft digital experiences at the intersection of bold ideas and pixel-perfect execution.
@@ -259,22 +260,22 @@ export default function Footer() {
               <div className="grid grid-cols-2 gap-3">
                 <div className="brand-img-item">
                   <a href="https://mindstory.in/" target="_blank" rel="noreferrer">
-                    <img src={img.mindstory} alt="MindStory" style={{ width: "100px", height: "30px" }} />
+                    <Image src={img.mindstory} alt="MindStory" width={100} height={30} style={{ width: "100px", height: "30px" }} />
                   </a>
                 </div>
                 <div className="brand-img-item">
                   <a href="https://seorankbird.com/" target="_blank" rel="noreferrer">
-                    <img src={img.rankbird} alt="Rankbird" style={{ width: "85px", height: "28px" }} />
+                    <Image src={img.rankbird} alt="Rankbird" width={85} height={28} style={{ width: "85px", height: "28px" }} />
                   </a>
                 </div>
                 <div className="brand-img-item">
                   <a href="https://viralcatmeow.com/" target="_blank" rel="noreferrer">
-                    <img src={img.vc} alt="VC" style={{ width: "60px", height: "40px" }} />
+                    <Image src={img.vc} alt="VC" width={60} height={40} style={{ width: "60px", height: "40px" }} />
                   </a>
                 </div>
                 <div className="brand-img-item">
                   <a href="https://21fiftyone.com/" target="_blank" rel="noreferrer">
-                    <img src={img.twentyonefiftyone} alt="twentyonefiftyone" style={{ paddingRight: "20px", width: "110px", height: "25px" }} />
+                    <Image src={img.twentyonefiftyone} alt="twentyonefiftyone" width={110} height={25} style={{ paddingRight: "20px", width: "110px", height: "25px" }} />
                   </a>
                 </div>
               </div>

@@ -1,5 +1,6 @@
 "use client";
 import React from 'react';
+import Image from 'next/image';
 import { img } from '../assets/assest';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
@@ -103,11 +104,12 @@ export default function EnquiryLogos() {
             return (
               <SwiperSlide key={i} style={{ width: "auto" }}>
                 <div className="enquiry-logo-card">
-                  <img
+                  <Image
                     src={imgSrc}
                     alt={logo.name}
+                    width={110}
+                    height={40}
                     className="enquiry-logo-img"
-                    loading="lazy"
                   />
                 </div>
               </SwiperSlide>

@@ -126,7 +126,7 @@ export default function FaqSection() {
   };
 
   return (
-    <div className="w-full h-auto bg-white pt-5">
+    <div className="w-full h-auto bg-white pt-5 offscreen-section">
       <section className="faq-section-wrapper">
         <style>{`
           .faq-section-wrapper {

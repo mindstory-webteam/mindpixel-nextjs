@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 import { Link } from '@/lib/react-router-dom-compat';
 import { img } from '../assets/assest';
 
@@ -61,9 +62,11 @@ const Breadcrumb = ({
         /> */}
 
         <foreignObject x="60" y="40" width="40" height="40">
-          <img
+          <Image
             src={img.favicon}
-            alt=""
+            alt="Favicon"
+            width={40}
+            height={40}
             style={{ width: '100%', height: '100%', objectFit: 'contain' }}
           />
         </foreignObject>
