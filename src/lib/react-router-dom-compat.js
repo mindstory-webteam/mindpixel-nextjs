@@ -1,7 +1,7 @@
 "use client";
 import React, { forwardRef } from 'react';
 import NextLink from 'next/link';
-import { useRouter, usePathname, useParams as useNextParams, useSearchParams } from 'next/navigation';
+import { useRouter, usePathname, useParams as useNextParams } from 'next/navigation';
 import { usePageTransition } from '@/components/TransitionProvider';
 
 // Mock Link with page transition integration
@@ -155,11 +155,10 @@ export function useParams() {
 // Mock useLocation
 export function useLocation() {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
   return {
     pathname: pathname || '',
-    search: searchParams ? `?${searchParams.toString()}` : '',
-    hash: '',
+    search: typeof window !== 'undefined' ? window.location.search : '',
+    hash: typeof window !== 'undefined' ? window.location.hash : '',
     state: null,
   };
 }

@@ -6,16 +6,15 @@ import { Syne, Geist } from "next/font/google";
 
 const syne = Syne({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
   variable: "--font-syne",
-  display: "swap",
+  display: "optional",
   preload: true,
 });
 
 const geist = Geist({
   subsets: ["latin"],
   variable: "--font-geist-sans",
-  display: "swap",
+  display: "optional",
   preload: true,
 });
 

@@ -110,6 +110,7 @@ export default function EnquiryLogos() {
                     width={110}
                     height={40}
                     className="enquiry-logo-img"
+                    style={{ width: "auto", height: "auto" }}
                   />
                 </div>
               </SwiperSlide>

@@ -290,6 +290,7 @@ const WhoWeAre = () => {
                     width={110}
                     height={40}
                     className="logo-img"
+                    style={{ width: "auto", height: "auto" }}
                   />
                 </div>
               ))}
