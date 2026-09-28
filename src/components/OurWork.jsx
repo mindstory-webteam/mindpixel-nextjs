@@ -17,7 +17,7 @@ const cards = [
     desc: 'Built a user-friendly platform for seamless ordering and improved customer retention.',
     ink: "#94267c",
     icons: [
-      "https://cdn.simpleicons.org/shopify/7AB55C"
+      "/icons/shopify-blue.svg"
     ]
   },
   {
@@ -29,8 +29,8 @@ const cards = [
     desc: 'Designed a fast and intuitive website enhancing product visibility and brand presence.',
     ink: "#94267c",
     icons: [
-      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
-      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg"
+      "/icons/html5.svg",
+      "/icons/css3.svg"
     ]
   },
   {
@@ -42,7 +42,7 @@ const cards = [
     desc: 'Developed a responsive shopping experience focused on product discovery and smooth checkout.',
     ink: "#94267c",
     icons: [
-      "https://cdn.simpleicons.org/shopify/7AB55C"
+      "/icons/shopify-blue.svg"
     ]
   },
   {
@@ -54,8 +54,8 @@ const cards = [
     desc: 'Built a secure platform for managing foreign exchange and global transactions.',
     ink: "#94267c",
     icons: [
-      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
-      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg"
+      "/icons/html5.svg",
+      "/icons/css3.svg"
     ]
   },
   {
@@ -67,8 +67,8 @@ const cards = [
     desc: 'Designed an engaging website showcasing menu, ambience, and dining experience.',
     ink: "#94267c",
     icons: [
-      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
-      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg"
+      "/icons/html5.svg",
+      "/icons/css3.svg"
     ]
   },
   {
@@ -80,7 +80,7 @@ const cards = [
     desc: 'Built a structured platform delivering academic guidance and global education support.',
     ink: "#94267c",
     icons: [
-      "https://cdn.simpleicons.org/react/61DAFB"
+      "/icons/react-si.svg"
     ]
   },
   {
@@ -92,7 +92,7 @@ const cards = [
     desc: 'Developed a digital platform presenting lending and financial service solutions.',
     ink: "#94267c",
     icons: [
-      "https://cdn.simpleicons.org/drupal/0678BE"
+      "/icons/drupal-si.svg"
     ]
 
   },
@@ -105,8 +105,8 @@ const cards = [
     desc: 'Designed a dynamic website to showcase vehicles and streamline customer inquiries.',
     ink: "#94267c",
     icons: [
-      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
-      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg"
+      "/icons/html5.svg",
+      "/icons/css3.svg"
     ]
   },
   {
@@ -118,7 +118,7 @@ const cards = [
     desc: 'Built an engaging platform highlighting ambience, offerings, and guest experience.',
     ink: "#94267c",
     icons: [
-      "https://cdn.simpleicons.org/wordpress/21759B"
+      "/icons/wordpress-si.svg"
     ]
   },
   {
@@ -130,8 +130,8 @@ const cards = [
     desc: 'Designed a modern website showcasing services and performance-driven marketing solutions.',
     ink: "#94267c",
     icons: [
-      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
-      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg"
+      "/icons/html5.svg",
+      "/icons/css3.svg"
     ]
   }
 ];

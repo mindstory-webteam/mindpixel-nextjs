@@ -19,7 +19,7 @@ const categories = [
     inkA: "#94267c",
     inkB: "#f7f7f7",
     icons: [
-      "https://cdn.simpleicons.org/shopify/7AB55C"
+      "/icons/shopify-blue.svg"
     ]
   },
   {
@@ -30,8 +30,8 @@ const categories = [
     inkA: "#94267c",
     inkB: "#f7f7f7",
     icons: [
-      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
-      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg"
+      "/icons/html5.svg",
+      "/icons/css3.svg"
     ]
   },
   {
@@ -42,7 +42,7 @@ const categories = [
     inkA: "#94267c",
     inkB: "#f7f7f7",
     icons: [
-      "https://cdn.simpleicons.org/shopify/7AB55C"
+      "/icons/shopify-blue.svg"
     ]
   },
   {
@@ -53,7 +53,7 @@ const categories = [
     inkA: "#94267c",
     inkB: "#f7f7f7",
     icons: [
-      "https://cdn.simpleicons.org/drupal/0678BE"
+      "/icons/drupal-si.svg"
     ]
   },
   {
@@ -64,8 +64,8 @@ const categories = [
     inkA: "#94267c",
     inkB: "#f7f7f7",
     icons: [
-      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
-      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg"
+      "/icons/html5.svg",
+      "/icons/css3.svg"
     ]
   },
   {
@@ -76,8 +76,8 @@ const categories = [
     inkA: "#94267c",
     inkB: "#f7f7f7",
     icons: [
-      "https://cdn.simpleicons.org/react/61DAFB",
-      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg"
+      "/icons/react-si.svg",
+      "/icons/nextjs.svg"
     ]
   },
   {
@@ -88,8 +88,8 @@ const categories = [
     inkA: "#94267c",
     inkB: "#f7f7f7",
     icons: [
-      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
-      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg"
+      "/icons/html5.svg",
+      "/icons/css3.svg"
     ]
   },
   {
@@ -100,8 +100,8 @@ const categories = [
     inkA: "#94267c",
     inkB: "#f7f7f7",
     icons: [
-      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
-      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg"
+      "/icons/html5.svg",
+      "/icons/css3.svg"
     ]
   },
   {
@@ -112,7 +112,7 @@ const categories = [
     inkA: "#94267c",
     inkB: "#f7f7f7",
     icons: [
-      "https://cdn.simpleicons.org/wordpress/21759B"
+      "/icons/wordpress-si.svg"
     ]
   },
   {
@@ -123,8 +123,8 @@ const categories = [
     inkA: "#94267c",
     inkB: "#f7f7f7",
     icons: [
-      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg",
-      "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg"
+      "/icons/html5.svg",
+      "/icons/css3.svg"
     ]
   }
 ];
