@@ -7,8 +7,9 @@ import { Syne, Geist } from "next/font/google";
 const syne = Syne({
   subsets: ["latin"],
   variable: "--font-syne",
-  display: "optional",
+  display: "swap",
   preload: true,
+  adjustFontFallback: false, // We provide our own metric-matched fallback in globals.css
 });
 
 const geist = Geist({

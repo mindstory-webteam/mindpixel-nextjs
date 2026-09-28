@@ -98,7 +98,7 @@ export default function Hero2() {
     };
   }, []);
 
-  const syne = { fontFamily: "var(--font-syne), 'Syne', sans-serif" };
+  const syne = { fontFamily: "var(--font-syne), 'Syne', 'Syne Fallback', sans-serif" };
 
   return (
     <div ref={containerRef} style={{ position: "relative", backgroundColor: "#000" }}>

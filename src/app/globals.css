@@ -1,3 +1,14 @@
+/* Metric-matched Syne fallback: prevents font-swap layout shift which would trigger
+   a new LCP paint candidate. ascent/descent/size-adjust tuned to match Syne metrics. */
+@font-face {
+  font-family: "Syne Fallback";
+  src: local("Arial");
+  ascent-override: 93.6%;
+  descent-override: 22.5%;
+  line-gap-override: 0%;
+  size-adjust: 107.1%;
+}
+
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "../../node_modules/shadcn/dist/tailwind.css";
@@ -124,7 +135,7 @@ html {
 
 @layer base {
   .syne, .font-syne {
-    font-family: var(--font-syne), 'Syne', sans-serif;
+    font-family: var(--font-syne), 'Syne', "Syne Fallback", sans-serif;
   }
 
   .maplibregl-popup-content {
