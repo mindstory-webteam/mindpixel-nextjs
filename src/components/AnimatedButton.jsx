@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { Link } from '@/lib/react-router-dom-compat';
 import { gsap } from 'gsap';
 
@@ -24,7 +24,7 @@ const AnimatedButton = ({
   const tlRef      = useRef(null);
   const activeTween = useRef(null);
 
-  const layout = () => {
+  const layout = useCallback(() => {
     const pill   = pillRef.current;
     const circle = circleRef.current;
     if (!pill || !circle) return;
@@ -65,28 +65,24 @@ const AnimatedButton = ({
     }
 
     tlRef.current = tl;
-  };
+  }, [ease]);
 
   useEffect(() => {
-    layout();
-    const pill = pillRef.current;
-    let ro;
-    if (pill) {
-      ro = new ResizeObserver(() => {
-        layout();
-      });
-      ro.observe(pill);
-    }
-    window.addEventListener('resize', layout);
-    document.fonts?.ready?.then(layout).catch(() => {});
+    const animFrame = requestAnimationFrame(() => {
+      layout();
+    });
+    window.addEventListener('resize', layout, { passive: true });
     return () => {
+      cancelAnimationFrame(animFrame);
       window.removeEventListener('resize', layout);
-      if (ro) ro.disconnect();
     };
-  }, [ease, children]);
+  }, [layout, children]);
 
   const handleEnter = () => {
     if (disabled) return;
+    if (!tlRef.current) {
+      layout();
+    }
     const tl = tlRef.current;
     if (!tl) return;
     activeTween.current?.kill();

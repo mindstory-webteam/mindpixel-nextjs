@@ -235,6 +235,16 @@ const DesktopSlider = () => {
     const wrapper = wrapperRef.current
     if (!wrapper) return
     const slides = [...wrapper.children]
+    let slideWidth = slides[0]?.offsetWidth || (window.innerWidth * 0.24)
+    let slideOffsets = slides.map((s) => s.offsetLeft)
+    let wrapperWidth = wrapper.offsetWidth || window.innerWidth
+
+    const measureLayout = () => {
+      slideWidth = slides[0]?.offsetWidth || (window.innerWidth * 0.24)
+      slideOffsets = slides.map((s) => s.offsetLeft)
+      wrapperWidth = wrapper.offsetWidth || window.innerWidth
+    }
+    window.addEventListener('resize', measureLayout, { passive: true })
 
     const preventSelect = (e) => e.preventDefault()
     wrapper.addEventListener('selectstart', preventSelect)
@@ -253,30 +263,21 @@ const DesktopSlider = () => {
       },
       onUpdate: (instance) => {
         const vwOffset = window.innerWidth * 0.08
-        slides.forEach((slide, i) => {
-          const slideWidth = slide.offsetWidth
-          const slideLeft = slide.offsetLeft + instance.current
-          const bgColor = slidesData[i].color || '#fafafa'
+        for (let i = 0; i < slides.length; i++) {
+          const slide = slides[i]
+          const slideLeft = (slideOffsets[i] ?? 0) + instance.current
           const isLast = i === slidesData.length - 1
 
           if (slideLeft < 0 && !isLast) {
             const ratio = Math.min(1, Math.abs(slideLeft) / slideWidth)
-            slide.style.cssText = `
-              background-color: ${bgColor};
-              transform-origin: left 80%;
-              transform: translateX(${instance.current + Math.abs(slideLeft) + ratio * vwOffset}px) rotate(${-15 * ratio}deg) scale(${1 - ratio * 0.3});
-              position: relative;
-              z-index: ${i + 1};
-            `
+            slide.style.transformOrigin = 'left 80%'
+            slide.style.transform = `translateX(${instance.current + Math.abs(slideLeft) + ratio * vwOffset}px) rotate(${-15 * ratio}deg) scale(${1 - ratio * 0.3})`
+            slide.style.zIndex = `${i + 1}`
           } else {
-            slide.style.cssText = `
-              background-color: ${bgColor};
-              box-shadow: 0 6px 24px rgba(0,0,0,0.06);
-              transform: translateX(${instance.current}px);
-              z-index: ${i + 1};
-            `
+            slide.style.transform = `translateX(${instance.current}px)`
+            slide.style.zIndex = `${i + 1}`
           }
-        })
+        }
       },
     })
 
@@ -291,9 +292,8 @@ const DesktopSlider = () => {
     const MOMENTUM_DECAY = 0.96
 
     function isLastVisible() {
-      const triggerSlide = slides[slidesData.length - 1]
-      if (!triggerSlide) return false
-      return triggerSlide.offsetLeft + slider.target <= wrapper.offsetWidth - 100
+      const lastOffset = slideOffsets[slidesData.length - 1] ?? 0
+      return lastOffset + slider.target <= wrapperWidth - 100
     }
 
     function animate() {
@@ -340,6 +340,7 @@ const DesktopSlider = () => {
       cancelAnimationFrame(animId)
       if (resumeTimer) clearTimeout(resumeTimer)
       wrapper.removeEventListener('selectstart', preventSelect)
+      window.removeEventListener('resize', measureLayout)
       slider.destroy()
     }
   }, [])

@@ -13,28 +13,19 @@ export default function SmoothScroll({ children }) {
 
   // Sync GSAP ticker with Lenis raf and handle dynamic height resizing
   useEffect(() => {
+    const lenis = lenisRef.current?.lenis;
+
+    // Connect Lenis scroll events to GSAP ScrollTrigger (only updates when scrolling occurs)
+    if (lenis) {
+      lenis.on('scroll', ScrollTrigger.update);
+    }
+
     const update = (time) => {
-      const lenis = lenisRef.current?.lenis;
-      if (lenis) {
-        lenis.raf(time * 1000);
-        ScrollTrigger.update(); // keep GSAP in sync with Lenis's virtual scroll position
+      const l = lenisRef.current?.lenis;
+      if (l) {
+        l.raf(time * 1000);
       }
     };
-
-    // Tell GSAP's ScrollTrigger to use Lenis's scroll position
-    ScrollTrigger.scrollerProxy(document.documentElement, {
-      scrollTop(value) {
-        const lenis = lenisRef.current?.lenis;
-        if (arguments.length && lenis) {
-          lenis.scrollTo(value, { immediate: true });
-        }
-        return lenis ? lenis.scroll : window.scrollY;
-      },
-      getBoundingClientRect() {
-        return { top: 0, left: 0, width: window.innerWidth, height: window.innerHeight };
-      },
-      pinType: document.documentElement.style.transform ? 'transform' : 'fixed',
-    });
 
     gsap.ticker.add(update);
     gsap.ticker.lagSmoothing(0);
@@ -45,18 +36,26 @@ export default function SmoothScroll({ children }) {
     };
     ScrollTrigger.addEventListener("refresh", handleRefresh);
 
-    // Dynamically update Lenis scroller limits whenever DOM changes (Sanity load, image load, accordion expand)
+    // Debounced ResizeObserver to prevent continuous layout recalculations during DOM updates
+    let resizeTimer = null;
     const resizeObserver = new ResizeObserver(() => {
-      lenisRef.current?.lenis?.resize();
+      if (resizeTimer) clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        lenisRef.current?.lenis?.resize();
+      }, 200);
     });
+
     if (document.body) {
       resizeObserver.observe(document.body);
     }
 
     return () => {
+      if (lenis) {
+        lenis.off('scroll', ScrollTrigger.update);
+      }
       gsap.ticker.remove(update);
       ScrollTrigger.removeEventListener("refresh", handleRefresh);
-      ScrollTrigger.clearScrollMemory(); // remove the scrollerProxy on unmount
+      if (resizeTimer) clearTimeout(resizeTimer);
       resizeObserver.disconnect();
     };
   }, []);
