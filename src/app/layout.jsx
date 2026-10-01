@@ -38,22 +38,22 @@ export const metadata = {
 const localBusinessSchema = {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "name": "https://mpxcode.com/",
-  "image": "https://mpxcode.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fmyndpixel.843680e1.png&w=256&q=75",
+  "name": "Mind Pixel",
+  "image": "https://mpxcode.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fmyndpixel.843680e1.png&w=384&q=75",
   "@id": "",
   "url": "https://mpxcode.com/",
-  "telephone": "8281610051",
+  "telephone": "+918281610051",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "HiLITE Business Park",
-    "addressLocality": "Kozhikode",
-    "postalCode": "673014",
+    "streetAddress": "opp. MTHS, near Gossayikkunnu, West Hill Residence, Kuriachira",
+    "addressLocality": "Thrissur",
+    "postalCode": "680006",
     "addressCountry": "IN"
   },
   "geo": {
     "@type": "GeoCoordinates",
-    "latitude": 11.2477892,
-    "longitude": 75.8340558
+    "latitude": 10.5088795,
+    "longitude": 76.2189254
   },
   "openingHoursSpecification": {
     "@type": "OpeningHoursSpecification",
