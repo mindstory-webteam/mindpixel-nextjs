@@ -7,7 +7,7 @@ import SharedLeadForm from './SharedLeadForm';
 const ContactMap = dynamic(() => import('./ContactMap'), {
   ssr: false,
   loading: () => (
-    <div style={{ width: '100%', height: '100%', minHeight: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f5f5f5', borderRadius: '16px' }}>
+    <div style={{ width: '100%', height: '100%', minHeight: '260px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f5f5f5', borderRadius: '16px' }}>
       <p style={{ color: '#888', fontSize: '14px', fontFamily: 'sans-serif' }}>Loading map...</p>
     </div>
   ),
@@ -345,6 +345,70 @@ const ContactSection = () => {
           .locations-grid { grid-template-columns: 1fr; }
           .contact-methods-grid { grid-template-columns: 1fr; }
           .map-wrap { height: 360px; min-height: 360px; }
+        }
+
+        /* ══ SM SCREEN: FORM & MAP RESPONSIVENESS ONLY ══ */
+        @media (max-width: 640px) {
+          .map-header {
+            margin-bottom: 20px;
+          }
+          .map-header h2 {
+            font-size: 1.5rem;
+            line-height: 1.25;
+            margin-bottom: 6px;
+          }
+          .map-header p {
+            font-size: 13.5px;
+            line-height: 1.5;
+          }
+          .map-section-grid {
+            gap: 20px;
+          }
+          .wa-form-card {
+            padding: 24px 18px;
+            border-radius: 18px;
+          }
+          .wa-form-title {
+            font-size: 1.25rem;
+          }
+          .wa-form-sub {
+            font-size: 13px;
+            margin-bottom: 18px;
+            line-height: 1.45;
+          }
+          .map-wrap {
+            height: 300px;
+            min-height: 300px;
+            border-radius: 18px;
+          }
+          .maplibregl-popup {
+            max-width: 90vw !important;
+          }
+        }
+
+        @media (max-width: 380px) {
+          .wa-form-card {
+            padding: 20px 14px;
+          }
+          .map-wrap {
+            height: 270px;
+            min-height: 270px;
+            border-radius: 16px;
+          }
+          #shared-recap-widget > div {
+            transform: scale(0.86);
+            transform-origin: 0 0;
+          }
+        }
+
+        @media (max-width: 340px) {
+          .wa-form-card {
+            padding: 18px 10px;
+          }
+          #shared-recap-widget > div {
+            transform: scale(0.76);
+            transform-origin: 0 0;
+          }
         }
       `}</style>
 
