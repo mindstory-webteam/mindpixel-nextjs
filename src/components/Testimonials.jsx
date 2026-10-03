@@ -94,7 +94,7 @@ function ReviewCardContent({ slide }) {
 const SlideCard = ({ slide, index }) => (
   <div
     className="shrink-0 w-[82vw] sm:w-[50vw] md:w-[42vw] lg:w-[32vw] max-w-105 rounded-[24px] flex flex-col justify-between p-6 sm:p-7 snap-center relative overflow-hidden"
-    style={{ backgroundColor: slide.color || '#fafafa', border: '1px solid rgba(0,0,0,0.06)', boxShadow: '0 6px 24px rgba(0,0,0,0.05)' }}
+    style={{ backgroundColor: slide.color || '#fafafa', border: '1px solid rgba(0,0,0,0.06)' }}
   >
     <ReviewCardContent slide={slide} />
   </div>
@@ -205,7 +205,7 @@ const MobileSwiper = () => {
       </div>
 
       {/* Dots */}
-      <div className="flex gap-1 mt-1 items-center">
+      <div className="hidden sm:flex gap-1 mt-1 items-center">
         {slidesData.map((_, i) => (
           <button
             key={i}
@@ -364,7 +364,7 @@ const DesktopSlider = () => {
             <div
               key={index}
               className={`shrink-0 w-[24vw] h-[28vw] rounded-[24px] flex flex-col justify-between p-[1.8vw] relative overflow-hidden border border-black/5 ${index < slidesData.length - 1 ? 'mr-[1.5vw]' : ''}`}
-              style={{ backgroundColor: slide.color || '#fafafa', boxShadow: '0 6px 24px rgba(0,0,0,0.06)' }}
+              style={{ backgroundColor: slide.color || '#fafafa' }}
             >
               <ReviewCardContent slide={slide} />
             </div>
