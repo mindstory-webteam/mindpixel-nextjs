@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import { IoIosArrowForward } from "react-icons/io";
 import emailjs from "@emailjs/browser";
 import { img } from "../assets/assest";
 import TurnstileWidget from "./TurnstileWidget";
 
+// Saved for future use:
+/*
 const jobs = [
   {
     title: "Frontend Developer",
@@ -43,19 +44,23 @@ const jobs = [
     description: "Looking for a passionate UI/UX Designer to create intuitive and visually engaging digital experiences for websites and applications.",
   },
 ];
+*/
+
+const jobs = [];
 
 export default function CareerSection() {
   const [applyForm, setApplyForm] = useState({
-    name: "", email: "", mobile: "", position: "", message: "",
+    name: "",
+    email: "",
+    mobile: "",
+    position: "",
+    message: "",
   });
   const [applyStatus, setApplyStatus] = useState("idle");
-  const [expandedJob, setExpandedJob] = useState(null);
   const [turnstileToken, setTurnstileToken] = useState(null);
 
   const inputBase =
     "w-full border border-gray-200 rounded px-3 py-2 text-xs outline-none focus:border-orange-500 bg-white placeholder-gray-400 disabled:opacity-50 disabled:cursor-not-allowed";
-
-  const toggleJob = (i) => setExpandedJob((prev) => (prev === i ? null : i));
 
   const handleApplySubmit = (e) => {
     e.preventDefault();
@@ -73,7 +78,7 @@ export default function CareerSection() {
           from_name: applyForm.name,
           from_email: applyForm.email,
           mobile: applyForm.mobile,
-          position: applyForm.position,
+          position: applyForm.position || "General Application",
           message: applyForm.message || "No additional message provided.",
           time: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
           "g-recaptcha-response": turnstileToken,
@@ -94,75 +99,35 @@ export default function CareerSection() {
 
   return (
     <div style={{ fontFamily: "var(--font-syne, 'Syne'), sans-serif" }} className="bg-white text-gray-900">
-      <style>{`
-        .job-desc { display:grid; grid-template-rows:0fr; transition:grid-template-rows 0.32s ease; }
-        .job-desc.open { grid-template-rows:1fr; }
-        .job-desc-inner { overflow:hidden; }
-        .arrow-btn { transition:transform 0.3s ease, background 0.2s ease, border-color 0.2s ease; }
-        .arrow-btn.rotated { transform:rotate(90deg); }
-      `}</style>
-
-      {/*  JOBS LIST SECTION  */}
+      {/* JOBS LIST SECTION */}
       <section className="px-8 md:px-14 pt-25 pb-16">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-8">
           <div>
-            <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-1">HIRING POSITIONS AVAILABLE</p>
+            <p className="text-[10px] text-gray-400 uppercase tracking-widest mb-1">CAREERS AT OUR COMPANY</p>
             <h1 className="text-2xl lg:text-3xl md:text-4xl font-normal leading-tight">
               Begin Your Career Here
             </h1>
           </div>
           <p className="text-[14px] text-gray-500 max-w-xs leading-relaxed md:text-right">
-            Come and join our team in the full-time positions. Help us grow and make a real difference with your experience.
+            We are always looking for passionate talent. Feel free to leave your profile and we will get back to you when a spot opens up.
           </p>
         </div>
 
         <div className="flex flex-col md:flex-row gap-8">
-
-          {/* Job list */}
+          {/* Job list / No Openings State */}
           <div className="flex-1">
-            {jobs.map((job, i) => {
-              const isOpen = expandedJob === i;
-              return (
-                <div key={i} className="border-b border-gray-100">
-                  <div
-                    className="flex items-center justify-between py-4 group cursor-pointer"
-                    onClick={() => toggleJob(i)}
-                  >
-                    <div className="w-1/3">
-                      <p className={`text-sm font-semibold transition-colors ${isOpen ? "text-orange-600" : "group-hover:text-orange-600"}`}>
-                        {job.title}
-                      </p>
-                    </div>
-
-                    <div className="w-1/3 flex justify-center">
-                      <span className="text-orange-600  text-[13px]  font-normal">
-                        {job.location}
-                        <span className="font-medium">{job.type}</span>
-                      </span>
-                    </div>
-
-                    <div className="w-1/3 flex justify-end">
-                      <div className={`arrow-btn w-7 h-7 rounded-full border flex items-center justify-center transition-all
-      ${isOpen
-                          ? "bg-orange-600 border-orange-600 text-white rotated"
-                          : "border-gray-200 text-gray-500 group-hover:bg-orange-600 group-hover:border-orange-600 group-hover:text-white"
-                        }`}>
-                        <IoIosArrowForward size={11} />
-                      </div>
-                    </div>
-                  </div>
-                  <div className={`job-desc ${isOpen ? "open" : ""}`}>
-                    <div className="job-desc-inner">
-                      <div className="pb-4 pl-1 pr-10">
-                        <p className="text-[11.5px] text-gray-500 leading-relaxed pl-3">
-                          {job.description}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+            {jobs.length > 0 ? (
+              jobs.map((job, i) => null)
+            ) : (
+              <div className="border border-dashed border-gray-200 rounded-2xl p-10 text-center flex flex-col items-center justify-center bg-gray-50/50 min-h-75">
+                <h3 className="text-base font-medium text-gray-900 mb-2">
+                  No Open Positions Right Now
+                </h3>
+                <p className="text-xs text-gray-400 max-w-sm leading-relaxed">
+                  We do not currently have any active job openings, but we are always open to connecting with great talent. Send us your details below!
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Sidebar */}
@@ -230,10 +195,9 @@ export default function CareerSection() {
         </div>
       </section>
 
-      {/* ── APPLY FORM SECTION ── */}
+      {/* APPLY FORM SECTION */}
       <section id="apply-form" className="mx-4 sm:mx-8 md:mx-14 mb-16 rounded-2xl overflow-hidden border border-gray-100 shadow-sm">
         <div className="flex flex-col md:flex-row">
-
           <div className="w-full md:w-72 shrink-0 min-h-64 relative">
             <Image
               src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=600&q=80"
@@ -246,15 +210,15 @@ export default function CareerSection() {
 
           <div className="flex-1 p-5 sm:p-8">
             <h2 className="text-xl md:text-2xl font-normal leading-snug mb-2">
-              Our Team Will Respond To You Within 24 Hrs
+              Send Us Your Details
             </h2>
             <p className="text-[13px] text-gray-400 mb-6">
-              Fill out the form below and attach your resume link if applicable.
+              Even if there are no open roles, send us your resume. We review incoming profiles for upcoming projects.
             </p>
 
             {applyStatus === "success" && (
               <div className="mb-5 px-4 py-3 rounded-lg bg-green-50 border border-green-200 text-green-700 text-xs font-medium">
-                Application submitted successfully! We&apos;ll get back to you within 24 hours.
+                Application submitted successfully! We&apos;ll get back to you if your profile matches a future opening.
               </div>
             )}
             {applyStatus === "error" && (
@@ -270,7 +234,7 @@ export default function CareerSection() {
                   placeholder="Your Name *"
                   required
                   value={applyForm.name}
-                  onChange={e => setApplyForm(f => ({ ...f, name: e.target.value }))}
+                  onChange={(e) => setApplyForm((f) => ({ ...f, name: e.target.value }))}
                   disabled={applyStatus === "submitting"}
                 />
                 <input
@@ -279,7 +243,7 @@ export default function CareerSection() {
                   placeholder="Your Email *"
                   required
                   value={applyForm.email}
-                  onChange={e => setApplyForm(f => ({ ...f, email: e.target.value }))}
+                  onChange={(e) => setApplyForm((f) => ({ ...f, email: e.target.value }))}
                   disabled={applyStatus === "submitting"}
                 />
                 <input
@@ -287,21 +251,17 @@ export default function CareerSection() {
                   placeholder="Mobile Number *"
                   required
                   value={applyForm.mobile}
-                  onChange={e => setApplyForm(f => ({ ...f, mobile: e.target.value }))}
+                  onChange={(e) => setApplyForm((f) => ({ ...f, mobile: e.target.value }))}
                   disabled={applyStatus === "submitting"}
                 />
-                <select
-                  className={`${inputBase} text-gray-400`}
+                <input
+                  className={inputBase}
+                  placeholder="Desired Role / Position *"
                   required
                   value={applyForm.position}
-                  onChange={e => setApplyForm(f => ({ ...f, position: e.target.value }))}
+                  onChange={(e) => setApplyForm((f) => ({ ...f, position: e.target.value }))}
                   disabled={applyStatus === "submitting"}
-                >
-                  <option value="">Select Job Position *</option>
-                  {jobs.map((j, i) => (
-                    <option key={i} value={j.title}>{j.title}</option>
-                  ))}
-                </select>
+                />
               </div>
 
               <textarea
@@ -309,7 +269,7 @@ export default function CareerSection() {
                 rows={3}
                 placeholder="Additional message (include your Google Drive resume link here if applicable)"
                 value={applyForm.message}
-                onChange={e => setApplyForm(f => ({ ...f, message: e.target.value }))}
+                onChange={(e) => setApplyForm((f) => ({ ...f, message: e.target.value }))}
                 disabled={applyStatus === "submitting"}
               />
 
@@ -328,14 +288,13 @@ export default function CareerSection() {
                   disabled={applyStatus === "submitting" || !turnstileToken}
                   className="bg-orange-600 text-white text-xs font-semibold px-6 py-3 rounded hover:bg-orange-700 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto shrink-0"
                 >
-                  {applyStatus === "submitting" ? "Sending…" : "Submit Application"}
+                  {applyStatus === "submitting" ? "Sending…" : "Submit Profile"}
                 </button>
               </div>
             </form>
           </div>
         </div>
       </section>
-
     </div>
   );
 }
