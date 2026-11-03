@@ -81,23 +81,11 @@ export default function TechStack() {
   const startTimeRef = useRef(null);
   const mobilTabsRef = useRef(null);
 
-  const active = categories[activeIdx].id;
-  const techs = techData[active] || [];
-
   const goTo = (idx) => {
     setActiveIdx(idx);
     setProgress(0);
     startTimeRef.current = performance.now();
   };
-
-  // useEffect(() => {
-  //   if (mobilTabsRef.current) {
-  //     const activeBtn = mobilTabsRef.current.querySelector("[data-active='true']");
-  //     if (activeBtn) {
-  //       activeBtn.scrollIntoView({ inline: "center", behavior: "smooth", block: "nearest" });
-  //     }
-  //   }
-  // }, [activeIdx]);
 
   useEffect(() => {
     if (paused) {
@@ -125,10 +113,24 @@ export default function TechStack() {
     return () => cancelAnimationFrame(progressRef.current);
   }, [paused, activeIdx]);
 
+  // Structured Data for AI & Search Engine Crawlers
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Technologies We Use for Custom Software Development",
+    "itemListElement": categories.map((cat, idx) => ({
+      "@type": "ListItem",
+      "position": idx + 1,
+      "name": cat.label,
+      "description": (techData[cat.id] || []).map((t) => t.name).join(", "),
+    })),
+  };
+
   const TabButton = ({ cat, idx }) => {
     const isActive = activeIdx === idx;
     return (
       <button
+        type="button"
         data-active={isActive}
         onClick={() => goTo(idx)}
         className="relative overflow-hidden transition-all duration-200"
@@ -166,6 +168,12 @@ export default function TechStack() {
 
   return (
     <>
+      {/* Search Engine & AI Structured Data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
+
       <style>{`
         .mobile-tabs-scroll::-webkit-scrollbar { display: none; }
         .mobile-tabs-scroll { -ms-overflow-style: none; scrollbar-width: none; }
@@ -174,6 +182,18 @@ export default function TechStack() {
           padding: 50px;
           background: transparent;
           font-family: 'Syne', sans-serif;
+        }
+
+        .sr-only {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          padding: 0;
+          margin: -1px;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          white-space: nowrap;
+          border-width: 0;
         }
 
         @media (max-width: 640px) {
@@ -192,6 +212,20 @@ export default function TechStack() {
             padding: "clamp(32px,6vw,80px) clamp(16px,5vw,72px)",
           }}
         >
+          {/* Crawlers & Screen Readers Semantic Content */}
+          <div className="sr-only">
+            {categories.map((cat) => (
+              <div key={`crawler-${cat.id}`}>
+                <h3>{cat.label}</h3>
+                <ul>
+                  {(techData[cat.id] || []).map((t) => (
+                    <li key={`crawler-item-${t.name}`}>{t.name}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
           <h2
             className="text-center leading-tight mb-10 relative z-10 max-w-4xl px-4 text-xl sm:text-2xl md:text-[35px]"
             style={{
@@ -203,6 +237,7 @@ export default function TechStack() {
             Technologies We Use for Custom Software Development
           </h2>
 
+          {/* Mobile Tabs */}
           <div
             ref={mobilTabsRef}
             className="mobile-tabs-scroll sm:hidden w-full flex gap-2 overflow-x-auto pb-1 mb-5 relative z-10"
@@ -212,6 +247,7 @@ export default function TechStack() {
             ))}
           </div>
 
+          {/* Desktop Layout */}
           <div
             className="relative z-10 w-full max-w-6xl hidden sm:flex flex-col md:flex-row gap-12 md:gap-16 items-start"
             onMouseEnter={() => setPaused(true)}
@@ -225,21 +261,39 @@ export default function TechStack() {
               </div>
             </div>
 
-            <div className="flex-1 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4">
-              {techs.map((tech) => (
-                <TechCard key={tech.name} tech={tech} />
+            {/* Desktop Grids for all categories */}
+            <div className="flex-1 w-full">
+              {categories.map((cat, idx) => (
+                <div
+                  key={`desktop-${cat.id}`}
+                  className={`grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-4 ${
+                    activeIdx === idx ? "grid" : "hidden"
+                  }`}
+                >
+                  {(techData[cat.id] || []).map((tech) => (
+                    <TechCard key={tech.name} tech={tech} />
+                  ))}
+                </div>
               ))}
             </div>
           </div>
 
+          {/* Mobile Grids for all categories */}
           <div
-            className="sm:hidden w-full grid gap-3 relative z-10"
-            style={{ gridTemplateColumns: "repeat(3, 1fr)" }}
+            className="sm:hidden w-full relative z-10"
             onTouchStart={() => setPaused(true)}
             onTouchEnd={() => setPaused(false)}
           >
-            {techs.map((tech) => (
-              <TechCard key={tech.name} tech={tech} isMobile />
+            {categories.map((cat, idx) => (
+              <div
+                key={`mobile-${cat.id}`}
+                className={`gap-3 ${activeIdx === idx ? "grid" : "hidden"}`}
+                style={{ gridTemplateColumns: "repeat(3, 1fr)" }}
+              >
+                {(techData[cat.id] || []).map((tech) => (
+                  <TechCard key={tech.name} tech={tech} isMobile />
+                ))}
+              </div>
             ))}
           </div>
         </section>
