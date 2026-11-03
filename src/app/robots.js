@@ -7,7 +7,7 @@ export default function robots() {
   return {
     rules: {
       userAgent: '*',
-      allow: '/',
+      allow: ['/', '/service', '/portfolio'],
       disallow: ['/api/'],
     },
     sitemap: siteOrigin + 'sitemap.xml',
