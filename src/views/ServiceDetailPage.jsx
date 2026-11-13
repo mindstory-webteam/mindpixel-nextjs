@@ -192,10 +192,10 @@ export default function ServiceDetailPage({ serviceSlug }) {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="max-w-3xl mb-10 sm:mb-14 md:mb-16">
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-normal tracking-tight">
-                  What we build & solve for you.
+                  {service.capabilitiesHeading || "What we build & solve for you."}
                 </h2>
                 <p className="text-xs sm:text-sm md:text-base text-neutral-400 mt-3 sm:mt-4 leading-relaxed">
-                  Every feature is engineered to perform reliably, scale effortlessly, and align with your target user needs.
+                  {service.capabilitiesDesc || "Every feature is engineered to perform reliably, scale effortlessly, and align with your target user needs."}
                 </p>
               </div>
 
@@ -223,7 +223,7 @@ export default function ServiceDetailPage({ serviceSlug }) {
               {/* Tangible Deliverables Row */}
               <div className="mt-10 sm:mt-14 p-6 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl bg-gradient-to-r from-neutral-900 via-neutral-900 to-neutral-800 border border-white/10">
                 <h3 className="text-base sm:text-lg md:text-xl font-normal text-white mb-3 sm:mb-4">
-                  What You Receive (Tangible Deliverables)
+                  {service.deliverablesHeading || "What You Receive (Tangible Deliverables)"}
                 </h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
                   {service.deliverables.map((del, i) => (
@@ -243,11 +243,11 @@ export default function ServiceDetailPage({ serviceSlug }) {
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-12">
                 <div>
                   <h2 className="text-xl sm:text-2xl md:text-3xl font-normal tracking-tight text-neutral-900">
-                    Tools & stacks tailored for {service.title}
+                    {service.technologiesHeading || `Tools & stacks tailored for ${service.title}`}
                   </h2>
                 </div>
                 <p className="text-xs sm:text-sm text-neutral-600 max-w-md">
-                  We use verified, production-grade tools that minimize technical debt and maximize velocity.
+                  {service.technologiesDesc || "We use verified, production-grade tools that minimize technical debt and maximize velocity."}
                 </p>
               </div>
 
@@ -283,10 +283,10 @@ export default function ServiceDetailPage({ serviceSlug }) {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="max-w-2xl mb-10 sm:mb-14 md:mb-16">
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-normal tracking-tight text-neutral-900">
-                  How we execute {service.title}
+                  {service.processHeading || `How we execute ${service.title}`}
                 </h2>
                 <p className="text-xs sm:text-sm md:text-base text-neutral-600 mt-2.5 sm:mt-3">
-                  A disciplined, transparent delivery framework designed for predictability and speed.
+                  {service.processDesc || "A disciplined, transparent delivery framework designed for predictability and speed."}
                 </p>
               </div>
 
@@ -318,10 +318,10 @@ export default function ServiceDetailPage({ serviceSlug }) {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="max-w-2xl mb-10 sm:mb-14 md:mb-16">
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-normal tracking-tight text-neutral-900">
-                  Our Commitment
+                  {service.commitmentsHeading || "Our Commitment"}
                 </h2>
                 <p className="text-xs sm:text-sm md:text-base text-neutral-600 mt-2.5 sm:mt-3 leading-relaxed">
-                  We build partnerships rooted in craft, accountability, and measurable business outcomes. Here is what we promise on every project.
+                  {service.commitmentsDesc || "We build partnerships rooted in craft, accountability, and measurable business outcomes. Here is what we promise on every project."}
                 </p>
               </div>
 

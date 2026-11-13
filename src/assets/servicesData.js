@@ -25,6 +25,9 @@ export const SERVICES_DATA = [
       "Biometric Authentication & Hardware Integration",
       "Automated CI/CD App Store & Play Store Deployment",
     ],
+    capabilitiesHeading: "Mobile Capabilities & Engineering",
+    capabilitiesDesc:
+      "From tactile mobile gestures to complex hardware background services, we build apps that feel responsive, look refined, and retain users.",
     features: [
       {
         title: "Native & Hybrid Mastery",
@@ -43,13 +46,17 @@ export const SERVICES_DATA = [
         desc: "Full guidance through Apple App Store and Google Play compliance, metadata tuning, App Store Optimization, and release management.",
       },
     ],
+    deliverablesHeading: "What You Receive (Tangible Deliverables)",
     deliverables: [
-      "Production-ready iOS and Android binaries",
+      "Production-ready iOS and Android binaries (IPA & AAB)",
       "Full source code and architecture documentation",
       "Automated testing suite (Unit, E2E, UI tests)",
       "App Store & Google Play approved listings",
-      "Analytics and crash reporting dashboards",
+      "Real-time analytics and crash reporting telemetry",
     ],
+    technologiesHeading: "Tools & Stacks Tailored for Mobile",
+    technologiesDesc:
+      "Battle-tested mobile frameworks, testing harnesses, and native SDKs that guarantee store approval and smooth runtimes.",
     technologies: [
       { name: "React Native", icon: "/icons/react.svg", category: "Framework" },
       { name: "Next JS / Node", icon: "/icons/nodejs.svg", category: "Backend" },
@@ -58,6 +65,9 @@ export const SERVICES_DATA = [
       { name: "PostgreSQL", icon: "/icons/postgresql.svg", category: "Database" },
       { name: "Docker", icon: "/icons/docker.svg", category: "DevOps" },
     ],
+    processHeading: "How We Build Your Mobile App",
+    processDesc:
+      "A disciplined, transparent delivery framework designed for rapid TestFlight releases and App Store compliance.",
     process: [
       {
         step: "01",
@@ -85,21 +95,24 @@ export const SERVICES_DATA = [
         desc: "Submitting to App Store and Play Store, resolving review feedback, and monitoring live telemetry.",
       },
     ],
+    commitmentsHeading: "Our Mobile Engineering Commitment",
+    commitmentsDesc:
+      "We build mobile applications built to withstand millions of sessions without degradation or store friction.",
     commitments: [
       {
         num: "01",
         title: "Store Approval Guarantee",
-        desc: "We guide your application through Apple App Store and Google Play review cycles until it is officially published and live.",
+        desc: "We work alongside your team through Apple App Store and Google Play review cycles until your app is officially approved and live.",
       },
       {
         num: "02",
         title: "60 FPS Fluid Performance",
-        desc: "Native-level responsiveness, smooth gesture interactions, and zero dropped frames across iOS and Android devices.",
+        desc: "Native-level responsiveness, smooth 60fps gesture interactions, and zero dropped frames across iOS and Android devices.",
       },
       {
         num: "03",
         title: "100% Code & Asset Ownership",
-        desc: "Full intellectual property ownership of your mobile codebase, assets, and build pipelines with zero lock-in.",
+        desc: "Full intellectual property ownership of your mobile codebase, repositories, assets, and build pipelines with zero lock-in.",
       },
       {
         num: "04",
@@ -150,6 +163,9 @@ export const SERVICES_DATA = [
       "Stripe / LemonSqueezy Tiered Billing & Usage Metering",
       "Role-Based Access Control (RBAC) & Audit Logs",
     ],
+    capabilitiesHeading: "Cloud-Native SaaS Engineering",
+    capabilitiesDesc:
+      "Robust multitenancy, high concurrency event pipelines, and frictionless monetization built for subscription velocity.",
     features: [
       {
         title: "Multi-Tenant Cloud Architecture",
@@ -168,6 +184,7 @@ export const SERVICES_DATA = [
         desc: "Provide your users with public REST/GraphQL APIs, developer documentation, and outbound webhook delivery systems.",
       },
     ],
+    deliverablesHeading: "What You Receive (Tangible Deliverables)",
     deliverables: [
       "Complete SaaS web application with authentication & tenant spaces",
       "Admin superuser dashboard for user management & MRR analytics",
@@ -175,6 +192,9 @@ export const SERVICES_DATA = [
       "Infrastructure as Code (Terraform / Docker) scripts",
       "Public API documentation and webhooks",
     ],
+    technologiesHeading: "Tools & Stacks Tailored for SaaS",
+    technologiesDesc:
+      "High-throughput databases, caching clusters, and modern frontend frameworks built for fast cloud deployment.",
     technologies: [
       { name: "Next JS", icon: "/icons/nextjs.svg", category: "Frontend" },
       { name: "Node JS", icon: "/icons/nodejs.svg", category: "Backend" },
@@ -183,6 +203,9 @@ export const SERVICES_DATA = [
       { name: "Docker", icon: "/icons/docker.svg", category: "Containers" },
       { name: "Azure / AWS", icon: "/icons/azure.svg", category: "Cloud" },
     ],
+    processHeading: "How We Engineer Your SaaS Platform",
+    processDesc:
+      "A structured architectural sprint model that validates multi-tenancy early and ensures rapid customer time-to-value.",
     process: [
       {
         step: "01",
@@ -210,26 +233,29 @@ export const SERVICES_DATA = [
         desc: "Setting up CI/CD, auto-scaling clusters, automated backups, and 24/7 uptime monitoring.",
       },
     ],
+    commitmentsHeading: "Our SaaS Delivery Commitment",
+    commitmentsDesc:
+      "Architected for 99.99% uptime, strict tenant data isolation, and smooth recurring revenue operations.",
     commitments: [
       {
         num: "01",
-        title: "Store Approval Guarantee",
-        desc: "We guide your application through Apple App Store and Google Play review cycles until it is officially published and live.",
+        title: "99.99% Uptime Architecture",
+        desc: "Cloud-native infrastructure configured with auto-scaling, disaster recovery, and automated regional failover.",
       },
       {
         num: "02",
-        title: "60 FPS Fluid Performance",
-        desc: "Native-level responsiveness, smooth gesture interactions, and zero dropped frames across iOS and Android devices.",
+        title: "Strict Multi-Tenant Isolation",
+        desc: "Guaranteed tenant data isolation using verified row-level policies to safeguard customer data integrity.",
       },
       {
         num: "03",
-        title: "100% Code & Asset Ownership",
-        desc: "Full intellectual property ownership of your mobile codebase, assets, and build pipelines with zero lock-in.",
+        title: "Production Billing Reliability",
+        desc: "PCI-compliant subscription pipelines with webhook retries, automated prorations, and zero lost invoice states.",
       },
       {
         num: "04",
-        title: "Post-Launch Crash Monitoring",
-        desc: "Proactive telemetry and instant crash triage during the critical initial user onboarding and launch window.",
+        title: "Extensible API Foundation",
+        desc: "Modular REST/GraphQL interfaces ready for third-party integrations, developer documentation, and ecosystems.",
       },
     ],
     faqs: [
@@ -271,6 +297,9 @@ export const SERVICES_DATA = [
       "Tailored Role-Based Portals & Dashboards",
       "High Security & Proprietary IP Ownership",
     ],
+    capabilitiesHeading: "Custom Software Engineering",
+    capabilitiesDesc:
+      "Bespoke business logic, tailored departmental portals, and custom API connectors engineered without templates.",
     features: [
       {
         title: "Bespoke Workflow Engines",
@@ -289,6 +318,7 @@ export const SERVICES_DATA = [
         desc: "End-to-end encryption, strict role-based access controls, complete audit trails, and automated backups.",
       },
     ],
+    deliverablesHeading: "What You Receive (Tangible Deliverables)",
     deliverables: [
       "Custom application tailored to exact business requirements",
       "Clean, modular codebase with comprehensive documentation",
@@ -296,6 +326,9 @@ export const SERVICES_DATA = [
       "User guides and administrative training walkthroughs",
       "Post-launch SLA and maintenance package",
     ],
+    technologiesHeading: "Tools & Stacks Tailored for Custom Engineering",
+    technologiesDesc:
+      "Versatile languages and performant backend engines chosen to integrate cleanly with your existing technical environment.",
     technologies: [
       { name: "React JS", icon: "/icons/react.svg", category: "Frontend" },
       { name: "Node JS", icon: "/icons/nodejs.svg", category: "Backend" },
@@ -304,6 +337,9 @@ export const SERVICES_DATA = [
       { name: "PostgreSQL", icon: "/icons/postgresql.svg", category: "Database" },
       { name: "Nginx", icon: "/icons/nginx.svg", category: "Infrastructure" },
     ],
+    processHeading: "How We Deliver Custom Software",
+    processDesc:
+      "Deep operational discovery combined with iterative phased releases to avoid business disruption.",
     process: [
       {
         step: "01",
@@ -331,26 +367,29 @@ export const SERVICES_DATA = [
         desc: "Hands-on team onboarding, system cutover, and dedicated hypercare support.",
       },
     ],
+    commitmentsHeading: "Our Custom Software Commitment",
+    commitmentsDesc:
+      "Engineered specifically for your exact operations with zero per-user fees and full proprietary IP ownership.",
     commitments: [
       {
         num: "01",
-        title: "Store Approval Guarantee",
-        desc: "We guide your application through Apple App Store and Google Play review cycles until it is officially published and live.",
+        title: "Exact Operational Alignment",
+        desc: "Engineered around your exact business logic with zero unnecessary templates or forced out-of-the-box workflows.",
       },
       {
         num: "02",
-        title: "60 FPS Fluid Performance",
-        desc: "Native-level responsiveness, smooth gesture interactions, and zero dropped frames across iOS and Android devices.",
+        title: "Seamless Legacy Integration",
+        desc: "Clean interoperability with your existing ERPs, databases, accounting packages, and CRM setups.",
       },
       {
         num: "03",
-        title: "100% Code & Asset Ownership",
-        desc: "Full intellectual property ownership of your mobile codebase, assets, and build pipelines with zero lock-in.",
+        title: "Zero Recurring Seat Fees",
+        desc: "You own the custom platform outright without paying ongoing per-user or seat-based licensing fees.",
       },
       {
         num: "04",
-        title: "Post-Launch Crash Monitoring",
-        desc: "Proactive telemetry and instant crash triage during the critical initial user onboarding and launch window.",
+        title: "Scalable Modular Codebase",
+        desc: "Built to expand smoothly as your team, transaction volume, and operational demands grow over time.",
       },
     ],
     faqs: [
@@ -392,6 +431,9 @@ export const SERVICES_DATA = [
       "Executive Dashboards & Predictive Analytics",
       "Enterprise Disaster Recovery & Multi-Region Failover",
     ],
+    capabilitiesHeading: "Enterprise Architecture & Scale",
+    capabilitiesDesc:
+      "Security hardening, single sign-on federation, and high-concurrency transactional pipelines designed for large teams.",
     features: [
       {
         title: "Enterprise Security & SSO",
@@ -410,6 +452,7 @@ export const SERVICES_DATA = [
         desc: "Containerized Kubernetes clusters, distributed database replicas, and redundant cloud architectures that prevent downtime.",
       },
     ],
+    deliverablesHeading: "What You Receive (Tangible Deliverables)",
     deliverables: [
       "Enterprise software application with SSO/SAML integration",
       "Centralized administrative control panel with audit logging",
@@ -417,6 +460,9 @@ export const SERVICES_DATA = [
       "Security audit compliance documentation",
       "Enterprise SLA and 24/7 incident response agreement",
     ],
+    technologiesHeading: "Tools & Stacks Tailored for Enterprise Systems",
+    technologiesDesc:
+      "Hardened backend frameworks, distributed caching, and container orchestration designed for high reliability.",
     technologies: [
       { name: "Next JS", icon: "/icons/nextjs.svg", category: "Frontend" },
       { name: "Node JS", icon: "/icons/nodejs.svg", category: "Backend" },
@@ -425,6 +471,9 @@ export const SERVICES_DATA = [
       { name: "Redis", icon: "/icons/redis.svg", category: "Cache" },
       { name: "Docker / Azure", icon: "/icons/docker.svg", category: "Infrastructure" },
     ],
+    processHeading: "How We Deliver Enterprise Solutions",
+    processDesc:
+      "Compliance-first discovery, architectural threat modeling, and staged non-disruptive migration cutovers.",
     process: [
       {
         step: "01",
@@ -452,26 +501,29 @@ export const SERVICES_DATA = [
         desc: "Coordinating multi-tier deployment, single sign-on cutover, and round-the-clock engineer support.",
       },
     ],
+    commitmentsHeading: "Our Enterprise Engineering Commitment",
+    commitmentsDesc:
+      "Enterprise-grade reliability, strict security governance, and guaranteed SLA response windows.",
     commitments: [
       {
         num: "01",
-        title: "Store Approval Guarantee",
-        desc: "We guide your application through Apple App Store and Google Play review cycles until it is officially published and live.",
+        title: "SOC 2 & SSO Compliance",
+        desc: "Enterprise authentication with SAML 2.0 / OIDC Single Sign-On, granular role-based access, and immutable audit logs.",
       },
       {
         num: "02",
-        title: "60 FPS Fluid Performance",
-        desc: "Native-level responsiveness, smooth gesture interactions, and zero dropped frames across iOS and Android devices.",
+        title: "Sub-Second Query Latency",
+        desc: "Optimized database indexing, replica pooling, and caching layers engineered for heavy concurrent transactions.",
       },
       {
         num: "03",
-        title: "100% Code & Asset Ownership",
-        desc: "Full intellectual property ownership of your mobile codebase, assets, and build pipelines with zero lock-in.",
+        title: "Data Integrity & Disaster Recovery",
+        desc: "Automated continuous backups, point-in-time recovery, and multi-region failover protocols ensuring zero data loss.",
       },
       {
         num: "04",
-        title: "Post-Launch Crash Monitoring",
-        desc: "Proactive telemetry and instant crash triage during the critical initial user onboarding and launch window.",
+        title: "SLA-Backed 24/7 Response",
+        desc: "Guaranteed incident response windows with senior engineers standing by for mission-critical operations.",
       },
     ],
     faqs: [
@@ -513,6 +565,9 @@ export const SERVICES_DATA = [
       "Scalable Figma Design Systems & Token Architecture",
       "Usability Testing & Micro-Interaction Animations",
     ],
+    capabilitiesHeading: "User Experience & Design Craft",
+    capabilitiesDesc:
+      "Translating complex product requirements into clear visual hierarchies, intuitive flows, and reusable design systems.",
     features: [
       {
         title: "Deep User Research & Journey Mapping",
@@ -531,6 +586,7 @@ export const SERVICES_DATA = [
         desc: "Thoughtful contrast ratios, legible typography, and focus states that ensure your digital products are usable by everyone.",
       },
     ],
+    deliverablesHeading: "What You Receive (Tangible Deliverables)",
     deliverables: [
       "Complete Figma project file with organized pages and layers",
       "Clickable interactive prototype ready for usability tests",
@@ -538,6 +594,9 @@ export const SERVICES_DATA = [
       "Developer handoff documentation with spacing & animation specs",
       "Responsive artboards for mobile, tablet, and desktop views",
     ],
+    technologiesHeading: "Tools & Stacks Tailored for UI/UX",
+    technologiesDesc:
+      "Modern industry-standard design tools, token generators, and prototyping software for fluid cross-functional handoff.",
     technologies: [
       { name: "Figma", icon: "/icons/figma.svg", category: "Design Tool" },
       { name: "Photoshop", icon: "/icons/photoshop.svg", category: "Graphics" },
@@ -545,6 +604,9 @@ export const SERVICES_DATA = [
       { name: "Html / Css", icon: "/icons/html5.svg", category: "Prototyping" },
       { name: "Next JS", icon: "/icons/nextjs.svg", category: "Handoff" },
     ],
+    processHeading: "How We Craft Your UI/UX",
+    processDesc:
+      "A user-centered discovery and prototyping sprint cycle validated with real user task completions.",
     process: [
       {
         step: "01",
@@ -572,26 +634,29 @@ export const SERVICES_DATA = [
         desc: "Annotating exact measurements, states, responsive rules, and exporting assets for the engineering team.",
       },
     ],
+    commitmentsHeading: "Our UI/UX Design Commitment",
+    commitmentsDesc:
+      "Designs that balance human emotion, conversion science, and flawless developer handoff.",
     commitments: [
       {
         num: "01",
-        title: "Store Approval Guarantee",
-        desc: "We guide your application through Apple App Store and Google Play review cycles until it is officially published and live.",
+        title: "Pixel-Perfect Developer Handoff",
+        desc: "Production-ready Figma files with auto-layout, design tokens, and exact developer annotations for 1:1 engineering implementation.",
       },
       {
         num: "02",
-        title: "60 FPS Fluid Performance",
-        desc: "Native-level responsiveness, smooth gesture interactions, and zero dropped frames across iOS and Android devices.",
+        title: "WCAG AA Accessibility",
+        desc: "Tested contrast ratios, accessible touch targets, and legible typography across devices for universal usability.",
       },
       {
         num: "03",
-        title: "100% Code & Asset Ownership",
-        desc: "Full intellectual property ownership of your mobile codebase, assets, and build pipelines with zero lock-in.",
+        title: "Usability-Validated Flows",
+        desc: "Interactive prototypes tested with real users before costly engineering and development investments begin.",
       },
       {
         num: "04",
-        title: "Post-Launch Crash Monitoring",
-        desc: "Proactive telemetry and instant crash triage during the critical initial user onboarding and launch window.",
+        title: "Scalable Design Systems",
+        desc: "Reusable component libraries, tokens, and variants that keep your visual brand consistent and fast to update.",
       },
     ],
     faqs: [
@@ -633,6 +698,9 @@ export const SERVICES_DATA = [
       "Structured Schema Data (JSON-LD) Implementation",
       "Transparent Monthly Ranking & Revenue Attribution Reports",
     ],
+    capabilitiesHeading: "Search Engine & Growth Strategy",
+    capabilitiesDesc:
+      "Core Web Vitals remediation, crawl budget optimization, and commercial intent content clustering that compounds traffic.",
     features: [
       {
         title: "Technical SEO & Speed Optimization",
@@ -651,6 +719,7 @@ export const SERVICES_DATA = [
         desc: "Dominate local map packs or national search results with optimized Google Business profiles, citation consistency, and reviews.",
       },
     ],
+    deliverablesHeading: "What You Receive (Tangible Deliverables)",
     deliverables: [
       "Comprehensive 360-degree technical SEO audit report",
       "Targeted keyword matrix mapped by search volume & buyer intent",
@@ -658,12 +727,18 @@ export const SERVICES_DATA = [
       "Structured data (Schema.org) code snippets for rich search snippets",
       "Monthly KPI performance, keyword ranking, and traffic dashboards",
     ],
+    technologiesHeading: "Tools & Stacks Tailored for SEO",
+    technologiesDesc:
+      "Server-side rendering frameworks, structured markup validators, and search console analytics for ranking dominance.",
     technologies: [
       { name: "Next JS (SSR)", icon: "/icons/nextjs.svg", category: "SEO Framework" },
       { name: "Html 5", icon: "/icons/html5.svg", category: "Semantic Markup" },
       { name: "Analytics", icon: "/icons/clerk.svg", category: "Telemetry" },
       { name: "PostgreSQL", icon: "/icons/postgresql.svg", category: "Data Storage" },
     ],
+    processHeading: "How We Execute Your SEO Strategy",
+    processDesc:
+      "From technical site foundation to high-intent keyword expansion and continuous search console iteration.",
     process: [
       {
         step: "01",
@@ -691,26 +766,29 @@ export const SERVICES_DATA = [
         desc: "Monitoring Google Search Console metrics, keyword movements, and A/B testing calls-to-action to convert traffic into leads.",
       },
     ],
+    commitmentsHeading: "Our Organic Search Commitment",
+    commitmentsDesc:
+      "Transparent reporting, strictly ethical optimization, and sustainable top-tier rankings that compound revenue.",
     commitments: [
       {
         num: "01",
-        title: "Store Approval Guarantee",
-        desc: "We guide your application through Apple App Store and Google Play review cycles until it is officially published and live.",
+        title: "100% White-Hat Practices",
+        desc: "Strict adherence to Google Search Essentials and ethical, algorithm-safe ranking practices with zero black-hat risks.",
       },
       {
         num: "02",
-        title: "60 FPS Fluid Performance",
-        desc: "Native-level responsiveness, smooth gesture interactions, and zero dropped frames across iOS and Android devices.",
+        title: "Commercial Intent Targeting",
+        desc: "Targeting high-converting buyer searches rather than inflated vanity traffic metrics that fail to generate revenue.",
       },
       {
         num: "03",
-        title: "100% Code & Asset Ownership",
-        desc: "Full intellectual property ownership of your mobile codebase, assets, and build pipelines with zero lock-in.",
+        title: "Core Web Vitals Benchmarks",
+        desc: "Technical speed tuning targeting sub-1.2s Largest Contentful Paint (LCP) and 90+ mobile PageSpeed scores.",
       },
       {
         num: "04",
-        title: "Post-Launch Crash Monitoring",
-        desc: "Proactive telemetry and instant crash triage during the critical initial user onboarding and launch window.",
+        title: "Transparent Bi-Weekly Reports",
+        desc: "Actionable Search Console dashboards tracking impression share, keyword rankings, crawl health, and conversions.",
       },
     ],
     faqs: [
@@ -738,4 +816,3 @@ export function getServiceBySlug(slug) {
 export function getAllServices() {
   return SERVICES_DATA;
 }
-
