@@ -408,7 +408,7 @@ export default function ServicesSticky() {
         }
         .svc-title {
           font-family: 'Syne', sans-serif;
-          font-size: clamp(1.5rem, 2.3vw, 2.2rem);
+          font-size: clamp(1.9rem, 3.2vw, 3rem);
           color: var(--ink);
           line-height: 1.06;
           margin-bottom: 1.2rem;
