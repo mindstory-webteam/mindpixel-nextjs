@@ -12,6 +12,7 @@ const SIDE_GAP = 60;
 const services = [
   {
     id: "01",
+    slug: "mobile-app-development",
     title: "Mobile App Development",
     subtitle: "Native & Cross-Platform",
     description:
@@ -21,6 +22,7 @@ const services = [
   },
   {
     id: "02",
+    slug: "saas-application",
     title: "SaaS Application",
     subtitle: "Cloud-Native Platforms",
     description:
@@ -30,6 +32,7 @@ const services = [
   },
   {
     id: "03",
+    slug: "custom-software",
     title: "Custom Software",
     subtitle: "Bespoke & Tailored",
     description:
@@ -39,6 +42,7 @@ const services = [
   },
   {
     id: "04",
+    slug: "enterprise-software",
     title: "Enterprise Software",
     subtitle: "Complex Workflows Simplified",
     description:
@@ -48,6 +52,7 @@ const services = [
   },
   {
     id: "05",
+    slug: "ui-ux-design",
     title: "UI / UX Design",
     subtitle: "Human-Centred Craft",
     description:
@@ -57,6 +62,7 @@ const services = [
   },
   {
     id: "06",
+    slug: "seo",
     title: "SEO",
     subtitle: "Organic Growth Engine",
     description:
@@ -77,16 +83,26 @@ function ServiceCard({ service }) {
         <p className="svc-desc">{service.description}</p>
         <p className="svc-detail">{service.detail}</p>
       </div>
-      <div className="svc-bottom">
+      <div className="svc-bottom" style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
         <AnimatedButton
-          href="/contact"
+          href={`/service/${service.slug}`}
           bgColor="#1a1a1a"
           textColor="#f5f0e8"
           hoverBgColor="#ffb86a"
           hoverTextColor="#1a1a1a"
           style={{ textTransform: "uppercase" }}
         >
-          Know More
+          View Details
+        </AnimatedButton>
+        <AnimatedButton
+          href="/contact"
+          bgColor="transparent"
+          textColor="#1a1a1a"
+          hoverBgColor="#1a1a1a"
+          hoverTextColor="#f5f0e8"
+          style={{ textTransform: "uppercase" }}
+        >
+          Contact Us
         </AnimatedButton>
       </div>
     </div>
@@ -392,7 +408,7 @@ export default function ServicesSticky() {
         }
         .svc-title {
           font-family: 'Syne', sans-serif;
-          font-size: clamp(1.9rem, 3.2vw, 3rem);
+          font-size: clamp(1.5rem, 2.3vw, 2.2rem);
           color: var(--ink);
           line-height: 1.06;
           margin-bottom: 1.2rem;

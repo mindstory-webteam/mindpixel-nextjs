@@ -62,10 +62,18 @@ import  distrikt9mockup from './distrikt9/distrikt9mockup.png'
 import  viralcatmockup from './viralcat/viralcatmockup.png'
 import  kairaliford from './ourclients/kairaliford.png'
 import  indelremit from './ourclients/indelremit.png'
-import  userimg from './userimg.png'
+import userimg from './userimg.png'
 import skyimg from './skyimg.webp'
+import agency_meeting_bg from './agency_meeting_bg.png'
+import communication from './communication.png'
+import experts from './experts.png'
+import growth from './growth.png'
 
 const rawImg = {
+     agency_meeting_bg,
+     communication,
+     experts,
+     growth,
      skyimg,
      reactlogo,
      userimg,

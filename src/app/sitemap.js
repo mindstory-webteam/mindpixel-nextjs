@@ -69,6 +69,22 @@ export default async function sitemap() {
     },
   ];
 
+  // Service detail routes
+  const serviceSlugs = [
+    'mobile-app-development',
+    'saas-application',
+    'custom-software',
+    'enterprise-software',
+    'ui-ux-design',
+    'seo',
+  ];
+  const serviceRoutes = serviceSlugs.map((slug) => ({
+    url: `${BASE_URL}/service/${slug}`,
+    lastModified: currentDate,
+    changeFrequency: 'weekly',
+    priority: 0.85,
+  }));
+
   // Case study routes
   const caseStudyIds = [1, 2, 3, 4, 5, 6];
   const caseStudyRoutes = caseStudyIds.map((id) => ({
@@ -101,5 +117,5 @@ export default async function sitemap() {
     console.error('Failed to fetch blog posts for sitemap:', error);
   }
 
-  return [...staticRoutes, ...caseStudyRoutes, ...blogRoutes];
+  return [...staticRoutes, ...serviceRoutes, ...caseStudyRoutes, ...blogRoutes];
 }

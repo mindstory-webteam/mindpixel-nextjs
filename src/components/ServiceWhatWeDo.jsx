@@ -85,7 +85,7 @@ export default function ServiceWhatWeDo() {
             {whatWeDo.tagline}
           </p>
           <h2
-            className="text-3xl md:text-5xl font-normal text-[#1a1a1a] leading-[1.2] mb-6 tracking-tight"
+            className="text-2xl sm:text-3xl md:text-4xl font-normal text-[#1a1a1a] leading-[1.2] mb-4 tracking-tight"
             style={{ fontFamily: "'Syne', sans-serif" }}
           >
             {whatWeDo.heading}

@@ -38,7 +38,8 @@ const FAQS = [
   }
 ];
 
-export default function FaqSection() {
+export default function FaqSection({ faqs = FAQS, heading = "Common Questions" } = {}) {
+  const faqList = (faqs && faqs.length > 0) ? faqs : FAQS;
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [status, setStatus] = useState("idle"); // idle | submitting | error
   const [errorMsg, setErrorMsg] = useState("");
@@ -600,10 +601,10 @@ export default function FaqSection() {
 
           {/* RIGHT — FAQs */}
           <div>
-            <h2 className="faq-heading">Common Questions</h2>
+            <h2 className="faq-heading">{heading}</h2>
 
             <div>
-              {FAQS.map((f, i) => (
+              {faqList.map((f, i) => (
                 <div
                   key={i}
                   className="faq-item"

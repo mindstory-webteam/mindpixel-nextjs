@@ -68,12 +68,12 @@ const WorkProcess = () => {
 
           {/* LEFT CONTENT */}
           <div className="flex flex-col gap-4 sm:gap-6 lg:sticky lg:top-50">
-            <h2 className="text-[28px] sm:text-[36px] lg:text-[60px] leading-[1.1] m-0 text-black text-center sm:text-left">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl leading-[1.15] m-0 text-black text-center sm:text-left tracking-tight">
               Our process, crafted for results.
             </h2>
             <p className="text-[13px] sm:text-[14px] lg:text-[18px] leading-[1.75] font-medium m-0 opacity-65 text-black text-center sm:text-left max-w-md mx-auto sm:mx-0">
               From the first conversation to long-term support, every step in
-              our workflow is intentional. We don't just deliver projects we
+              our workflow is intentional. We don&apos;t just deliver projects we
               build partnerships rooted in clarity, craft, and accountability.
             </p>
             <div className="w-fit mx-auto sm:mx-0">
