@@ -10,10 +10,37 @@ import { getServiceBySlug, getAllServices } from "../assets/servicesData";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+const DEFAULT_COMMITMENTS = [
+  {
+    num: "01",
+    title: "Zero Architectural Shortcuts",
+    desc: "Every line of code, database schema, and component is crafted to enterprise standards with strict type safety, modular design, and high test coverage.",
+  },
+  {
+    num: "02",
+    title: "100% Code & Asset Ownership",
+    desc: "You retain full, unencumbered ownership of every code repository, design token, database, and asset from day one. No vendor lock-in.",
+  },
+  {
+    num: "03",
+    title: "Transparent, Agile Sprints",
+    desc: "Direct access to your dedicated engineering team with weekly live progress demos, staging environments, and fixed milestone predictability.",
+  },
+  {
+    num: "04",
+    title: "Post-Launch Hypercare & SLA",
+    desc: "We stand firmly behind our delivery with proactive uptime monitoring, swift bug resolution, and SLA-backed maintenance so your product thrives.",
+  },
+];
+
 export default function ServiceDetailPage({ serviceSlug }) {
   const params = useParams();
   const slug = serviceSlug || params?.slug || "";
   const service = getServiceBySlug(slug) || getAllServices()[0];
+  const commitments =
+    service?.commitments && service.commitments.length > 0
+      ? service.commitments
+      : DEFAULT_COMMITMENTS;
 
   const sliderRef = useRef(null);
   const containerRef = useRef(null);
@@ -267,19 +294,46 @@ export default function ServiceDetailPage({ serviceSlug }) {
                 {service.process.map((step, i) => (
                   <div
                     key={i}
-                    className="p-5 sm:p-6 rounded-2xl bg-neutral-50 border border-neutral-200 flex flex-col justify-between"
+                    className="p-5 sm:p-6 rounded-2xl bg-[#141414] border border-neutral-800 shadow-md flex flex-col justify-between text-white"
                   >
                     <div>
                       <span className="text-xl sm:text-2xl font-bold font-mono text-[#e74c3c]">
                         {step.step}
                       </span>
-                      <h3 className="text-sm sm:text-base font-semibold text-neutral-900 mt-3 sm:mt-4 mb-1.5 sm:mb-2">
+                      <h3 className="text-sm sm:text-base font-semibold text-white mt-3 sm:mt-4 mb-1.5 sm:mb-2">
                         {step.title}
                       </h3>
-                      <p className="text-xs text-neutral-600 leading-relaxed">
+                      <p className="text-xs text-neutral-400 leading-relaxed">
                         {step.desc}
                       </p>
                     </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* OUR COMMITMENT Section */}
+          <section className="py-14 sm:py-20 md:py-24 bg-white border-t border-neutral-200">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="max-w-2xl mb-10 sm:mb-14 md:mb-16">
+                <h2 className="text-xl sm:text-2xl md:text-3xl font-normal tracking-tight text-neutral-900">
+                  Our Commitment
+                </h2>
+                <p className="text-xs sm:text-sm md:text-base text-neutral-600 mt-2.5 sm:mt-3 leading-relaxed">
+                  We build partnerships rooted in craft, accountability, and measurable business outcomes. Here is what we promise on every project.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
+                {commitments.map((item, i) => (
+                  <div key={i} className="flex flex-col">
+                    <h3 className="text-base sm:text-lg font-semibold text-neutral-900 mb-2 leading-snug">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed m-0">
+                      {item.desc}
+                    </p>
                   </div>
                 ))}
               </div>

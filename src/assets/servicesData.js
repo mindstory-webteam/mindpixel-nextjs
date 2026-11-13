@@ -85,6 +85,28 @@ export const SERVICES_DATA = [
         desc: "Submitting to App Store and Play Store, resolving review feedback, and monitoring live telemetry.",
       },
     ],
+    commitments: [
+      {
+        num: "01",
+        title: "Store Approval Guarantee",
+        desc: "We guide your application through Apple App Store and Google Play review cycles until it is officially published and live.",
+      },
+      {
+        num: "02",
+        title: "60 FPS Fluid Performance",
+        desc: "Native-level responsiveness, smooth gesture interactions, and zero dropped frames across iOS and Android devices.",
+      },
+      {
+        num: "03",
+        title: "100% Code & Asset Ownership",
+        desc: "Full intellectual property ownership of your mobile codebase, assets, and build pipelines with zero lock-in.",
+      },
+      {
+        num: "04",
+        title: "Post-Launch Crash Monitoring",
+        desc: "Proactive telemetry and instant crash triage during the critical initial user onboarding and launch window.",
+      },
+    ],
     faqs: [
       {
         q: "Should I build native apps or choose cross-platform (React Native/Flutter)?",
@@ -188,6 +210,28 @@ export const SERVICES_DATA = [
         desc: "Setting up CI/CD, auto-scaling clusters, automated backups, and 24/7 uptime monitoring.",
       },
     ],
+    commitments: [
+      {
+        num: "01",
+        title: "Store Approval Guarantee",
+        desc: "We guide your application through Apple App Store and Google Play review cycles until it is officially published and live.",
+      },
+      {
+        num: "02",
+        title: "60 FPS Fluid Performance",
+        desc: "Native-level responsiveness, smooth gesture interactions, and zero dropped frames across iOS and Android devices.",
+      },
+      {
+        num: "03",
+        title: "100% Code & Asset Ownership",
+        desc: "Full intellectual property ownership of your mobile codebase, assets, and build pipelines with zero lock-in.",
+      },
+      {
+        num: "04",
+        title: "Post-Launch Crash Monitoring",
+        desc: "Proactive telemetry and instant crash triage during the critical initial user onboarding and launch window.",
+      },
+    ],
     faqs: [
       {
         q: "How do you ensure data isolation between different customer accounts?",
@@ -285,6 +329,28 @@ export const SERVICES_DATA = [
         step: "05",
         title: "Staff Training & Cutover",
         desc: "Hands-on team onboarding, system cutover, and dedicated hypercare support.",
+      },
+    ],
+    commitments: [
+      {
+        num: "01",
+        title: "Store Approval Guarantee",
+        desc: "We guide your application through Apple App Store and Google Play review cycles until it is officially published and live.",
+      },
+      {
+        num: "02",
+        title: "60 FPS Fluid Performance",
+        desc: "Native-level responsiveness, smooth gesture interactions, and zero dropped frames across iOS and Android devices.",
+      },
+      {
+        num: "03",
+        title: "100% Code & Asset Ownership",
+        desc: "Full intellectual property ownership of your mobile codebase, assets, and build pipelines with zero lock-in.",
+      },
+      {
+        num: "04",
+        title: "Post-Launch Crash Monitoring",
+        desc: "Proactive telemetry and instant crash triage during the critical initial user onboarding and launch window.",
       },
     ],
     faqs: [
@@ -386,6 +452,28 @@ export const SERVICES_DATA = [
         desc: "Coordinating multi-tier deployment, single sign-on cutover, and round-the-clock engineer support.",
       },
     ],
+    commitments: [
+      {
+        num: "01",
+        title: "Store Approval Guarantee",
+        desc: "We guide your application through Apple App Store and Google Play review cycles until it is officially published and live.",
+      },
+      {
+        num: "02",
+        title: "60 FPS Fluid Performance",
+        desc: "Native-level responsiveness, smooth gesture interactions, and zero dropped frames across iOS and Android devices.",
+      },
+      {
+        num: "03",
+        title: "100% Code & Asset Ownership",
+        desc: "Full intellectual property ownership of your mobile codebase, assets, and build pipelines with zero lock-in.",
+      },
+      {
+        num: "04",
+        title: "Post-Launch Crash Monitoring",
+        desc: "Proactive telemetry and instant crash triage during the critical initial user onboarding and launch window.",
+      },
+    ],
     faqs: [
       {
         q: "Can your system integrate with our existing Active Directory or Okta?",
@@ -484,6 +572,28 @@ export const SERVICES_DATA = [
         desc: "Annotating exact measurements, states, responsive rules, and exporting assets for the engineering team.",
       },
     ],
+    commitments: [
+      {
+        num: "01",
+        title: "Store Approval Guarantee",
+        desc: "We guide your application through Apple App Store and Google Play review cycles until it is officially published and live.",
+      },
+      {
+        num: "02",
+        title: "60 FPS Fluid Performance",
+        desc: "Native-level responsiveness, smooth gesture interactions, and zero dropped frames across iOS and Android devices.",
+      },
+      {
+        num: "03",
+        title: "100% Code & Asset Ownership",
+        desc: "Full intellectual property ownership of your mobile codebase, assets, and build pipelines with zero lock-in.",
+      },
+      {
+        num: "04",
+        title: "Post-Launch Crash Monitoring",
+        desc: "Proactive telemetry and instant crash triage during the critical initial user onboarding and launch window.",
+      },
+    ],
     faqs: [
       {
         q: "What tool do you use for UI/UX design and handoff?",
@@ -579,6 +689,28 @@ export const SERVICES_DATA = [
         step: "05",
         title: "Rank Tracking, CRO & Ongoing Iteration",
         desc: "Monitoring Google Search Console metrics, keyword movements, and A/B testing calls-to-action to convert traffic into leads.",
+      },
+    ],
+    commitments: [
+      {
+        num: "01",
+        title: "Store Approval Guarantee",
+        desc: "We guide your application through Apple App Store and Google Play review cycles until it is officially published and live.",
+      },
+      {
+        num: "02",
+        title: "60 FPS Fluid Performance",
+        desc: "Native-level responsiveness, smooth gesture interactions, and zero dropped frames across iOS and Android devices.",
+      },
+      {
+        num: "03",
+        title: "100% Code & Asset Ownership",
+        desc: "Full intellectual property ownership of your mobile codebase, assets, and build pipelines with zero lock-in.",
+      },
+      {
+        num: "04",
+        title: "Post-Launch Crash Monitoring",
+        desc: "Proactive telemetry and instant crash triage during the critical initial user onboarding and launch window.",
       },
     ],
     faqs: [
