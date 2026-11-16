@@ -285,7 +285,7 @@ export default function CareerSection() {
                 </div>
                 <button
                   type="submit"
-                  disabled={applyStatus === "submitting" || !turnstileToken}
+                  disabled
                   className="bg-orange-600 text-white text-xs font-semibold px-6 py-3 rounded hover:bg-orange-700 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto shrink-0"
                 >
                   {applyStatus === "submitting" ? "Sending…" : "Submit Profile"}
